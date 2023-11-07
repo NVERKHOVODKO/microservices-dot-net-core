@@ -47,8 +47,53 @@ public class UserService: IUserService
         //if (userList == null) throw new EntityNotFoundException("Users not found");
         return user;
     }
+    
+    public async Task DeleteUserAsync(Guid id)
+    {
+        await _dbRepository.Delete<UserEntity>(id);
+        await _dbRepository.SaveChangesAsync();
+    }
+    
+    public async Task DeleteUserRoleAsync(Guid id)
+    {
+        await _dbRepository.Delete<UserRoleEntity>(id);
+        await _dbRepository.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsLoginUniqueAsync(string login)
+    {
+        var user = _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == login);
+        return user != null;
+    }
 
 
+    public async Task<bool> IsLoginUniqueForUserAsync(Guid userId, string login)
+    {
+        var user = _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == login && x.Id != userId);
+        return user != null;
+    }
+
+    public async Task<Guid> AddRoleToUserAsync(AddUserRoleRequest request)
+    {
+        var userRole = new UserRoleEntity
+        {
+            UserId = request.UserId,
+            RoleId = request.RoleId
+        };
+        var result = await _dbRepository.Add(userRole);
+        await _dbRepository.SaveChangesAsync();
+        return result;
+    }
+    
+    /*public async Task Update(EditLoginRequest user)
+    {
+        //var entity = _mapper.Map<LeadEntity>(lead);
+
+        await _dbRepository.Update(user);
+        await _dbRepository.SaveChangesAsync();
+    }*/
+    
+    
     /*public async Task EditLoginAsync(EditLoginRequest request)
     {
         var userToUpdate = await _userRepository.GetUserModelAsync(request.UserId);
@@ -57,35 +102,6 @@ public class UserService: IUserService
         else
             _logger.LogInformation($"User with Id {request.UserId} was not found.");
     }
-
-    public async Task AddRoleToUserAsync(AddUserRoleRequest roleRequest)
-    {
-        await _userRepository.AddRoleToUserAsync(roleRequest);
-    }
-
-    public async Task DeleteUserAsync(Guid userId)
-    {
-        var user = await _userRepository.GetUserModelAsync(userId);
-        if (user == null) throw new EntityNotFoundException("User not found");
-        await _userRepository.DeleteAsync(user);
-    }
-
-
-    
-
-
-    public async Task<bool> IsLoginUniqueAsync(string login)
-    {
-        var IsLoginUnique = await _userRepository.IsLoginUniqueAsync(login);
-        return IsLoginUnique;
-    }
-
-
-    public async Task<bool> IsLoginUniqueForUserAsync(Guid userId, string login)
-    {
-        var IsLoginUnique = await _userRepository.IsLoginUniqueForUserAsync(userId, login);
-        return IsLoginUnique;
-    }*/
 
     /*public async Task<List<UserGetResponse>> GetFilteredAndSortedUsers(FilterSortUserRequest request)
     {

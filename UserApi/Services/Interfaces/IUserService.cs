@@ -10,6 +10,16 @@ public interface IUserService
     public List<UserEntity> GetUsers();
 
     public Task<UserEntity> GetUser(Guid id);
+
+    public Task DeleteUserAsync(Guid id);
+
+    public Task<bool> IsLoginUniqueAsync(string login);
+
+    public Task<bool> IsLoginUniqueForUserAsync(Guid userId, string login);
+    public Task<Guid> AddRoleToUserAsync(AddUserRoleRequest request);
+    public Task DeleteUserRoleAsync(Guid id);
+
+    //public Task Update(UserEntity user);
     /*public Task AddRoleToUserAsync(AddUserRoleRequest roleRequest);
 
     public Task<UserGetResponse> GetUser(Guid userId);

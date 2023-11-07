@@ -29,21 +29,13 @@ public class UserController : ControllerBase
     }
 
 
-    /*//[Authorize(Roles = "Admin, SuperAdmin, Support")]
+    //[Authorize(Roles = "Admin, SuperAdmin, Support")]
     [HttpPost("addRole")]
     public async Task<IActionResult> AddRoleToUser([FromBody] AddUserRoleRequest request)
     {
-        try
-        {
-            await _userService.AddRoleToUserAsync(request);
-            return Ok("Role added to user successfully");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Can't add role{request.RoleId} to user{request.UserId}: {ex.Message}");
-            return StatusCode(500, $"Can't add role{request.RoleId} to user{request.UserId}: {ex.Message}");
-        }
-    }*/
+        await _userService.AddRoleToUserAsync(request);
+        return Ok("Role added to user successfully");
+    }
 
 
     //[Authorize]
@@ -108,45 +100,37 @@ public class UserController : ControllerBase
             return StatusCode(500, $"Error filtering/sorting roles: {ex.Message}");
         }
     }*/
-
-
-    /*//[Authorize(Roles = "Admin, SuperAdmin")]
-    [HttpPatch("editLogin")]
-    public async Task<IActionResult> EditUser(EditLoginRequest request)
+    
+    //[Authorize(Roles = "Admin, SuperAdmin")]
+    /*[HttpPatch("edit")]
+    public async Task<IActionResult> EditLogin(EditLoginRequest request)
     {
-        try
-        {
-            if (request.NewLogin == null || request.UserId == null) return BadRequest("Fill in all details");
-            if (request.NewLogin.Length > 20) return BadRequest("Login has to be shorter that 20 symbols");
-            if (request.NewLogin.Length < 4) return BadRequest("Login has to be longer that 4 symbols");
-            if (!await _userService.IsLoginUniqueForUserAsync(request.UserId, request.NewLogin))
-                return BadRequest("Login isn't unique");
-            await _userService.EditLoginAsync(request);
-            return Ok($"User with Id {request.UserId} has been updated.");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Error editing user with Id {request.UserId}: {ex.Message}");
-            return StatusCode(500, $"User with Id {request.UserId} hasn't been updated.");
-        }
-    }
+        /*if (request.NewLogin == null || request.UserId == null) return BadRequest("Fill in all details");
+        if (request.NewLogin.Length > 20) return BadRequest("Login has to be shorter that 20 symbols");
+        if (request.NewLogin.Length < 4) return BadRequest("Login has to be longer that 4 symbols");
+        if (!await _userService.IsLoginUniqueForUserAsync(request.UserId, request.NewLogin))
+            return BadRequest("Login isn't unique");#1#
+        
+        
+        await _userService.Update(request);
+        return Ok($"User with Id {request.UserId} has been updated.");
+    }*/
+
 
 
     //[Authorize(Roles = "SuperAdmin")]
     [HttpDelete("deleteUser")]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
-        if (id == null) return BadRequest("Id must be not null");
-        try
-        {
-            await _userService.DeleteUserAsync(id);
-            _logger.LogInformation($"User({id}) has been deleted.");
-            return Ok($"User({id}) has been deleted.");
-        }
-        catch (DbUpdateException e)
-        {
-            _logger.LogError($"User({id}) hasn't been deleted.");
-            return StatusCode(StatusCodes.Status500InternalServerError, $"User({id}) hasn't been deleted.");
-        }
-    }*/
+        await _userService.DeleteUserAsync(id);
+        return Ok($"User({id}) has been deleted.");
+    }
+    
+    //[Authorize(Roles = "SuperAdmin")]
+    [HttpDelete("deleteUserRole")]
+    public async Task<IActionResult> DeleteUserRole(Guid id)
+    {
+        await _userService.DeleteUserRoleAsync(id);
+        return Ok($"User({id}) has been deleted.");
+    }
 }
