@@ -8,7 +8,7 @@ public class DataContext : DbContext
         /*Database.EnsureDeleted();
         Database.EnsureCreated();*/
     }
-    
+
     public DbSet<RoleEntity> Roles { get; set; }
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<UserRoleEntity> UserRoles { get; set; }

@@ -24,8 +24,8 @@ public class UserController : ControllerBase
     public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
     {
         //if (!await _userService.IsLoginUniqueAsync(request.Login)) return BadRequest("Login isn't unique");
-        await _userService.CreateUserAsync(request);
-        return Ok("User created successfully");
+        var id = await _userService.CreateUserAsync(request);
+        return Ok(id);
     }
 
 
@@ -39,7 +39,7 @@ public class UserController : ControllerBase
 
 
     //[Authorize]
-    [HttpGet("getUser")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetUser(Guid id)
     {
         var user = await _userService.GetUser(id);
@@ -49,7 +49,7 @@ public class UserController : ControllerBase
 
 
     //[Authorize]
-    [HttpGet("getUsers")]
+    [HttpGet("")]
     public async Task<IActionResult> GetUsers(int pageNumber, int pageSize)
     {
         if (pageSize < 1 || pageNumber < 1) return BadRequest("Invalid page number or page size.");
@@ -60,8 +60,38 @@ public class UserController : ControllerBase
     }
 
 
-    /*[Authorize(Roles = "Admin, SuperAdmin, Support")]
-    [HttpPost("filterSortUsers")]
+    //[Authorize(Roles = "SuperAdmin")]
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser(Guid id)
+    {
+        await _userService.DeleteUserAsync(id);
+        return Ok($"User({id}) has been deleted.");
+    }
+
+    //[Authorize(Roles = "SuperAdmin")]
+    [HttpDelete("removeUserRole")]
+    public async Task<IActionResult> RemoveUserRole(Guid id)
+    {
+        await _userService.RemoveUserRoleAsync(id);
+        return Ok($"User({id}) has been deleted.");
+    }
+
+    //[Authorize(Roles = "Admin, SuperAdmin")]
+    [HttpPatch("")]
+    public async Task<IActionResult> EditLogin(EditUserRequest request)
+    {
+        /*if (request.NewLogin == null || request.UserId == null) return BadRequest("Fill in all details");
+        if (request.NewLogin.Length > 20) return BadRequest("Login has to be shorter that 20 symbols");
+        if (request.NewLogin.Length < 4) return BadRequest("Login has to be longer that 4 symbols");
+        if (!await _userService.IsLoginUniqueForUserAsync(request.UserId, request.NewLogin))
+            return BadRequest("Login isn't unique");*/
+
+        await _userService.Update(request);
+        return Ok($"User with Id {request.UserId} has been updated.");
+    }
+
+    //[Authorize(Roles = "Admin, SuperAdmin, Support")]
+    /*[HttpPost("filterSortUsers")]
     public async Task<IActionResult> FilterSortUsers(FilterSortUserRequest request)
     {
         if (request.PageNumber < 1 || request.PageSize < 1)
@@ -100,37 +130,4 @@ public class UserController : ControllerBase
             return StatusCode(500, $"Error filtering/sorting roles: {ex.Message}");
         }
     }*/
-    
-    //[Authorize(Roles = "Admin, SuperAdmin")]
-    /*[HttpPatch("edit")]
-    public async Task<IActionResult> EditLogin(EditLoginRequest request)
-    {
-        /*if (request.NewLogin == null || request.UserId == null) return BadRequest("Fill in all details");
-        if (request.NewLogin.Length > 20) return BadRequest("Login has to be shorter that 20 symbols");
-        if (request.NewLogin.Length < 4) return BadRequest("Login has to be longer that 4 symbols");
-        if (!await _userService.IsLoginUniqueForUserAsync(request.UserId, request.NewLogin))
-            return BadRequest("Login isn't unique");#1#
-        
-        
-        await _userService.Update(request);
-        return Ok($"User with Id {request.UserId} has been updated.");
-    }*/
-
-
-
-    //[Authorize(Roles = "SuperAdmin")]
-    [HttpDelete("deleteUser")]
-    public async Task<IActionResult> DeleteUser(Guid id)
-    {
-        await _userService.DeleteUserAsync(id);
-        return Ok($"User({id}) has been deleted.");
-    }
-    
-    //[Authorize(Roles = "SuperAdmin")]
-    [HttpDelete("deleteUserRole")]
-    public async Task<IActionResult> DeleteUserRole(Guid id)
-    {
-        await _userService.DeleteUserRoleAsync(id);
-        return Ok($"User({id}) has been deleted.");
-    }
 }

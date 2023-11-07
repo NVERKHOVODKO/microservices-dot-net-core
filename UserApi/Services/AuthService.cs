@@ -65,7 +65,7 @@ public class AuthService : IAuthService
     {
         var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == request.Login);
         var userRoles = _dbRepository.GetAll<UserRoleEntity>().Where(r => r.UserId == user.Id);
-        List<string> roleNames = userRoles.Select(u => u.RoleEntity.Role).ToList();
+        var roleNames = userRoles.Select(u => u.RoleEntity.Role).ToList();
 
         return roleNames;
     }

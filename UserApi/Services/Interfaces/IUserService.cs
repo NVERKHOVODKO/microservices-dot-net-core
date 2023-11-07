@@ -17,8 +17,9 @@ public interface IUserService
 
     public Task<bool> IsLoginUniqueForUserAsync(Guid userId, string login);
     public Task<Guid> AddRoleToUserAsync(AddUserRoleRequest request);
-    public Task DeleteUserRoleAsync(Guid id);
+    public Task RemoveUserRoleAsync(Guid id);
 
+    public Task Update(EditUserRequest request);
     //public Task Update(UserEntity user);
     /*public Task AddRoleToUserAsync(AddUserRoleRequest roleRequest);
 
@@ -33,4 +34,3 @@ public interface IUserService
     public Task<bool> IsLoginUniqueAsync(string login);
     public Task<bool> IsLoginUniqueForUserAsync(Guid userId, string login);*/
 }
-

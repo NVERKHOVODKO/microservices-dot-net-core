@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProjectX;
+﻿using ProjectX;
 using TestApplication.Models;
 
 public static class DbInitializer
@@ -25,9 +24,21 @@ public static class DbInitializer
 
         var users = new List<UserEntity>
         {
-            new() { Id = Guid.NewGuid(), Login = "name1", Password = "1", Salt = HashHandler.GenerateSalt(30), Email = "email1" },
-            new() { Id = Guid.NewGuid(), Login = "name2", Password = "2", Salt = HashHandler.GenerateSalt(30), Email = "email2"  },
-            new() { Id = Guid.NewGuid(), Login = "name3", Password = "3", Salt = HashHandler.GenerateSalt(30), Email = "email3"  }
+            new()
+            {
+                Id = Guid.NewGuid(), Login = "name1", Password = "1", Salt = HashHandler.GenerateSalt(30),
+                Email = "email1"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Login = "name2", Password = "2", Salt = HashHandler.GenerateSalt(30),
+                Email = "email2"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Login = "name3", Password = "3", Salt = HashHandler.GenerateSalt(30),
+                Email = "email3"
+            }
         };
 
         if (!context.Users.Any())

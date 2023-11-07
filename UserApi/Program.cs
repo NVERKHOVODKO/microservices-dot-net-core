@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProjectX.Middlewares;
 using Repository;
 using TestApplication.Services;
 
@@ -54,8 +55,6 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));*/
 });
 
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IDbRepository, DbRepository>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve; });
@@ -64,10 +63,11 @@ builder.Services.AddCors();
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<DataContext>(options =>
-{
-    options.UseNpgsql(connString);
-});
+builder.Services.AddDbContext<DataContext>(options => { options.UseNpgsql(connString); });
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IDbRepository, DbRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -136,6 +136,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseHttpsRedirection();
 
 using (var scope = app.Services.CreateScope())
 {

@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectX;
+using ProjectX.Exceptions;
 using Repository;
 using TestApplication.DTO;
 using TestApplication.Models;
 
 namespace TestApplication.Services;
 
-public class UserService: IUserService
+public class UserService : IUserService
 {
     private readonly IDbRepository _dbRepository;
     private readonly ILogger<UserService> _logger;
@@ -19,6 +20,26 @@ public class UserService: IUserService
 
     public async Task<Guid> CreateUserAsync(CreateUserRequest request)
     {
+        if (request.Login == null)
+        {
+            throw new IncorrectDataException("Login can't be null");
+        }
+        if (request.Password == null)
+        {
+            throw new IncorrectDataException("Password can't be null");
+        }
+        if (request.Login.Length < 4)
+        {
+            throw new IncorrectDataException("Login must be longer than 3 symbols");
+        }
+        if (request.Password.Length < 4)
+        {
+            throw new IncorrectDataException("Password must be longer than 3 symbols");
+        }
+        if (request.Email == null)
+        {
+            throw new IncorrectDataException("Email can't be null");
+        }
         var salt = HashHandler.GenerateSalt(30);
         var entity = new UserEntity
         {
@@ -32,7 +53,7 @@ public class UserService: IUserService
         await _dbRepository.SaveChangesAsync();
         return result;
     }
-    
+
     public List<UserEntity> GetUsers()
     {
         var users = _dbRepository.GetAll<UserEntity>().ToList();
@@ -47,14 +68,14 @@ public class UserService: IUserService
         //if (userList == null) throw new EntityNotFoundException("Users not found");
         return user;
     }
-    
+
     public async Task DeleteUserAsync(Guid id)
     {
         await _dbRepository.Delete<UserEntity>(id);
         await _dbRepository.SaveChangesAsync();
     }
-    
-    public async Task DeleteUserRoleAsync(Guid id)
+
+    public async Task RemoveUserRoleAsync(Guid id)
     {
         await _dbRepository.Delete<UserRoleEntity>(id);
         await _dbRepository.SaveChangesAsync();
@@ -84,16 +105,23 @@ public class UserService: IUserService
         await _dbRepository.SaveChangesAsync();
         return result;
     }
-    
-    /*public async Task Update(EditLoginRequest user)
+
+    public async Task Update(EditUserRequest request)
     {
         //var entity = _mapper.Map<LeadEntity>(lead);
-
-        await _dbRepository.Update(user);
+        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == request.UserId);
+        var entity = new UserEntity
+        {
+            Login = request.NewLogin,
+            Password = HashHandler.HashPassword(request.NewPassword, user.Salt),
+            Email = request.NewEmail,
+            Salt = user.Salt
+        };
+        await _dbRepository.Update(entity);
         await _dbRepository.SaveChangesAsync();
-    }*/
-    
-    
+    }
+
+
     /*public async Task EditLoginAsync(EditLoginRequest request)
     {
         var userToUpdate = await _userRepository.GetUserModelAsync(request.UserId);

@@ -3,7 +3,7 @@ using Entities;
 
 namespace Repository;
 
-public class DbRepository: IDbRepository
+public class DbRepository : IDbRepository
 {
     private readonly DataContext _context;
 
