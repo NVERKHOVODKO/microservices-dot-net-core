@@ -19,8 +19,8 @@ public class UserController : ControllerBase
         _logger = logger;
     }
 
-    //[Authorize(Roles = "Admin, SuperAdmin")]
-    [HttpPost("create")]
+    //[Authorize]
+    [HttpPost("users/create")]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
     {
         var id = await _userService.CreateUserAsync(request);
@@ -28,8 +28,8 @@ public class UserController : ControllerBase
     }
 
 
-    //[Authorize(Roles = "Admin, SuperAdmin, Support")]
-    [HttpPost("addRole")]
+    //[Authorize]
+    [HttpPost("users/addRole")]
     public async Task<IActionResult> AddRoleToUser([FromBody] AddUserRoleRequest request)
     {
         await _userService.AddRoleToUserAsync(request);
@@ -38,7 +38,7 @@ public class UserController : ControllerBase
 
 
     //[Authorize]
-    [HttpGet("{id}")]
+    [HttpGet("users/{id}")]
     public async Task<IActionResult> GetUser(Guid id)
     {
         var user = await _userService.GetUser(id);
@@ -48,43 +48,41 @@ public class UserController : ControllerBase
 
 
     //[Authorize]
-    [HttpGet("")]
-    public async Task<IActionResult> GetUsers(int pageNumber, int pageSize)
+    [HttpGet("users")]
+    public async Task<IActionResult> GetUsers()
     {
-        if (pageSize < 1 || pageNumber < 1) return BadRequest("Invalid page number or page size.");
-
         var user = _userService.GetUsers();
         if (user == null) return NotFound("User not found");
         return Ok(user);
     }
-    
-    
-    //[Authorize(Roles = "SuperAdmin")]
-    [HttpDelete("{id}")]
+
+
+    //[Authorize]
+    [HttpDelete("users/{id}")]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
         await _userService.DeleteUserAsync(id);
         return Ok($"User({id}) has been deleted.");
     }
 
-    //[Authorize(Roles = "SuperAdmin")]
-    [HttpDelete("removeUserRole")]
+    //[Authorize(Roles = "SuperAdmin, Admin")]
+    [HttpDelete("users/removeUserRole")]
     public async Task<IActionResult> RemoveUserRole(Guid id)
     {
         await _userService.RemoveUserRoleAsync(id);
         return Ok($"User({id}) has been deleted.");
     }
 
-    //[Authorize(Roles = "Admin, SuperAdmin")]
-    [HttpPatch("editLogin")]
+    //[Authorize]
+    [HttpPatch("users/editLogin")]
     public async Task<IActionResult> EditLogin(EditLoginRequest request)
     {
         await _userService.UpdateLogin(request);
         return Ok($"User with Id {request.UserId} has been updated.");
     }
 
-    //[Authorize(Roles = "Admin, SuperAdmin")]
-    [HttpPatch("editEmail")]
+    //[Authorize]
+    [HttpPatch("users/editEmail")]
     public async Task<IActionResult> EditEmail(EditEmailRequest request)
     {
         await _userService.UpdateEmail(request);

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 using ProjectX;
 using ProjectX.Exceptions;
 using Repository;
@@ -26,6 +27,8 @@ public class UserService : IUserService
         if (request.Login.Length < 4) throw new IncorrectDataException("Login must be longer than 3 symbols");
         if (request.Password.Length < 4) throw new IncorrectDataException("Password must be longer than 3 symbols");
         if (request.Email == null) throw new IncorrectDataException("Email can't be null");
+        //if (IsEmailValid(request.Email)) throw new IncorrectDataException("Email isn't valid");
+
         var salt = HashHandler.GenerateSalt(30);
         var id = Guid.NewGuid();
         var entity = new UserEntity
@@ -66,7 +69,7 @@ public class UserService : IUserService
         await _dbRepository.SaveChangesAsync();
     }
 
-    
+
     public async Task RemoveUserRoleAsync(Guid id)
     {
         var userRole = _dbRepository.Get<UserRoleEntity>().FirstOrDefaultAsync(x => x.Id == id);
@@ -75,7 +78,7 @@ public class UserService : IUserService
         await _dbRepository.SaveChangesAsync();
     }
 
-    
+
     public async Task<bool> IsLoginUniqueAsync(string login)
     {
         var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == login);
@@ -89,7 +92,7 @@ public class UserService : IUserService
         return user != null;
     }
 
-    
+
     public async Task<Guid> AddRoleToUserAsync(AddUserRoleRequest request)
     {
         var userRole = new UserRoleEntity
@@ -104,7 +107,7 @@ public class UserService : IUserService
         return result;
     }
 
-    
+
     public async Task UpdateLogin(EditLoginRequest request)
     {
         var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == request.UserId);
@@ -132,5 +135,13 @@ public class UserService : IUserService
         user.Email = request.NewEmail;
         await _dbRepository.Update(user);
         await _dbRepository.SaveChangesAsync();
+    }
+
+    private bool IsEmailValid(string email)
+    {
+        var pattern = @"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*";
+        if (Regex.Match(email, pattern).Success)
+            return true;
+        return false;
     }
 }

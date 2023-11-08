@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository;
 
@@ -36,10 +37,14 @@ public class DbRepository : IDbRepository
 
     public async Task Delete<T>(Guid id) where T : class, IEntity
     {
-        /*var activeEntity = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
-        activeEntity.IsActive = false;
-        await Task.Run(() => _context.Update(activeEntity));*/
+        var entity = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+        if (entity != null)
+        {
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
+        }
     }
+
 
     public async Task Remove<T>(T entity) where T : class, IEntity
     {

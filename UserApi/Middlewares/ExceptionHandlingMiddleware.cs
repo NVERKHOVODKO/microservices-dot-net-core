@@ -42,7 +42,7 @@ public class ExceptionHandlingMiddleware
             await HandleExceptionAsync(httpContext,
                 ex.Message,
                 HttpStatusCode.NotFound,
-                "It's impossible, but... Roberto NOT FOUND!!!");
+                ex.Message);
         }
         catch (Exception ex)
         {

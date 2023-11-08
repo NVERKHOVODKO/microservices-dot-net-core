@@ -21,14 +21,7 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] AuthRequest request)
     {
-        try
-        {
-            var token = await _authService.GenerateTokenAsync(request);
-            return Ok(token);
-        }
-        catch (KeyNotFoundException e)
-        {
-            return NotFound($"not found {e.Message}");
-        }
+        var token = await _authService.GenerateTokenAsync(request);
+        return Ok(token);
     }
 }
