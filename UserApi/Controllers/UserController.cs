@@ -57,8 +57,8 @@ public class UserController : ControllerBase
         if (user == null) return NotFound("User not found");
         return Ok(user);
     }
-
-
+    
+    
     //[Authorize(Roles = "SuperAdmin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(Guid id)
@@ -90,45 +90,4 @@ public class UserController : ControllerBase
         await _userService.UpdateEmail(request);
         return Ok($"User with Id {request.UserId} has been updated.");
     }
-
-    //[Authorize(Roles = "Admin, SuperAdmin, Support")]
-    /*[HttpPost("filterSortUsers")]
-    public async Task<IActionResult> FilterSortUsers(FilterSortUserRequest request)
-    {
-        if (request.PageNumber < 1 || request.PageSize < 1)
-        {
-            return BadRequest("Invalid page number or page size.");
-        }
-        try
-        {
-            var filteredUsers = await _userService.GetFilteredAndSortedUsers(request);
-            return Ok(filteredUsers);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Error filtering/sorting users: {ex.Message}");
-            return StatusCode(500, $"Error filtering/sorting users: {ex.Message}");
-        }
-    }*/
-
-
-    /*[Authorize(Roles = "Admin, SuperAdmin, Support")]
-    [HttpPost("filterSortRoles")]
-    public async Task<IActionResult> FilterSortUsersRoles(FilterSortRolesRequest request)
-    {
-        if (request.PageNumber < 1 || request.PageSize < 1)
-        {
-            return BadRequest("Invalid page number or page size.");
-        }
-        try
-        {
-            var filteredRoles = await _userService.GetFilteredAndSortedRoles(request);
-            return Ok(filteredRoles);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Error filtering/sorting roles: {ex.Message}");
-            return StatusCode(500, $"Error filtering/sorting roles: {ex.Message}");
-        }
-    }*/
 }

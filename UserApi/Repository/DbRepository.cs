@@ -25,6 +25,7 @@ public class DbRepository : IDbRepository
     public async Task<Guid> Add<T>(T newEntity) where T : class, IEntity
     {
         var entity = await _context.Set<T>().AddAsync(newEntity);
+        Console.WriteLine(entity.Entity.Id);
         return entity.Entity.Id;
     }
 

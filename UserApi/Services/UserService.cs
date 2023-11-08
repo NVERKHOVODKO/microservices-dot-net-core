@@ -27,9 +27,10 @@ public class UserService : IUserService
         if (request.Password.Length < 4) throw new IncorrectDataException("Password must be longer than 3 symbols");
         if (request.Email == null) throw new IncorrectDataException("Email can't be null");
         var salt = HashHandler.GenerateSalt(30);
+        var id = Guid.NewGuid();
         var entity = new UserEntity
         {
-            Id = Guid.NewGuid(),
+            Id = id,
             Login = request.Login,
             Password = HashHandler.HashPassword(request.Password, salt),
             Email = request.Email,
@@ -39,7 +40,7 @@ public class UserService : IUserService
         };
         var result = await _dbRepository.Add(entity);
         await _dbRepository.SaveChangesAsync();
-        return result;
+        return id;
     }
 
     public List<UserEntity> GetUsers()
@@ -65,6 +66,7 @@ public class UserService : IUserService
         await _dbRepository.SaveChangesAsync();
     }
 
+    
     public async Task RemoveUserRoleAsync(Guid id)
     {
         var userRole = _dbRepository.Get<UserRoleEntity>().FirstOrDefaultAsync(x => x.Id == id);
@@ -73,10 +75,11 @@ public class UserService : IUserService
         await _dbRepository.SaveChangesAsync();
     }
 
+    
     public async Task<bool> IsLoginUniqueAsync(string login)
     {
-        var user = _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == login);
-        return user != null;
+        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == login);
+        return user == null;
     }
 
 
@@ -86,6 +89,7 @@ public class UserService : IUserService
         return user != null;
     }
 
+    
     public async Task<Guid> AddRoleToUserAsync(AddUserRoleRequest request)
     {
         var userRole = new UserRoleEntity
@@ -100,6 +104,7 @@ public class UserService : IUserService
         return result;
     }
 
+    
     public async Task UpdateLogin(EditLoginRequest request)
     {
         var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == request.UserId);
@@ -128,108 +133,4 @@ public class UserService : IUserService
         await _dbRepository.Update(user);
         await _dbRepository.SaveChangesAsync();
     }
-
-    /*public async Task EditLoginAsync(EditLoginRequest request)
-    {
-        var userToUpdate = await _userRepository.GetUserModelAsync(request.UserId);
-        if (userToUpdate != null)
-            await _userRepository.EditLoginAsync(userToUpdate, request.NewLogin);
-        else
-            _logger.LogInformation($"User with Id {request.UserId} was not found.");
-    }
-
-    /*public async Task<List<UserGetResponse>> GetFilteredAndSortedUsers(FilterSortUserRequest request)
-    {
-        IQueryable<UserModel> query = _context.Users
-            .Include(u => u.UserRoleModels)
-            .ThenInclude(ur => ur.RoleModel);
-
-        foreach (var param in request.Filters)
-        {
-            if (!string.IsNullOrWhiteSpace(param.Param) && param.Min >= 0 && param.Max >= param.Min)
-            {
-                switch (param.Param.ToLower())
-                {
-                    case "age":
-                        query = query.Where(u => u.Age >= param.Min && u.Age <= param.Max);
-                        break;
-                    case "name":
-                        query = query.Where(u => u.Login.Length >= param.Min && u.Login.Length <= param.Max);
-                        break;
-                    case "email":
-                        query = query.Where(u => u.Email.Length >= param.Min && u.Email.Length <= param.Max);
-                        break;
-                }
-            }
-        }
-
-        switch (request.SortField.ToLower())
-        {
-            case "age":
-                query = request.SortDirection == SortDirection.Ascending
-                    ? query.OrderBy(u => u.Age)
-                    : query.OrderByDescending(u => u.Age);
-                break;
-            case "name":
-                query = request.SortDirection == SortDirection.Ascending
-                    ? query.OrderBy(u => u.Login)
-                    : query.OrderByDescending(u => u.Login);
-                break;
-            case "email":
-                query = request.SortDirection == SortDirection.Ascending
-                    ? query.OrderBy(u => u.Email)
-                    : query.OrderByDescending(u => u.Email);
-                break;
-        }
-        
-        var skipCount = (request.PageNumber - 1) * request.PageSize;
-        var users = await query.Skip(skipCount).Take(request.PageSize).ToListAsync();
-        var userGetResponses = users.Select(user => new UserGetResponse
-        {
-            Id = user.Id,
-            Name = user.Login,
-            Email = user.Email,
-            Age = user.Age,
-            Roles = user.UserRoleModels
-                .Select(ur => new RoleModel
-                {
-                    Id = ur.RoleModel.Id,
-                    Role = ur.RoleModel.Role
-                })
-                .ToList()
-        }).ToList();
-
-        return userGetResponses;
-    }*/
-
-
-    /*public async Task<List<RoleModel>> GetFilteredAndSortedRoles(FilterSortRolesRequest request)
-    {
-        IQueryable<RoleModel> query = _context.Roles;
-        if (request.SelectedRoles != null && request.SelectedRoles.Any())
-        {
-            query = query.Where(role => request.SelectedRoles.Contains(role.Role));
-        }
-
-        if (!string.IsNullOrWhiteSpace(request.SortField))
-        {
-            switch (request.SortField.ToLower())
-            {
-                case "role":
-                    if (request.SortDirection == SortDirection.Ascending)
-                    {
-                        query = query.OrderBy(role => role.Role);
-                    }
-                    else
-                    {
-                        query = query.OrderByDescending(role => role.Role);
-                    }
-                    break;
-            }
-        }
-        var skipCount = (request.PageNumber - 1) * request.PageSize;
-        var roles = await query.Skip(skipCount).Take(request.PageSize).ToListAsync();
-
-        return roles;
-    }*/
 }
