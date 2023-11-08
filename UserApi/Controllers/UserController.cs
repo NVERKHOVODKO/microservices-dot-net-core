@@ -23,7 +23,6 @@ public class UserController : ControllerBase
     [HttpPost("create")]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
     {
-        //if (!await _userService.IsLoginUniqueAsync(request.Login)) return BadRequest("Login isn't unique");
         var id = await _userService.CreateUserAsync(request);
         return Ok(id);
     }
@@ -77,16 +76,18 @@ public class UserController : ControllerBase
     }
 
     //[Authorize(Roles = "Admin, SuperAdmin")]
-    [HttpPatch("")]
-    public async Task<IActionResult> EditLogin(EditUserRequest request)
+    [HttpPatch("editLogin")]
+    public async Task<IActionResult> EditLogin(EditLoginRequest request)
     {
-        /*if (request.NewLogin == null || request.UserId == null) return BadRequest("Fill in all details");
-        if (request.NewLogin.Length > 20) return BadRequest("Login has to be shorter that 20 symbols");
-        if (request.NewLogin.Length < 4) return BadRequest("Login has to be longer that 4 symbols");
-        if (!await _userService.IsLoginUniqueForUserAsync(request.UserId, request.NewLogin))
-            return BadRequest("Login isn't unique");*/
+        await _userService.UpdateLogin(request);
+        return Ok($"User with Id {request.UserId} has been updated.");
+    }
 
-        await _userService.Update(request);
+    //[Authorize(Roles = "Admin, SuperAdmin")]
+    [HttpPatch("editEmail")]
+    public async Task<IActionResult> EditEmail(EditEmailRequest request)
+    {
+        await _userService.UpdateEmail(request);
         return Ok($"User with Id {request.UserId} has been updated.");
     }
 

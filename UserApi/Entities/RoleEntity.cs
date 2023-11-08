@@ -2,7 +2,7 @@
 
 namespace TestApplication.Models;
 
-public class RoleEntity : IEntity
+public class RoleEntity : BaseEntity
 {
     public string Role { get; set; }
     public List<UserRoleEntity> UserRoleModels { get; set; }

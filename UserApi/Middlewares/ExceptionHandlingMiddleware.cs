@@ -1,68 +1,74 @@
 ﻿using System.Net;
-using System.Text.Json;
 using ProjectX.Exceptions;
 using TestApplication.DTO;
 
-namespace ProjectX.Middlewares
+namespace ProjectX.Middlewares;
+
+public class ExceptionHandlingMiddleware
 {
-    public class ExceptionHandlingMiddleware
+    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+    private readonly RequestDelegate _next;
+
+    public ExceptionHandlingMiddleware(
+        RequestDelegate next,
+        ILogger<ExceptionHandlingMiddleware> logger)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+        _next = next;
+        _logger = logger;
+    }
 
-        public ExceptionHandlingMiddleware(
-            RequestDelegate next,
-            ILogger<ExceptionHandlingMiddleware> logger)
+    public async Task InvokeAsync(HttpContext httpContext)
+    {
+        try
         {
-            _next = next;
-            _logger = logger;
+            await _next(httpContext);
         }
-
-        public async Task InvokeAsync(HttpContext httpContext)
+        catch (EntityNotFoundException ex)
         {
-            try
-            {
-                await _next(httpContext);
-            }
-            catch (IncorrectDataException ex)
-            {
-                await HandleExceptionAsync(httpContext,
-                    ex.Message,
-                    HttpStatusCode.BadRequest,
-                    ex.Message);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                await HandleExceptionAsync(httpContext,
-                    ex.Message,
-                    HttpStatusCode.NotFound,
-                    "It's impossible, but... Roberto NOT FOUND!!!");
-            }
-            catch (Exception ex)
-            {
-                await HandleExceptionAsync(httpContext,
-                    ex.Message,
-                    HttpStatusCode.InternalServerError,
-                    "Internal server error");
-            }
+            await HandleExceptionAsync(httpContext,
+                ex.Message,
+                HttpStatusCode.NotFound,
+                ex.Message);
         }
-
-        private async Task HandleExceptionAsync(HttpContext context, string exMsg, HttpStatusCode httpStatusCode, string message)
+        catch (IncorrectDataException ex)
         {
-            _logger.LogError(exMsg);
-
-            HttpResponse response = context.Response;
-
-            response.ContentType = "application/json";
-            response.StatusCode = (int)httpStatusCode;
-
-            ErrorDto errorDto = new()
-            {
-                Message = message,
-                StatusCode = (int)httpStatusCode
-            };
-
-            await response.WriteAsJsonAsync(errorDto);
+            await HandleExceptionAsync(httpContext,
+                ex.Message,
+                HttpStatusCode.BadRequest,
+                ex.Message);
         }
+        catch (KeyNotFoundException ex)
+        {
+            await HandleExceptionAsync(httpContext,
+                ex.Message,
+                HttpStatusCode.NotFound,
+                "It's impossible, but... Roberto NOT FOUND!!!");
+        }
+        catch (Exception ex)
+        {
+            await HandleExceptionAsync(httpContext,
+                ex.Message,
+                HttpStatusCode.InternalServerError,
+                "Internal server error");
+        }
+    }
+
+    private async Task HandleExceptionAsync(HttpContext context, string exMsg, HttpStatusCode httpStatusCode,
+        string message)
+    {
+        _logger.LogError(exMsg);
+
+        var response = context.Response;
+
+        response.ContentType = "application/json";
+        response.StatusCode = (int)httpStatusCode;
+
+        ErrorDto errorDto = new()
+        {
+            Message = message,
+            StatusCode = (int)httpStatusCode
+        };
+
+        await response.WriteAsJsonAsync(errorDto);
     }
 }

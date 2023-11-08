@@ -4,7 +4,7 @@ using Entities;
 
 namespace TestApplication.Models;
 
-public class UserRoleEntity : IEntity
+public class UserRoleEntity : BaseEntity
 {
     [Required] public Guid UserId { get; set; }
     [ForeignKey("UserId")] public virtual UserEntity UserEntity { get; set; }

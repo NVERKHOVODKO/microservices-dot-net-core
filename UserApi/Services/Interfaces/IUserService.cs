@@ -19,7 +19,9 @@ public interface IUserService
     public Task<Guid> AddRoleToUserAsync(AddUserRoleRequest request);
     public Task RemoveUserRoleAsync(Guid id);
 
-    public Task Update(EditUserRequest request);
+    public Task UpdateLogin(EditLoginRequest request);
+
+    public Task UpdateEmail(EditEmailRequest request);
     //public Task Update(UserEntity user);
     /*public Task AddRoleToUserAsync(AddUserRoleRequest roleRequest);
 
