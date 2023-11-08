@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace UserApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231108091336_Initial")]
+    [Migration("20231108091931_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -29,12 +29,6 @@ namespace UserApi.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DateUpdated")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Role")
                         .IsRequired()

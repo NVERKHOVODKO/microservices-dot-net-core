@@ -2,9 +2,9 @@
 
 namespace TestApplication.Models;
 
-public class RoleEntity : BaseEntity
+public class RoleEntity : IEntity
 {
+    public Guid Id { get; set; }
     public string Role { get; set; }
     public List<UserRoleEntity> UserRoleModels { get; set; }
-    public Guid Id { get; set; }
 }
