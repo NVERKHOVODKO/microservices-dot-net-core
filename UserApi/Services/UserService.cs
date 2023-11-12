@@ -27,7 +27,7 @@ public class UserService : IUserService
         if (request.Login.Length < 4) throw new IncorrectDataException("Login must be longer than 3 symbols");
         if (request.Password.Length < 4) throw new IncorrectDataException("Password must be longer than 3 symbols");
         if (request.Email == null) throw new IncorrectDataException("Email can't be null");
-        //if (IsEmailValid(request.Email)) throw new IncorrectDataException("Email isn't valid");
+        if (!IsEmailValid(request.Email)) throw new IncorrectDataException("Email isn't valid");
 
         var salt = HashHandler.GenerateSalt(30);
         var id = Guid.NewGuid();
@@ -170,11 +170,9 @@ public class UserService : IUserService
         await _dbRepository.SaveChangesAsync();
     }
 
-    private bool IsEmailValid(string email)
+    public bool IsEmailValid(string email)
     {
-        var pattern = @"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*";
-        if (Regex.Match(email, pattern).Success)
-            return true;
-        return false;
+        var regex = @"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$";
+        return Regex.IsMatch(email, regex, RegexOptions.IgnoreCase);
     }
 }
