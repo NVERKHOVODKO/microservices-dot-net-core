@@ -9,7 +9,7 @@ public interface IUserService
 
     public List<UserEntity> GetUsers();
 
-    public Task<UserEntity> GetUser(Guid id);
+    public Task<UserWithRolesDTO> GetUser(Guid id);
 
     public Task DeleteUserAsync(Guid id);
 

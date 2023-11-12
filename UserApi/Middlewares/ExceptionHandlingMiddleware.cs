@@ -44,6 +44,13 @@ public class ExceptionHandlingMiddleware
                 HttpStatusCode.NotFound,
                 ex.Message);
         }
+        catch (UserRoleAlreadyExistsException ex)
+        {
+            await HandleExceptionAsync(httpContext,
+                ex.Message,
+                HttpStatusCode.BadRequest,
+                ex.Message);
+        }
         catch (Exception ex)
         {
             await HandleExceptionAsync(httpContext,

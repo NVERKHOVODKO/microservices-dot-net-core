@@ -54,12 +54,31 @@ public class UserService : IUserService
     }
 
 
-    public Task<UserEntity> GetUser(Guid id)
+    public async Task<UserWithRolesDTO> GetUser(Guid id)
     {
-        var user = _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == id);
-        if (user == null) throw new EntityNotFoundException("User not found");
-        return user;
+        var user = await _dbRepository.Get<UserEntity>()
+            .Include(u => u.UserRoleModels)
+            .ThenInclude(ur => ur.RoleEntity)
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+        if (user == null)
+        {
+            throw new EntityNotFoundException("User not found");
+        }
+
+        var userDTO = new UserWithRolesDTO
+        {
+            Id = user.Id,
+            Login = user.Login,
+            Password = user.Password,
+            Email = user.Email,
+            Salt = user.Salt,
+            RoleNames = user.UserRoleModels?.Select(ur => ur.RoleEntity.Role).ToList() ?? new List<string>()
+        };
+
+        return userDTO;
     }
+
 
     public async Task DeleteUserAsync(Guid id)
     {
@@ -95,6 +114,13 @@ public class UserService : IUserService
 
     public async Task<Guid> AddRoleToUserAsync(AddUserRoleRequest request)
     {
+        var roleExists = await UserRoleExistsAsync(request.UserId, request.RoleId);
+
+        if (roleExists)
+        {
+            throw new UserRoleAlreadyExistsException("User already has this role.");
+        }
+
         var userRole = new UserRoleEntity
         {
             UserId = request.UserId,
@@ -106,6 +132,13 @@ public class UserService : IUserService
         await _dbRepository.SaveChangesAsync();
         return result;
     }
+
+    private async Task<bool> UserRoleExistsAsync(Guid userId, Guid roleId)
+    {
+        return await _dbRepository.Get<UserRoleEntity>()
+            .AnyAsync(ur => ur.UserId == userId && ur.RoleId == roleId);
+    }
+
 
 
     public async Task UpdateLogin(EditLoginRequest request)

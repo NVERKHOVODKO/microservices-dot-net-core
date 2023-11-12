@@ -20,7 +20,7 @@ public class ProductService : IProductService
 
     public async Task<Guid> CreateProductAsync(CreateProductRequest request)
     {
-        if (request.Name == null) throw new IncorrectDataException("Name can't be null");
+        if (request.Name.Length < 3) throw new IncorrectDataException("Name can't be less than 3 symbols");
         if (request.Price == null) throw new IncorrectDataException("Price can't be null");
         if (request.Availability == null) throw new IncorrectDataException("Availability can't be null");
         if (request.CreatorId == null) throw new IncorrectDataException("CreatorId can't be null");
@@ -53,10 +53,10 @@ public class ProductService : IProductService
     }
 
 
-    public Task<ProductEntity> GetProduct(Guid id)
+    public async Task<ProductEntity> GetProduct(Guid id)
     {
         _logger.LogInformation($"GetProduct(Guid id): {id}");
-        var product = _dbRepository.Get<ProductEntity>().FirstOrDefaultAsync(x => x.Id == id);
+        var product = await _dbRepository.Get<ProductEntity>().FirstOrDefaultAsync(x => x.Id == id);
         if (product == null) throw new EntityNotFoundException("Product not found");
         return product;
     }
@@ -117,7 +117,7 @@ public class ProductService : IProductService
 
     public async Task DeleteProductAsync(Guid id)
     {
-        var user = _dbRepository.Get<ProductEntity>().FirstOrDefaultAsync(x => x.Id == id);
+        var user = await _dbRepository.Get<ProductEntity>().FirstOrDefaultAsync(x => x.Id == id);
         if (user == null) throw new EntityNotFoundException("Product not found");
         await _dbRepository.Delete<ProductEntity>(id);
         await _dbRepository.SaveChangesAsync();
