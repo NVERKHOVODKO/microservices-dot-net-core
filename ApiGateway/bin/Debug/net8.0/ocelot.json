@@ -1,0 +1,93 @@
+﻿{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/gateway/users",
+      "UpstreamHttpMethod": ["GET"],
+      "DownstreamPathTemplate": "/User/users",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/addRole",
+      "UpstreamHttpMethod": ["POST"],
+      "DownstreamPathTemplate": "/User/addRole",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/{id}",
+      "UpstreamHttpMethod": ["GET", "DELETE"],
+      "DownstreamPathTemplate": "/User/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/create",
+      "UpstreamHttpMethod": ["POST"],
+      "DownstreamPathTemplate": "/User/create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/removeUserRole",
+      "UpstreamHttpMethod": ["DELETE"],
+      "DownstreamPathTemplate": "/User/removeUserRole",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/editLogin",
+      "UpstreamHttpMethod": ["PATCH"],
+      "DownstreamPathTemplate": "/User/editLogin",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/editEmail",
+      "UpstreamHttpMethod": ["PATCH"],
+      "DownstreamPathTemplate": "/User/editEmail",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    }
+  ],
+  
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5187"
+  }
+}

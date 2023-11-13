@@ -1,5 +1,4 @@
 ﻿using TestApplication.DTO;
-using TestApplication.Models;
 
 namespace TestApplication.Services;
 
@@ -7,7 +6,7 @@ public interface IUserService
 {
     public Task<Guid> CreateUserAsync(CreateUserRequest request);
 
-    public List<UserEntity> GetUsers();
+    public List<UserWithRolesDTO> GetUsers();
 
     public Task<UserWithRolesDTO> GetUser(Guid id);
 

@@ -60,3 +60,15 @@ C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\Debug\net8.0\refi
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\Debug\net8.0\ApiGateway.pdb
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\Debug\net8.0\ApiGateway.genruntimeconfig.cache
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\Debug\net8.0\ref\ApiGateway.dll
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\bin\Debug\net8.0\ocelot.json
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\bin\Debug\net8.0\FluentValidation.dll
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\bin\Debug\net8.0\IPAddressRange.dll
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\bin\Debug\net8.0\Microsoft.AspNetCore.MiddlewareAnalysis.dll
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\bin\Debug\net8.0\Microsoft.Extensions.DiagnosticAdapter.dll
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\bin\Debug\net8.0\Ocelot.dll
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\Debug\net8.0\ApiGateway.MvcApplicationPartsAssemblyInfo.cs
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\Debug\net8.0\ApiGateway.csproj.CopyComplete

@@ -46,11 +46,26 @@ public class UserService : IUserService
         return id;
     }
 
-    public List<UserEntity> GetUsers()
+    public List<UserWithRolesDTO> GetUsers()
     {
-        var users = _dbRepository.GetAll<UserEntity>().ToList();
-        if (users == null) throw new EntityNotFoundException("There is no users");
-        return users;
+        var users = _dbRepository.GetAll<UserEntity>()
+            .Include(u => u.UserRoleModels)
+            .ThenInclude(ur => ur.RoleEntity)
+            .ToList();
+
+        if (users == null || users.Count == 0) throw new EntityNotFoundException("There are no users");
+
+        var usersDTO = users.Select(user => new UserWithRolesDTO
+        {
+            Id = user.Id,
+            Login = user.Login,
+            Email = user.Email,
+            RoleNames = user.UserRoleModels?.Select(ur => ur.RoleEntity.Role).ToList() ?? new List<string>(),
+            DateCreated = user.DateCreated,
+            DateUpdated = user.DateUpdated ?? null
+        }).ToList();
+
+        return usersDTO;
     }
 
 
@@ -61,10 +76,7 @@ public class UserService : IUserService
             .ThenInclude(ur => ur.RoleEntity)
             .FirstOrDefaultAsync(u => u.Id == id);
 
-        if (user == null)
-        {
-            throw new EntityNotFoundException("User not found");
-        }
+        if (user == null) throw new EntityNotFoundException("User not found");
 
         var userDTO = new UserWithRolesDTO
         {
@@ -116,10 +128,7 @@ public class UserService : IUserService
     {
         var roleExists = await UserRoleExistsAsync(request.UserId, request.RoleId);
 
-        if (roleExists)
-        {
-            throw new UserRoleAlreadyExistsException("User already has this role.");
-        }
+        if (roleExists) throw new UserRoleAlreadyExistsException("User already has this role.");
 
         var userRole = new UserRoleEntity
         {
@@ -132,13 +141,6 @@ public class UserService : IUserService
         await _dbRepository.SaveChangesAsync();
         return result;
     }
-
-    private async Task<bool> UserRoleExistsAsync(Guid userId, Guid roleId)
-    {
-        return await _dbRepository.Get<UserRoleEntity>()
-            .AnyAsync(ur => ur.UserId == userId && ur.RoleId == roleId);
-    }
-
 
 
     public async Task UpdateLogin(EditLoginRequest request)
@@ -168,6 +170,12 @@ public class UserService : IUserService
         user.Email = request.NewEmail;
         await _dbRepository.Update(user);
         await _dbRepository.SaveChangesAsync();
+    }
+
+    private async Task<bool> UserRoleExistsAsync(Guid userId, Guid roleId)
+    {
+        return await _dbRepository.Get<UserRoleEntity>()
+            .AnyAsync(ur => ur.UserId == userId && ur.RoleId == roleId);
     }
 
     public bool IsEmailValid(string email)
