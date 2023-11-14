@@ -20,7 +20,7 @@ public class UserController : ControllerBase
     }
 
     //[Authorize]
-    [HttpPost("users/create")]
+    [HttpPost("users")]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
     {
         var id = await _userService.CreateUserAsync(request);

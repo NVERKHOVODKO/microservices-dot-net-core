@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ApiGateway\\obj\\run-all\\net8.0\\scopedcss\\projectbundle\\ApiGateway.bundle.scp.css",
-      "PackagePath": "staticwebassets\\ApiGateway.bundle.scp.css"
-    },
-    {
       "Id": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ApiGateway\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

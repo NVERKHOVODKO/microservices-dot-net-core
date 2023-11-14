@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "nnkvWT/vDpMilTE/qUpL8NvaZLGqxYvvQ32w3hmu3Fc=",
+  "Hash": "KZyjC9Pt0cszdEUBJ1C9udkc260Gmvv6c2M0E+iMY8s=",
   "Source": "ApiGateway",
   "BasePath": "_content/ApiGateway",
   "Mode": "Default",
@@ -16,40 +16,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ApiGateway\\obj\\run-all\\net8.0\\scopedcss\\bundle\\ApiGateway.styles.css",
-      "SourceId": "ApiGateway",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ApiGateway\\obj\\run-all\\net8.0\\scopedcss\\bundle\\",
-      "BasePath": "_content/ApiGateway",
-      "RelativePath": "ApiGateway.styles.css",
-      "AssetKind": "All",
-      "AssetMode": "CurrentProject",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ApiGateway\\obj\\run-all\\net8.0\\scopedcss\\bundle\\ApiGateway.styles.css"
-    },
-    {
-      "Identity": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ApiGateway\\obj\\run-all\\net8.0\\scopedcss\\projectbundle\\ApiGateway.bundle.scp.css",
-      "SourceId": "ApiGateway",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ApiGateway\\obj\\run-all\\net8.0\\scopedcss\\projectbundle\\",
-      "BasePath": "_content/ApiGateway",
-      "RelativePath": "ApiGateway.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ApiGateway\\obj\\run-all\\net8.0\\scopedcss\\projectbundle\\ApiGateway.bundle.scp.css"
-    },
     {
       "Identity": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ApiGateway\\wwwroot\\css\\site.css",
       "SourceId": "ApiGateway",

@@ -9,13 +9,16 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { UserMenuComponent } from './components/user-menu/user-menu.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
+import { ProductTableComponent } from './product-table/product-table.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UserMenuComponent,
-    AdminMenuComponent
+    AdminMenuComponent,
+    ProductTableComponent
   ],
   imports: [
     BrowserModule,

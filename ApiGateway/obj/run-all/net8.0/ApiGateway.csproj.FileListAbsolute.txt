@@ -23,8 +23,6 @@ C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\Ap
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\ApiGateway.csproj.CoreCompileInputs.cache
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\ApiGateway.MvcApplicationPartsAssemblyInfo.cs
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\ApiGateway.MvcApplicationPartsAssemblyInfo.cache
-C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\ApiGateway.RazorAssemblyInfo.cache
-C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\ApiGateway.RazorAssemblyInfo.cs
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\staticwebassets\msbuild.ApiGateway.Microsoft.AspNetCore.StaticWebAssets.props
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\staticwebassets\msbuild.build.ApiGateway.props
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\staticwebassets\msbuild.buildMultiTargeting.ApiGateway.props
@@ -32,9 +30,7 @@ C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\st
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\staticwebassets.pack.json
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\staticwebassets.build.json
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\staticwebassets.development.json
-C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\scopedcss\bundle\ApiGateway.styles.css
-C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\scopedcss\projectbundle\ApiGateway.bundle.scp.css
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\ApiGateway.csproj.CopyComplete
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\ApiGateway.dll
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ApiGateway\obj\run-all\net8.0\refint\ApiGateway.dll

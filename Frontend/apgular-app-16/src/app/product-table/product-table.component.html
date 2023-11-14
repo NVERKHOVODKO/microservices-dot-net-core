@@ -1,0 +1,41 @@
+<!-- product-list.component.html -->
+
+<div>
+    <button (click)="getProducts()">Get Products</button>
+</div>
+
+<div *ngIf="products && products.length > 0">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Availability</th>
+                <th>Date Created</th>
+                <th>Date Updated</th>
+                <th>Actions</th>
+                <!-- Добавляем столбец для действий -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of products">
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.availability }}</td>
+                <td>{{ product.dateCreated }}</td>
+                <td>{{ product.dateUpdated }}</td>
+                <td>
+                    <button (click)="editProduct(product.id)">Edit</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div *ngIf="!products || products.length === 0">
+    <p>No products available.</p>
+</div>

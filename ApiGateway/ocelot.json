@@ -25,18 +25,6 @@
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
     },{
-      "UpstreamPathTemplate": "/gateway/{id}",
-      "UpstreamHttpMethod": ["GET", "DELETE"],
-      "DownstreamPathTemplate": "/User/{id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5092
-        }
-      ],
-      "DangerousAcceptAnyServerCertificateValidator": true
-    },{
       "UpstreamPathTemplate": "/gateway/create",
       "UpstreamHttpMethod": ["POST"],
       "DownstreamPathTemplate": "/User/create",
@@ -96,9 +84,117 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/products",
+      "UpstreamHttpMethod": ["GET"],
+      "DownstreamPathTemplate": "/Product/products",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/products",
+      "UpstreamHttpMethod": ["POST"],
+      "DownstreamPathTemplate": "/Product/products",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/products/{id}",
+      "UpstreamHttpMethod": ["GET"],
+      "DownstreamPathTemplate": "/Product/products/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/products/{id}",
+      "UpstreamHttpMethod": ["DELETE"],
+      "DownstreamPathTemplate": "/Product/products/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/editAvailability",
+      "UpstreamHttpMethod": ["PATCH"],
+      "DownstreamPathTemplate": "/Product/editAvailability",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/editPrice",
+      "UpstreamHttpMethod": ["PATCH"],
+      "DownstreamPathTemplate": "/Product/editPrice",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/editDescription",
+      "UpstreamHttpMethod": ["PATCH"],
+      "DownstreamPathTemplate": "/Product/editDescription",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/editName",
+      "UpstreamHttpMethod": ["PATCH"],
+      "DownstreamPathTemplate": "/Product/editName",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/{id}",
+      "UpstreamHttpMethod": ["GET", "DELETE"],
+      "DownstreamPathTemplate": "/User/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     }
   ],
-  
+
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:5187"
   }
