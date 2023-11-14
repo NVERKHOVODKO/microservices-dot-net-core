@@ -84,6 +84,18 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
+    },{
+      "UpstreamPathTemplate": "/gateway/login",
+      "UpstreamHttpMethod": ["POST"],
+      "DownstreamPathTemplate": "/Auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     }
   ],
   
