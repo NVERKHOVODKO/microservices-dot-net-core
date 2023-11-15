@@ -9,8 +9,16 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { UserMenuComponent } from './components/user-menu/user-menu.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
-import { ProductTableComponent } from './product-table/product-table.component';
+import { ProductMenuComponent } from './components/product-menu/product-menu.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { RouterModule, Routes } from '@angular/router';
 
+
+const routes: Routes = [
+  { path: '', component: LoginComponent },
+  { path: 'product-menu', component: ProductMenuComponent },
+  { path: '**', component:  NotFoundComponent}
+];
 
 @NgModule({
   declarations: [
@@ -18,11 +26,13 @@ import { ProductTableComponent } from './product-table/product-table.component';
     LoginComponent,
     UserMenuComponent,
     AdminMenuComponent,
-    ProductTableComponent
+    ProductMenuComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    RouterModule.forRoot(routes),
     HttpClientModule // добавлено
   ],
   providers: [],

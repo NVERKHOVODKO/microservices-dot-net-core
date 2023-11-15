@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { UserMenuComponent } from './components/user-menu/user-menu.component';
+import { ProductMenuComponent } from './components/product-menu/product-menu.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
-  { path: 'userNemu', component: UserMenuComponent },
-  // Другие маршруты могут быть добавлены здесь
+  { path: 'product-menu', component: ProductMenuComponent },
+  { path: '**', component:  NotFoundComponent}
 ];
 
 @NgModule({

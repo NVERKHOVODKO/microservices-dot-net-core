@@ -4,11 +4,11 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css']
+  selector: 'app-product-menu',
+  templateUrl: './product-menu.component.html',
+  styleUrls: ['./product-menu.component.css']
 })
-export class ProductListComponent implements OnInit {
+export class ProductMenuComponent implements OnInit {
   products: any[] = [];
 
   constructor(private http: HttpClient) {}

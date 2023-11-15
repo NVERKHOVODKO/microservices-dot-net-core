@@ -4,11 +4,11 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-product-table',
-  templateUrl: './product-table.component.html',
-  styleUrls: ['./product-table.component.css']
+  selector: 'app-product-menu',
+  templateUrl: './product-menu.component.html',
+  styleUrls: ['./product-menu.component.css']
 })
-export class ProductTableComponent implements OnInit {
+export class ProductMenuComponent implements OnInit {
   products: any[] = [];
 
   constructor(private http: HttpClient) {}
@@ -29,6 +29,15 @@ export class ProductTableComponent implements OnInit {
         console.error('Error:', error);
       }
     );
+  }
+
+  createProduct() {
+    
+  }
+
+  deleteProduct(productId: string) {
+    // Здесь вы можете добавить логику для редактирования продукта
+    console.log('Edit Product with ID:', productId);
   }
 
   editProduct(productId: string) {
