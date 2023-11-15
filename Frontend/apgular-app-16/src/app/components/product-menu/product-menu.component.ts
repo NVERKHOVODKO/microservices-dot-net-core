@@ -1,6 +1,5 @@
-// product-list.component.ts
-
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -10,18 +9,25 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ProductMenuComponent implements OnInit {
   products: any[] = [];
+  token: string | undefined;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    // Возможно, в реальном приложении вы будете получать данные с сервера
-    // через сервис или HTTP-запросы. В данном примере данные просто хардкодятся.
+    this.route.queryParams.subscribe(params => {
+      this.token = params['token'];
+    });
+
+    //this.getProducts();
   }
 
   getProducts() {
     const url = 'http://localhost:5187/gateway/products';
-
-    this.http.get(url).subscribe(
+      const headers = {
+      'Authorization': `Bearer ${this.token}`
+    };
+  
+    this.http.get(url, { headers }).subscribe(
       (response: any) => {
         this.products = response.$values;
       },
@@ -31,17 +37,28 @@ export class ProductMenuComponent implements OnInit {
     );
   }
 
-  createProduct() {
-    
-  }
 
   deleteProduct(productId: string) {
-    // Здесь вы можете добавить логику для редактирования продукта
-    console.log('Edit Product with ID:', productId);
+    const url = `http://localhost:5122/Product/products/${productId}`;
+    const headers = {
+      'Authorization': `Bearer ${this.token}`
+    };
+    this.http.delete(url, { headers }).subscribe(
+      (response: any) => {
+        this.products = response.$values;
+      },
+      error => {
+        console.error('Error:', error);
+      }
+    );
+  }
+  
+
+  createProduct() {
+    console.log('Token:', this.token);
   }
 
   editProduct(productId: string) {
-    // Здесь вы можете добавить логику для редактирования продукта
     console.log('Edit Product with ID:', productId);
   }
 }

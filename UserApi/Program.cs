@@ -85,8 +85,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 var app = builder.Build();
 app.UseCors(x => x
-    .WithOrigins("https://localhost:7045")
-    .AllowCredentials()
+    .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
 

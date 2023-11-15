@@ -84,11 +84,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 
 var app = builder.Build();
-app.UseCors(x => x
-    .WithOrigins("https://localhost:7045")
-    .AllowCredentials()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
 
 app.UseCookiePolicy(new CookiePolicyOptions
 {
@@ -110,10 +105,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseCors(x => x
-    .WithOrigins("https://localhost:7045")
-    .AllowCredentials()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .WithExposedHeaders("Content-Disposition")
+);
 
 app.UseCookiePolicy(new CookiePolicyOptions
 {

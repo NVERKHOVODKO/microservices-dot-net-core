@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProductApi.Services.Interfaces;
 using TestApplication.DTO;
 
@@ -71,7 +72,7 @@ public class ProductController : ControllerBase
         return Ok($"Product with Id {request.ProductId} has been updated.");
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpDelete("products/{id}")]
     public async Task<IActionResult> DeleteProduct(Guid id)
     {
