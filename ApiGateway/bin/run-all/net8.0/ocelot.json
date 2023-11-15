@@ -2,7 +2,7 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/gateway/users",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": ["GET", "POST"],
       "DownstreamPathTemplate": "/User/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -16,18 +16,6 @@
       "UpstreamPathTemplate": "/gateway/addRole",
       "UpstreamHttpMethod": ["POST"],
       "DownstreamPathTemplate": "/User/addRole",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5092
-        }
-      ],
-      "DangerousAcceptAnyServerCertificateValidator": true
-    },{
-      "UpstreamPathTemplate": "/gateway/create",
-      "UpstreamHttpMethod": ["POST"],
-      "DownstreamPathTemplate": "/User/create",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {

@@ -12,11 +12,13 @@ import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { ProductMenuComponent } from './components/product-menu/product-menu.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RouterModule, Routes } from '@angular/router';
+import { RegisterComponent } from './components/register/register.component';
 
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'product-menu', component: ProductMenuComponent },
+  { path: 'register', component: RegisterComponent },
   { path: '**', component:  NotFoundComponent}
 ];
 
@@ -26,6 +28,7 @@ const routes: Routes = [
     LoginComponent,
     UserMenuComponent,
     AdminMenuComponent,
+    RegisterComponent,
     ProductMenuComponent,
     NotFoundComponent
   ],

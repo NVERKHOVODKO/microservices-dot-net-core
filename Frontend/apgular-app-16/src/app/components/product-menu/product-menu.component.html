@@ -4,7 +4,8 @@
     <button (click)="goBack()">Go back</button>
 </div>
 
-<div *ngIf="showCreateProductPopup">
+<!-- Ваш шаблон компонента -->
+<div class="background" *ngIf="showCreateProductPopup">
     <div>
         Create
     </div>
@@ -30,7 +31,6 @@
     </div>
 </div>
 
-<!-- product-menu.component.html -->
 
 <div *ngIf="showEditProductPopup">
     <div>
