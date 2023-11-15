@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-menu',
@@ -12,32 +12,30 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class ProductMenuComponent implements OnInit {
   products: any[] = [];
   token: string | undefined;
+  userId: string | undefined;
   showCreateProductPopup: boolean = false;
+  showEditProductPopup: boolean = false;
+  selectedProductId: string | null = null;  
+  editedProduct: any = { name: '', description: '', price: 0, availability: false };
   newProduct: any = {
     name: '',
     description: '',
     price: 0
   };
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) { }
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.token = params['token'];
     });
-  
     const helper = new JwtHelperService();
-  
     if (this.token) {
       const decodedToken = helper.decodeToken(this.token);
+      this.userId = decodedToken.id;
       console.log('Decoded Token:', decodedToken);
-  
-      // Получение утверждений (claims)
-      const claims = decodedToken?.claims;
-      console.log('Token Claims:', claims);
     } else {
       console.error('Token is undefined or null');
-      // Обработайте отсутствие токена, если необходимо.
     }
   }
   
@@ -63,13 +61,35 @@ export class ProductMenuComponent implements OnInit {
   }
 
   saveProduct() {
-    // TODO: Добавить логику сохранения продукта на сервере
-
-
+    const url = 'http://localhost:5187/gateway/products';
+      const productData = {
+      name: this.newProduct.name,
+      description: this.newProduct.description,
+      price: this.newProduct.price,
+      availability: this.newProduct.availability,
+      creatorId: this.userId
+    };
+  
+    const headers = {
+      'Authorization': `Bearer ${this.token}`
+    };
+    this.http.post(url, productData, { headers, observe: 'response' }).subscribe(
+      (response: any) => {
+        console.log(response);
+        console.log('Product created successfully:', response);
+        alert('Product created successfully!');
+      },
+      error => {
+        console.error('Error:', error);
+        alert('An error occurred while creating the product.');
+      }
+    );
+  
     this.showCreateProductPopup = false;
     this.newProduct = { name: '', description: '', price: 0, availability: false };
     this.getProducts();
   }
+
 
   closeCreateProductPopup() {
     // Закрываем всплывающее окно без сохранения
@@ -93,13 +113,11 @@ export class ProductMenuComponent implements OnInit {
           this.products = response.$values;
           alert('Product deleted successfully!');
         } else {
-          // Обработка других случаев
           console.error('Unexpected response:', response);
           alert('An unexpected error occurred while deleting the product.');
         }
       },
       error => {
-        // Обработка ошибок
         console.error('Error:', error);
 
         if (error.status === 403) {
@@ -113,12 +131,35 @@ export class ProductMenuComponent implements OnInit {
         }
       }
     );
-    //this.getProducts();
+    this.getProducts();
   }
-
 
 
   editProduct(productId: string) {
     console.log('Edit Product with ID:', productId);
+
+    this.selectedProductId = productId;
+    this.showEditProductPopup = true;
+
+    const selectedProduct = this.products.find(p => p.id === productId);
+    if (selectedProduct) {
+      this.editedProduct = { ...selectedProduct };
+    }
+  }
+
+  saveEditedProduct() {
+    // TODO: Добавить логику сохранения изменений на сервере
+
+    this.closeEditProductPopup();
+  }
+
+  closeEditProductPopup() {
+    this.showEditProductPopup = false;
+    this.selectedProductId = null;
+    this.editedProduct = { name: '', description: '', price: 0, availability: false };
+  }
+
+  goBack(){
+    this.router.navigate(['/']);
   }
 }

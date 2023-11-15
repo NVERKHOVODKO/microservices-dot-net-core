@@ -1,9 +1,13 @@
 <div>
     <button (click)="getProducts()">Get Products</button>
     <button (click)="createProduct()">Create Product</button>
+    <button (click)="goBack()">Go back</button>
 </div>
 
 <div *ngIf="showCreateProductPopup">
+    <div>
+        Create
+    </div>
     <div>
         <label for="productName">Name:</label>
         <input type="text" id="productName" [(ngModel)]="newProduct.name" />
@@ -25,6 +29,35 @@
         <button (click)="closeCreateProductPopup()">Close</button>
     </div>
 </div>
+
+<!-- product-menu.component.html -->
+
+<div *ngIf="showEditProductPopup">
+    <div>
+        Edit
+    </div>
+    <div>
+        <label for="editProductName">Name:</label>
+        <input type="text" id="editProductName" [(ngModel)]="editedProduct.name" />
+    </div>
+    <div>
+        <label for="editProductDescription">Description:</label>
+        <textarea id="editProductDescription" [(ngModel)]="editedProduct.description"></textarea>
+    </div>
+    <div>
+        <label for="editProductPrice">Price:</label>
+        <input type="number" id="editProductPrice" [(ngModel)]="editedProduct.price" />
+    </div>
+    <div>
+        <label for="editProductAvailability">Availability:</label>
+        <input type="checkbox" id="editProductAvailability" [(ngModel)]="editedProduct.availability" />
+    </div>
+    <div>
+        <button (click)="saveEditedProduct()">Save Changes</button>
+        <button (click)="closeEditProductPopup()">Close</button>
+    </div>
+</div>
+
 
 <div *ngIf="products && products.length > 0">
     <table>
