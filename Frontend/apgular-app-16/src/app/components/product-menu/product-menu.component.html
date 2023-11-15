@@ -1,8 +1,29 @@
-<!-- product-list.component.html -->
-
 <div>
     <button (click)="getProducts()">Get Products</button>
     <button (click)="createProduct()">Create Product</button>
+</div>
+
+<div *ngIf="showCreateProductPopup">
+    <div>
+        <label for="productName">Name:</label>
+        <input type="text" id="productName" [(ngModel)]="newProduct.name" />
+    </div>
+    <div>
+        <label for="productDescription">Description:</label>
+        <textarea id="productDescription" [(ngModel)]="newProduct.description"></textarea>
+    </div>
+    <div>
+        <label for="productPrice">Price:</label>
+        <input type="number" id="productPrice" [(ngModel)]="newProduct.price" />
+    </div>
+    <div>
+        <label for="productAvailability">Availability:</label>
+        <input type="checkbox" id="productAvailability" [(ngModel)]="newProduct.availability" />
+    </div>
+    <div>
+        <button (click)="saveProduct()">Save Product</button>
+        <button (click)="closeCreateProductPopup()">Close</button>
+    </div>
 </div>
 
 <div *ngIf="products && products.length > 0">

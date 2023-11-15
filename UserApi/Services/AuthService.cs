@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjectX;
+using ProjectX.Exceptions;
 using Repository;
 using TestApplication.DTO;
 using TestApplication.Models;
@@ -26,19 +27,18 @@ public class AuthService : IAuthService
 
     public async Task<string> GenerateTokenAsync(AuthRequest request)
     {
-        if (await IsUserExists(request) == false) throw new KeyNotFoundException();
-
-        //var user = await _userRepository.GetUserModelAsync(request.Login);
-        //await _authRepository.RecordLoginAsync(user.Id);
-
+        if (await IsUserExists(request) == false) throw new EntityNotFoundException("There is no such user");
+        var user = await _dbRepository.Get<UserEntity>()
+            .Include(u => u.UserRoleModels)
+            .ThenInclude(ur => ur.RoleEntity)
+            .FirstOrDefaultAsync(u => u.Login == request.Login);
         var roles = await GetUserRoles(request);
-
         var claims = new List<Claim>();
-
         if (roles != null && roles.Any())
             foreach (var role in roles)
                 claims.Add(new Claim(ClaimTypes.Role, role));
-
+        claims.Add(new Claim("id", user.Id.ToString()));
+        claims.Add(new Claim("name", user.Login));
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(
