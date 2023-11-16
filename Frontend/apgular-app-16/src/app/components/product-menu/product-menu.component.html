@@ -1,7 +1,8 @@
 <div>
-    <button (click)="getProducts()">Get Products</button>
-    <button (click)="createProduct()">Create Product</button>
-    <button (click)="goBack()">Go back</button>
+    <button (click)="goBack()">Go back(Unauthorized)</button>
+    <button (click)="getProducts()">Get Products(Authorized)</button>
+    <button (click)="createProduct()">Create Product(Admin, SuperAdmin)</button>
+    <button (click)="goToUsersMenu()">Users Menu(Admin, SuperAdmin)</button>
 </div>
 
 <!-- Ваш шаблон компонента -->
@@ -11,52 +12,61 @@
     </div>
     <div>
         <label for="productName">Name:</label>
-        <input type="text" id="productName" [(ngModel)]="newProduct.name" />
+        <input type="text" id="productName" [(ngModel)]="newProduct.name" required />
+        <div *ngIf="isLoginValid('name')" class="error-message">{{ errorMessageLogin }}</div>
     </div>
+
     <div>
         <label for="productDescription">Description:</label>
-        <textarea id="productDescription" [(ngModel)]="newProduct.description"></textarea>
+        <textarea id="productDescription" [(ngModel)]="newProduct.description" required></textarea>
+        <div *ngIf="isDescriptionValid('description')" class="error-message">{{ errorMessageDescription }}</div>
     </div>
     <div>
         <label for="productPrice">Price:</label>
-        <input type="number" id="productPrice" [(ngModel)]="newProduct.price" />
+        <input type="number" id="productPrice" [(ngModel)]="newProduct.price" required />
+        <div *ngIf="isPriceValid('price')" class="error-message">{{ errorMessagePrice }}</div>
     </div>
+
     <div>
         <label for="productAvailability">Availability:</label>
         <input type="checkbox" id="productAvailability" [(ngModel)]="newProduct.availability" />
     </div>
     <div>
-        <button (click)="saveProduct()">Save Product</button>
+        <button (click)="saveProduct()">Save Product(Admin, SuperAdmin)</button>
         <button (click)="closeCreateProductPopup()">Close</button>
     </div>
 </div>
 
 
-<div *ngIf="showEditProductPopup">
-    <div>
-        Edit
-    </div>
-    <div>
-        <label for="editProductName">Name:</label>
-        <input type="text" id="editProductName" [(ngModel)]="editedProduct.name" />
-    </div>
-    <div>
-        <label for="editProductDescription">Description:</label>
-        <textarea id="editProductDescription" [(ngModel)]="editedProduct.description"></textarea>
-    </div>
-    <div>
-        <label for="editProductPrice">Price:</label>
-        <input type="number" id="editProductPrice" [(ngModel)]="editedProduct.price" />
-    </div>
-    <div>
-        <label for="editProductAvailability">Availability:</label>
-        <input type="checkbox" id="editProductAvailability" [(ngModel)]="editedProduct.availability" />
-    </div>
-    <div>
-        <button (click)="saveEditedProduct()">Save Changes</button>
-        <button (click)="closeEditProductPopup()">Close</button>
+<div class="overlay" *ngIf="showEditProductPopup"></div>
+<div class="edit-product-popup" *ngIf="showEditProductPopup">
+    <div *ngIf="showEditProductPopup">
+        <div>
+            Edit
+        </div>
+        <div>
+            <label for="editProductName">Name:</label>
+            <input type="text" id="editProductName" [(ngModel)]="editedProduct.name" />
+        </div>
+        <div>
+            <label for="editProductDescription">Description:</label>
+            <textarea id="editProductDescription" [(ngModel)]="editedProduct.description"></textarea>
+        </div>
+        <div>
+            <label for="editProductPrice">Price:</label>
+            <input type="number" id="editProductPrice" [(ngModel)]="editedProduct.price" />
+        </div>
+        <div>
+            <label for="editProductAvailability">Availability:</label>
+            <input type="checkbox" id="editProductAvailability" [(ngModel)]="editedProduct.availability" />
+        </div>
+        <div>
+            <button (click)="saveEditedProduct()">Save Changes(Admin, SuperAdmin)</button>
+            <button (click)="closeEditProductPopup()">Close</button>
+        </div>
     </div>
 </div>
+
 
 
 <div *ngIf="products && products.length > 0">
@@ -84,7 +94,7 @@
                 <td>{{ product.dateUpdated }}</td>
                 <td>
                     <button (click)="editProduct(product.id)">Edit</button>
-                    <button (click)="deleteProduct(product.id)">Delete</button>
+                    <button (click)="deleteProduct(product.id)">Delete(Admin, SuperAdmin)</button>
                 </td>
             </tr>
         </tbody>

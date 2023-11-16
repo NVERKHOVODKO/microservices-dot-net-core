@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-product-menu',
   templateUrl: './product-menu.component.html',
@@ -22,6 +23,10 @@ export class ProductMenuComponent implements OnInit {
     description: '',
     price: 0
   };
+  errorMessageLogin = '';
+  errorMessagePrice = '';
+  errorMessageDescription = '';
+
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
 
@@ -89,7 +94,49 @@ export class ProductMenuComponent implements OnInit {
     this.newProduct = { name: '', description: '', price: 0, availability: false };
     this.getProducts();
   }
+  
+  isLoginValid(field: string): boolean {
+    
+    const value = this.newProduct[field];
+    if(value.length > 30){
+      this.errorMessageLogin = 'Name must be less than 30 symbols';
+      return true;
+    }
+    const isValid = !(value === '' || value === undefined || value === null);
+    if (!isValid) {
+        this.errorMessageLogin = 'Name is required';
+    } else {
+        this.errorMessageLogin = '';
+    }
+    return !isValid;
+  }
 
+  isDescriptionValid(field: string): boolean {
+    const value = this.newProduct[field];
+    if(value.length > 200){
+      this.errorMessageDescription = 'Description must be less than 200 symbols';
+      return true;
+    }
+    return false;
+  }
+
+  isPriceValid(field: string): boolean {
+    const value = this.newProduct[field];
+    const isValid = !(value === '' || value === undefined || value === null);
+    if (!isValid) {
+        this.errorMessagePrice = 'Price is required';
+        return true;
+    }
+    if(value <= 0){
+      this.errorMessagePrice = "Price must be more than 0";
+      return true;
+    }
+    if(value > 999999999){
+      this.errorMessagePrice = "Price can't be more than 999999999";
+      return true;
+    }
+    return false;
+  }
 
   closeCreateProductPopup() {
     // Закрываем всплывающее окно без сохранения
@@ -158,6 +205,12 @@ export class ProductMenuComponent implements OnInit {
     this.selectedProductId = null;
     this.editedProduct = { name: '', description: '', price: 0, availability: false };
   }
+
+
+  goToUsersMenu(){
+    this.router.navigate(['/users-menu']);
+  }
+
 
   goBack(){
     this.router.navigate(['/']);
