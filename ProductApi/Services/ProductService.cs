@@ -20,7 +20,7 @@ public class ProductService : IProductService
 
     public async Task<Guid> CreateProductAsync(CreateProductRequest request)
     {
-        if (request.Name.Length < 3) throw new IncorrectDataException("Name can't be less than 3 symbols");
+        if (request.Name.Length < 4) throw new IncorrectDataException("Name can't be less than 4 symbols");
         if (request.Price == null) throw new IncorrectDataException("Price can't be null");
         if (request.Availability == null) throw new IncorrectDataException("Availability can't be null");
         if (request.CreatorId == null) throw new IncorrectDataException("CreatorId can't be null");
@@ -68,6 +68,7 @@ public class ProductService : IProductService
         if (product.CreatorId != request.UserId) throw new AccessViolationException("You can't edit this product");
         if (product == null) throw new EntityNotFoundException("Product not found");
         if (request.NewName == null) throw new IncorrectDataException("Fill in all details");
+        if (request.NewName.Length < 4) throw new IncorrectDataException("Name can't be than 4 symbols");
         if (request.NewName.Length > 20) throw new IncorrectDataException("Name has to be shorter that 20 symbols");
         product.Name = request.NewName;
         product.DateUpdated = DateTime.UtcNow;

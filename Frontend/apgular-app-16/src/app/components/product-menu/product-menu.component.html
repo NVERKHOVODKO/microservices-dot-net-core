@@ -2,7 +2,7 @@
     <button (click)="goBack()">Go back(Unauthorized)</button>
     <button (click)="getProducts()">Get Products(Authorized)</button>
     <button (click)="createProduct()">Create Product(Admin, SuperAdmin)</button>
-    <button (click)="goToUsersMenu()">Users Menu(Admin, SuperAdmin)</button>
+    <button (click)="goToUsersMenu()">Users Menu</button>
 </div>
 
 <!-- Ваш шаблон компонента -->
@@ -42,30 +42,37 @@
 <div class="edit-product-popup" *ngIf="showEditProductPopup">
     <div *ngIf="showEditProductPopup">
         <div>
-            Edit
+            <h4>Edit Product</h4>
         </div>
-        <div>
+        <div class="input-container">
             <label for="editProductName">Name:</label>
-            <input type="text" id="editProductName" [(ngModel)]="editedProduct.name" />
+            <input type="text" id="editProductName" [(ngModel)]="editingProduct.name" />
+            <button class="edit-button" (click)="editName('name')">Edit name(Admin, SuperAdmin)</button>
+            <div *ngIf="isEditNameValid('name')" class="error-message">{{ errorMessageEditName }}</div>
         </div>
-        <div>
+        <div class="input-container">
             <label for="editProductDescription">Description:</label>
-            <textarea id="editProductDescription" [(ngModel)]="editedProduct.description"></textarea>
+            <textarea id="editProductDescription" [(ngModel)]="editingProduct.description"></textarea>
+            <button class="edit-button" (click)="saveEditedProduct()">Edit description(Admin, SuperAdmin)</button>
+            <div *ngIf="isEditDescriptionValid('description')" class="error-message">{{ errorMessageEditDescription }}</div>
         </div>
-        <div>
+        <div class="input-container">
             <label for="editProductPrice">Price:</label>
-            <input type="number" id="editProductPrice" [(ngModel)]="editedProduct.price" />
+            <input type="number" id="editProductPrice" [(ngModel)]="editingProduct.price" />
+            <button class="edit-button" (click)="saveEditedProduct()">Edit price(Admin, SuperAdmin)</button>
+            <div *ngIf="isEditPriceValid('price')" class="error-message">{{ errorMessageEditPrice }}</div>
         </div>
-        <div>
+        <div class="input-container">
             <label for="editProductAvailability">Availability:</label>
-            <input type="checkbox" id="editProductAvailability" [(ngModel)]="editedProduct.availability" />
+            <input type="checkbox" id="editProductAvailability" [(ngModel)]="editingProduct.availability" />
+            <button class="edit-button" (click)="saveEditedProduct()">Edit availability(Admin, SuperAdmin)</button>
         </div>
-        <div>
-            <button (click)="saveEditedProduct()">Save Changes(Admin, SuperAdmin)</button>
+        <div class="input-container">
             <button (click)="closeEditProductPopup()">Close</button>
         </div>
     </div>
 </div>
+
 
 
 
@@ -90,8 +97,8 @@
                 <td>{{ product.description }}</td>
                 <td>{{ product.price }}</td>
                 <td>{{ product.availability }}</td>
-                <td>{{ product.dateCreated }}</td>
-                <td>{{ product.dateUpdated }}</td>
+                <td>{{ formatDateString(product.dateCreated) }}</td>
+                <td>{{ formatDateString(product.dateUpdated) }}</td>
                 <td>
                     <button (click)="editProduct(product.id)">Edit</button>
                     <button (click)="deleteProduct(product.id)">Delete(Admin, SuperAdmin)</button>

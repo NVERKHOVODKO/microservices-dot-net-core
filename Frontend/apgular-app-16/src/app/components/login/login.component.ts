@@ -17,13 +17,14 @@ export class LoginComponent {
 
   login() {
     const url = 'http://localhost:5187/gateway/login';
-    const data = { login: 'string', password: 'string' };
+    const data = { login: this.username, password: this.password };
 
     this.http.post(url, data).subscribe(
       (response: any) => {
         if (response && response.token) {
+          console.log('Request: ', Request);
           const token = response.token;
-          console.log('Token: ', token);
+          console.log('response: ', response);
           this.router.navigate(['/product-menu'], { queryParams: { token: token }});
         } else {
           console.error('Token not found in response.');

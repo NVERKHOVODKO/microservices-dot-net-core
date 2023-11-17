@@ -5,6 +5,7 @@ using TestApplication.DTO;
 
 namespace ProductApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ProductController : ControllerBase
@@ -16,7 +17,7 @@ public class ProductController : ControllerBase
         _productService = productService;
     }
 
-    //[Authorize]
+    [Authorize(Roles = "Admin, SuperAdmin, Support")]
     [HttpPost("products")]
     public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request)
     {
@@ -24,7 +25,7 @@ public class ProductController : ControllerBase
         return Ok(productId);
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpGet("products")]
     public async Task<IActionResult> GetProducts()
     {
@@ -32,7 +33,7 @@ public class ProductController : ControllerBase
         return Ok(product);
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpGet("products/{id}")]
     public async Task<IActionResult> GetProduct(Guid id)
     {
@@ -40,7 +41,7 @@ public class ProductController : ControllerBase
         return Ok(product);
     }
 
-    //[Authorize]
+    [Authorize(Roles = "Admin, SuperAdmin")]
     [HttpPatch("products/editName")]
     public async Task<IActionResult> EditName(EditNameRequest request)
     {
@@ -48,7 +49,7 @@ public class ProductController : ControllerBase
         return Ok($"Product with Id {request.ProductId} has been updated.");
     }
 
-    //[Authorize]
+    [Authorize(Roles = "Admin, SuperAdmin")]
     [HttpPatch("products/editDescription")]
     public async Task<IActionResult> EditDescription(EditDescriptionRequest request)
     {
@@ -56,7 +57,7 @@ public class ProductController : ControllerBase
         return Ok($"Product with Id {request.ProductId} has been updated.");
     }
 
-    //[Authorize]
+    [Authorize(Roles = "Admin, SuperAdmin")]
     [HttpPatch("products/editPrice")]
     public async Task<IActionResult> EditPrice(EditPriceRequest request)
     {
@@ -64,7 +65,7 @@ public class ProductController : ControllerBase
         return Ok($"Product with Id {request.ProductId} has been updated.");
     }
 
-    //[Authorize]
+    [Authorize(Roles = "Admin, SuperAdmin")]
     [HttpPatch("products/editAvailability")]
     public async Task<IActionResult> EditAvailability(EditAvailabilityRequest request)
     {
@@ -72,7 +73,7 @@ public class ProductController : ControllerBase
         return Ok($"Product with Id {request.ProductId} has been updated.");
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin, SuperAdmin")]
     [HttpDelete("products/{id}")]
     public async Task<IActionResult> DeleteProduct(Guid id)
     {

@@ -24,8 +24,10 @@ public class UserService : IUserService
         if (!await IsLoginUniqueAsync(request.Login)) throw new IncorrectDataException("Login isn't unique");
         if (request.Login == null) throw new IncorrectDataException("Login can't be null");
         if (request.Password == null) throw new IncorrectDataException("Password can't be null");
-        if (request.Login.Length < 4) throw new IncorrectDataException("Login must be longer than 3 symbols");
-        if (request.Password.Length < 4) throw new IncorrectDataException("Password must be longer than 3 symbols");
+        if (request.Login.Length < 4) throw new IncorrectDataException("Login must be longer than 4 symbols");
+        if (request.Login.Length > 30) throw new IncorrectDataException("Login must be less than 30 symbols");
+        if (request.Password.Length < 4) throw new IncorrectDataException("Password must be longer than 4 symbols");
+        if (request.Password.Length > 30) throw new IncorrectDataException("Password must be less than 30 symbols");
         if (request.Email == null) throw new IncorrectDataException("Email can't be null");
         if (!IsEmailValid(request.Email)) throw new IncorrectDataException("Email isn't valid");
 
@@ -157,7 +159,7 @@ public class UserService : IUserService
         if (user == null) throw new EntityNotFoundException("User not found");
         if (request.NewLogin == null || request.UserId == null) throw new IncorrectDataException("Fill in all details");
         if (request.NewLogin.Length > 20) throw new IncorrectDataException("Login has to be shorter that 20 symbols");
-        if (request.NewLogin.Length < 4) throw new IncorrectDataException("Login has to be longer than 3 symbols");
+        if (request.NewLogin.Length < 4) throw new IncorrectDataException("Login has to be longer than 4 symbols");
         if (!await IsLoginUniqueForUserAsync(request.UserId, request.NewLogin))
             throw new IncorrectDataException("Login isn't unique");
         user.Login = request.NewLogin;
@@ -171,8 +173,7 @@ public class UserService : IUserService
         var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == request.UserId);
         if (user == null) throw new EntityNotFoundException("User not found");
         if (request.NewEmail == null || request.UserId == null) throw new IncorrectDataException("Fill in all details");
-        /*if (request.NewEmail.Length > 20) throw new IncorrectDataException("Login has to be shorter that 20 symbols");
-        if (request.NewEmail.Length < 4) throw new IncorrectDataException("Login has to be longer than 3 symbols");*/
+        if (!IsEmailValid(request.NewEmail)) throw new IncorrectDataException("Email isn't valid");
         if (!await IsLoginUniqueForUserAsync(request.UserId, request.NewEmail))
             throw new IncorrectDataException("Login isn't unique");
         user.Email = request.NewEmail;
@@ -188,6 +189,7 @@ public class UserService : IUserService
 
     public bool IsEmailValid(string email)
     {
+        if (email.Length > 100) throw new IncorrectDataException("Email isn't valid");
         var regex = @"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$";
         return Regex.IsMatch(email, regex, RegexOptions.IgnoreCase);
     }

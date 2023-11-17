@@ -155,3 +155,22 @@ table tbody tr:last-child td:first-child {
 table tbody tr:last-child td:last-child {
     border-radius: 0 0 20px 0;
 }
+
+.edit-product-popup {
+    /* Add styles for the popup container, if needed */
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+label {
+    margin-right: 10px;
+}
+
+.edit-button {
+    margin-left: auto;
+    /* This will push the button to the right */
+}

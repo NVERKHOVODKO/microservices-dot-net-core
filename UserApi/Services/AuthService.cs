@@ -54,10 +54,12 @@ public class AuthService : IAuthService
     public async Task<bool> IsUserExists(AuthRequest request)
     {
         var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == request.Login);
-
-        if (user.Login == request.Login &&
-            HashHandler.HashPassword(request.Password, user.Salt) == user.Password)
-            return true;
+        if (user != null)
+        {
+            if (user.Login == request.Login &&
+                HashHandler.HashPassword(request.Password, user.Salt) == user.Password)
+                return true;
+        }
         return false;
     }
 
