@@ -121,9 +121,9 @@
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
     },{
-      "UpstreamPathTemplate": "/gateway/editAvailability",
+      "UpstreamPathTemplate": "/gateway/products/editAvailability",
       "UpstreamHttpMethod": ["PATCH"],
-      "DownstreamPathTemplate": "/Product/editAvailability",
+      "DownstreamPathTemplate": "/Product/products/editAvailability",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -133,9 +133,9 @@
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
     },{
-      "UpstreamPathTemplate": "/gateway/editPrice",
+      "UpstreamPathTemplate": "/gateway/products/editPrice",
       "UpstreamHttpMethod": ["PATCH"],
-      "DownstreamPathTemplate": "/Product/editPrice",
+      "DownstreamPathTemplate": "/Product/products/editPrice",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -145,9 +145,9 @@
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
     },{
-      "UpstreamPathTemplate": "/gateway/editDescription",
+      "UpstreamPathTemplate": "/gateway/products/editDescription",
       "UpstreamHttpMethod": ["PATCH"],
-      "DownstreamPathTemplate": "/Product/editDescription",
+      "DownstreamPathTemplate": "/Product/products/editDescription",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -157,9 +157,9 @@
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
     },{
-      "UpstreamPathTemplate": "/gateway/editName",
+      "UpstreamPathTemplate": "/gateway/products/editName",
       "UpstreamHttpMethod": ["PATCH"],
-      "DownstreamPathTemplate": "/Product/editName",
+      "DownstreamPathTemplate": "/Product/products/editName",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {

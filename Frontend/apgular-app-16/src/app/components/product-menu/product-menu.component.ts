@@ -39,7 +39,8 @@ export class ProductMenuComponent implements OnInit {
   errorMessageEditName = '';
   errorMessageEditDescription = '';
   errorMessageEditPrice = '';
-
+  sortedColumn: string | null = null;
+  sortDirection: string = 'asc'; // 'asc' or 'desc'
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private datePipe: DatePipe) { }
 
@@ -56,6 +57,31 @@ export class ProductMenuComponent implements OnInit {
       console.error('Token is undefined or null');
     }
     this.getProducts();
+  }
+
+
+  
+
+  sortTable(column: string): void {
+    if (column === this.sortedColumn) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortedColumn = column;
+      this.sortDirection = 'asc';
+    }
+
+    this.products.sort((a, b) => {
+      const aValue = a[column];
+      const bValue = b[column];
+
+      if (aValue < bValue) {
+        return this.sortDirection === 'asc' ? -1 : 1;
+      } else if (aValue > bValue) {
+        return this.sortDirection === 'asc' ? 1 : -1;
+      } else {
+        return 0;
+      }
+    });
   }
 
   formatDateString(dateString: string | null): string {
@@ -130,45 +156,142 @@ export class ProductMenuComponent implements OnInit {
   }
 
 
-  editName(field: string) {
-    const value = this.editingProduct[field];
+  editName() {
+    const value = this.editingProduct.name;
     if(value.length > 30){
-      this.errorMessageEditName = 'Name must be less than 30 symbols';
-      alert('Name must be less than 30 symbols');
       return;
     }
     const isValid = !(value === '' || value === undefined || value === null);
     if (!isValid) {
-        this.errorMessageEditName = 'Name is required';
-        alert('Name is required');
         return;
     }
-    
-    const url = 'http://localhost:5187/gateway/editName';
-    
+    const url = 'http://localhost:5187/gateway/products/editName';
     const headers = {
       'Authorization': `Bearer ${this.token}`
     };
-  
     const body = {
-      productId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      userId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      newName: this.editingProduct[field]
+      productId: this.editedProduct.id,
+      userId: this.userId,
+      newName: this.editingProduct.name
     };
-  
-    this.http.post(url, body, { headers }).subscribe(
+    this.http.patch(url, body, { headers }).subscribe(
       (response: any) => {
         console.log('Edit Name successful:', response);
         alert('Name edited successfully');
       },
       (error) => {
-        console.error('Edit Name error:', error);
+        if (error.status === 200) {
+          alert('Name edited successfully');
+        }else{
+          alert(error.error.message);
+          console.error('Edit Name error:', error);
+        }
       }
     );
   }
 
-  isEditNameValid(field: string): boolean {
-    const value = this.editingProduct[field];
+
+  editPrice() {
+    const value = this.editingProduct.price;
+    console.log('value: ', value);
+    const isValid = !(value === '' || value === undefined || value === null);
+    if (!isValid) {
+        return;
+    }
+    if(value <= 0){
+      return;
+    }
+    if(value > 999999999){
+      return;
+    }
+    const url = 'http://localhost:5187/gateway/products/editPrice';
+    const headers = {
+      'Authorization': `Bearer ${this.token}`
+    };
+    const body = {
+      productId: this.editedProduct.id,
+      userId: this.userId,
+      newPrice: this.editingProduct.price
+    };
+    console.log('body:', body);
+    this.http.patch(url, body, { headers }).subscribe(
+      (response: any) => {
+        console.log('Edit Price successful:', response);
+        alert('Price edited successfully');
+      },
+      (error) => {
+        if (error.status === 200) {
+          alert('Price edited successfully');
+        }else{
+          alert(error.error.message);
+          console.error('Edit Price error:', error);
+        }
+      }
+    );
+  }
+
+
+  editDescription() {
+    const value = this.editingProduct.description;
+    if(value.length > 200){
+      return;
+    }
+    const url = 'http://localhost:5187/gateway/products/editDescription';
+    const headers = {
+      'Authorization': `Bearer ${this.token}`
+    };
+    const body = {
+      productId: this.editedProduct.id,
+      userId: this.userId,
+      newDescription: this.editingProduct.description
+    };
+    console.log('body:', body);
+    this.http.patch(url, body, { headers }).subscribe(
+      (response: any) => {
+        console.log('Edit Description successful:', response);
+        alert('Description edited successfully');
+      },
+      (error) => {
+        if (error.status === 200) {
+          alert('Description edited successfully');
+        }else{
+          alert(error.error.message);
+          console.error('Edit Description error:', error);
+        }
+      }
+    );
+  }
+
+
+  editAvailability() {
+    const url = 'http://localhost:5187/gateway/products/editAvailability';
+    const headers = {
+      'Authorization': `Bearer ${this.token}`
+    };
+    const body = {
+      productId: this.editedProduct.id,
+      userId: this.userId,
+      newAvailability: this.editingProduct.availability
+    };
+    console.log('body:', body);
+    this.http.patch(url, body, { headers }).subscribe(
+      (response: any) => {
+        console.log('Edit Availability successful:', response);
+        alert('Availability edited successfully');
+      },
+      (error) => {
+        if (error.status === 200) {
+          alert('Availability edited successfully');
+        }else{
+          alert(error.error.message);
+          console.error('Edit Availability error:', error);
+        }
+      }
+    );
+  }
+
+  isEditNameValid(): boolean {
+    const value = this.editingProduct.name;
     if(value.length > 30){
       this.errorMessageEditName = 'Name must be less than 30 symbols';
       return true;
@@ -197,8 +320,8 @@ export class ProductMenuComponent implements OnInit {
     return !isValid;
   }
 
-  isEditDescriptionValid(field: string): boolean {
-    const value = this.editingProduct[field];
+  isEditDescriptionValid(): boolean {
+    const value = this.editingProduct.description;
     if(value.length > 200){
       this.errorMessageEditDescription = 'Description must be less than 200 symbols';
       return true;
@@ -215,8 +338,8 @@ export class ProductMenuComponent implements OnInit {
     return false;
   }
 
-  isEditPriceValid(field: string): boolean {
-    const value = this.editingProduct[field];
+  isEditPriceValid(): boolean {
+    const value = this.editingProduct.price;
     const isValid = !(value === '' || value === undefined || value === null);
     if (!isValid) {
         this.errorMessageEditPrice = 'Price is required';
@@ -252,9 +375,7 @@ export class ProductMenuComponent implements OnInit {
   }
 
   closeCreateProductPopup() {
-    // Закрываем всплывающее окно без сохранения
     this.showCreateProductPopup = false;
-    // Очищаем поля нового продукта
     this.newProduct = { name: '', description: '', price: 0, availability: false };
   }
 
@@ -271,8 +392,7 @@ export class ProductMenuComponent implements OnInit {
         console.log('Request:', Request);
         this.products = response.$values;
         alert('Product deleted successfully!');
-        console.log('Response body:', response.body);  // Add this line
-        // Move this.getProducts() inside the success block
+        console.log('Response body:', response.body);
         this.getProducts();
       },      
       error => {
@@ -282,7 +402,10 @@ export class ProductMenuComponent implements OnInit {
           alert('Access forbidden. You do not have permission to delete this product.');
         } else if (error.status === 401) {
           alert('Unauthorized. Please log in and try again.');
-        } else if (error.status === 404) {
+        } else if (error.status === 200) {
+          alert('Product deleted successfully!');
+          this.getProducts();
+        }else if (error.status === 404) {
           alert('Product not found. It may have been deleted by someone else.');
         } else {
           alert('An error occurred while deleting the product.');
@@ -314,7 +437,8 @@ export class ProductMenuComponent implements OnInit {
   closeEditProductPopup() {
     this.showEditProductPopup = false;
     this.selectedProductId = null;
-    this.editedProduct = { name: '', description: '', price: 0, availability: false };
+    this.editingProduct = { name: '', description: '', price: 0, availability: false };
+    this.getProducts();
   }
 
 

@@ -65,7 +65,7 @@ public class ProductService : IProductService
     public async Task UpdateName(EditNameRequest request)
     {
         var product = await _dbRepository.Get<ProductEntity>().FirstOrDefaultAsync(x => x.Id == request.ProductId);
-        if (product.CreatorId != request.UserId) throw new AccessViolationException("You can't edit this product");
+        //if (product.CreatorId != request.UserId) throw new AccessViolationException("You can't edit this product");
         if (product == null) throw new EntityNotFoundException("Product not found");
         if (request.NewName == null) throw new IncorrectDataException("Fill in all details");
         if (request.NewName.Length < 4) throw new IncorrectDataException("Name can't be than 4 symbols");
@@ -80,12 +80,12 @@ public class ProductService : IProductService
     public async Task UpdateDescription(EditDescriptionRequest request)
     {
         var product = await _dbRepository.Get<ProductEntity>().FirstOrDefaultAsync(x => x.Id == request.ProductId);
-        if (product.CreatorId != request.UserId) throw new AccessViolationException("You can't edit this product");
+        //if (product.CreatorId != request.UserId) throw new AccessViolationException("You can't edit this product");
         if (product == null) throw new EntityNotFoundException("Product not found");
         if (request.NewDescription == null) throw new IncorrectDataException("Fill in all details");
         if (request.NewDescription.Length > 200)
             throw new IncorrectDataException("Description has to be shorter that 200 symbols");
-        product.Name = request.NewDescription;
+        product.Description = request.NewDescription;
         product.DateUpdated = DateTime.UtcNow;
         await _dbRepository.Update(product);
         await _dbRepository.SaveChangesAsync();
@@ -94,7 +94,7 @@ public class ProductService : IProductService
     public async Task UpdatePrice(EditPriceRequest request)
     {
         var product = await _dbRepository.Get<ProductEntity>().FirstOrDefaultAsync(x => x.Id == request.ProductId);
-        if (product.CreatorId != request.UserId) throw new AccessViolationException("You can't edit this product");
+        //if (product.CreatorId != request.UserId) throw new AccessViolationException("You can't edit this product");
         if (product == null) throw new EntityNotFoundException("Product not found");
         if (request.NewPrice < 0) throw new IncorrectDataException("Price must be positive value");
         product.Price = request.NewPrice;
@@ -106,7 +106,7 @@ public class ProductService : IProductService
     public async Task UpdateAvailability(EditAvailabilityRequest request)
     {
         var product = await _dbRepository.Get<ProductEntity>().FirstOrDefaultAsync(x => x.Id == request.ProductId);
-        if (product.CreatorId != request.UserId) throw new AccessViolationException("You can't edit this product");
+        //if (product.CreatorId != request.UserId) throw new AccessViolationException("You can't edit this product");
         if (product == null) throw new EntityNotFoundException("Product not found");
         if (request.NewAvailability == null || request.UserId == null)
             throw new IncorrectDataException("Fill in all details");

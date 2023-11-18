@@ -47,25 +47,25 @@
         <div class="input-container">
             <label for="editProductName">Name:</label>
             <input type="text" id="editProductName" [(ngModel)]="editingProduct.name" />
-            <button class="edit-button" (click)="editName('name')">Edit name(Admin, SuperAdmin)</button>
-            <div *ngIf="isEditNameValid('name')" class="error-message">{{ errorMessageEditName }}</div>
+            <button class="edit-button" (click)="editName()">Edit name(Admin, SuperAdmin)</button>
+            <div *ngIf="isEditNameValid()" class="error-message">{{ errorMessageEditName }}</div>
         </div>
         <div class="input-container">
             <label for="editProductDescription">Description:</label>
             <textarea id="editProductDescription" [(ngModel)]="editingProduct.description"></textarea>
-            <button class="edit-button" (click)="saveEditedProduct()">Edit description(Admin, SuperAdmin)</button>
-            <div *ngIf="isEditDescriptionValid('description')" class="error-message">{{ errorMessageEditDescription }}</div>
+            <button class="edit-button" (click)="editDescription()">Edit description(Admin, SuperAdmin)</button>
+            <div *ngIf="isEditDescriptionValid()" class="error-message">{{ errorMessageEditDescription }}</div>
         </div>
         <div class="input-container">
             <label for="editProductPrice">Price:</label>
             <input type="number" id="editProductPrice" [(ngModel)]="editingProduct.price" />
-            <button class="edit-button" (click)="saveEditedProduct()">Edit price(Admin, SuperAdmin)</button>
-            <div *ngIf="isEditPriceValid('price')" class="error-message">{{ errorMessageEditPrice }}</div>
+            <button class="edit-button" (click)="editPrice()">Edit price(Admin, SuperAdmin)</button>
+            <div *ngIf="isEditPriceValid()" class="error-message">{{ errorMessageEditPrice }}</div>
         </div>
         <div class="input-container">
             <label for="editProductAvailability">Availability:</label>
             <input type="checkbox" id="editProductAvailability" [(ngModel)]="editingProduct.availability" />
-            <button class="edit-button" (click)="saveEditedProduct()">Edit availability(Admin, SuperAdmin)</button>
+            <button class="edit-button" (click)="editAvailability()">Edit availability(Admin, SuperAdmin)</button>
         </div>
         <div class="input-container">
             <button (click)="closeEditProductPopup()">Close</button>
@@ -77,19 +77,20 @@
 
 
 <div *ngIf="products && products.length > 0">
-    <table>
+    <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Availability</th>
-                <th>Date Created</th>
-                <th>Date Updated</th>
+                <th (click)="sortTable('id')">ID</th>
+                <th (click)="sortTable('name')">Name</th>
+                <th (click)="sortTable('description')">Description</th>
+                <th (click)="sortTable('price')">Price</th>
+                <th (click)="sortTable('availability')">Availability</th>
+                <th (click)="sortTable('dateCreated')">Date Created</th>
+                <th (click)="sortTable('dateUpdated')">Date Updated</th>
                 <th>Actions</th>
             </tr>
         </thead>
+
         <tbody>
             <tr *ngFor="let product of products">
                 <td>{{ product.id }}</td>
