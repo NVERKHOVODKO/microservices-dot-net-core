@@ -1,7 +1,7 @@
 <div>
     <button (click)="goBack()">Go back(Unauthorized)</button>
     <button (click)="getProducts()">Get Products(Authorized)</button>
-    <button (click)="createProduct()">Create Product(Admin, SuperAdmin)</button>
+    <button (click)="createProduct()">Create Product</button>
     <button (click)="goToUsersMenu()">Users Menu</button>
 </div>
 
@@ -101,7 +101,7 @@
                 <td>{{ formatDateString(product.dateCreated) }}</td>
                 <td>{{ formatDateString(product.dateUpdated) }}</td>
                 <td>
-                    <button (click)="editProduct(product.id)">Edit</button>
+                    <button (click)="editProduct(product)">Edit</button>
                     <button (click)="deleteProduct(product.id)">Delete(Admin, SuperAdmin)</button>
                 </td>
             </tr>

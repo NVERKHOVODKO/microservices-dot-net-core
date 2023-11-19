@@ -18,7 +18,6 @@ export class ProductMenuComponent implements OnInit {
   userId: string | undefined;
   showCreateProductPopup: boolean = false;
   showEditProductPopup: boolean = false;
-  selectedProductId: string | null = null;  
   editedProduct: any = { name: '', description: '', price: 0, availability: false };
   newProduct: any = {
     id: '',
@@ -170,10 +169,11 @@ export class ProductMenuComponent implements OnInit {
       'Authorization': `Bearer ${this.token}`
     };
     const body = {
-      productId: this.editedProduct.id,
+      productId: this.editingProduct.id,
       userId: this.userId,
       newName: this.editingProduct.name
     };
+    console.log('body:', body);
     this.http.patch(url, body, { headers }).subscribe(
       (response: any) => {
         console.log('Edit Name successful:', response);
@@ -209,7 +209,7 @@ export class ProductMenuComponent implements OnInit {
       'Authorization': `Bearer ${this.token}`
     };
     const body = {
-      productId: this.editedProduct.id,
+      productId: this.editingProduct.id,
       userId: this.userId,
       newPrice: this.editingProduct.price
     };
@@ -241,7 +241,7 @@ export class ProductMenuComponent implements OnInit {
       'Authorization': `Bearer ${this.token}`
     };
     const body = {
-      productId: this.editedProduct.id,
+      productId: this.editingProduct.id,
       userId: this.userId,
       newDescription: this.editingProduct.description
     };
@@ -269,7 +269,7 @@ export class ProductMenuComponent implements OnInit {
       'Authorization': `Bearer ${this.token}`
     };
     const body = {
-      productId: this.editedProduct.id,
+      productId: this.editingProduct.id,
       userId: this.userId,
       newAvailability: this.editingProduct.availability
     };
@@ -416,27 +416,23 @@ export class ProductMenuComponent implements OnInit {
   
 
 
-  editProduct(productId: string) {
-    console.log('Edit Product with ID:', productId);
-
-    this.selectedProductId = productId;
+  editProduct(product: any) {
+    console.log('Edit Product with ID:', product.id);
     this.showEditProductPopup = true;
 
-    const selectedProduct = this.products.find(p => p.id === productId);
-    if (selectedProduct) {
-      this.editedProduct = { ...selectedProduct };
-    }
+
+    this.editingProduct.name = product.name;
+    this.editingProduct.id = product.id;
+    this.editingProduct.description = product.description;
+    this.editingProduct.price = product.price;
   }
 
   saveEditedProduct() {
-    // TODO: Добавить логику сохранения изменений на сервере
-
     this.closeEditProductPopup();
   }
 
   closeEditProductPopup() {
     this.showEditProductPopup = false;
-    this.selectedProductId = null;
     this.editingProduct = { name: '', description: '', price: 0, availability: false };
     this.getProducts();
   }
