@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Security.Authentication;
 using ProjectX.Exceptions;
 using TestApplication.DTO;
 
@@ -45,6 +46,13 @@ public class ExceptionHandlingMiddleware
                 ex.Message);
         }
         catch (UserRoleAlreadyExistsException ex)
+        {
+            await HandleExceptionAsync(httpContext,
+                ex.Message,
+                HttpStatusCode.BadRequest,
+                ex.Message);
+        }
+        catch (AuthenticationException ex)
         {
             await HandleExceptionAsync(httpContext,
                 ex.Message,

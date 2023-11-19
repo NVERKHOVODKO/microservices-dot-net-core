@@ -1,6 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mail;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjectX;
@@ -8,6 +11,7 @@ using ProjectX.Exceptions;
 using Repository;
 using TestApplication.DTO;
 using TestApplication.Models;
+using UserApi.Entities;
 
 namespace TestApplication.Services;
 
@@ -71,4 +75,64 @@ public class AuthService : IAuthService
 
         return roleNames;
     }
+    
+    public async Task VerifyEmail(VerifyEmailRequest request)
+    {
+        var code = await _dbRepository.Get<EmailVerificationCodeEntity>().FirstOrDefaultAsync(x => x.Email == request.Email);
+        if (code == null) throw new EntityNotFoundException("An error occurred. The code was not sent");
+        if (code.Code != request.Code)
+        {
+            throw new AuthenticationException();
+        }
+    }
+    
+    public async Task SendVerificationCode(string email)
+    {
+        if (email == null) throw new IncorrectDataException("Email can't be null");
+        if (!IsEmailValid(email)) throw new IncorrectDataException("Email isn't valid");
+        var random = new Random();
+        string code = random.Next(1000, 9999).ToString();
+        var entity = new EmailVerificationCodeEntity
+        {
+            Id = Guid.NewGuid(),
+            Email = email,
+            Code = code,
+            DateCreated = DateTime.UtcNow,
+            DateUpdated = DateTime.UtcNow
+        };
+        var result = await _dbRepository.Add(entity);
+        await _dbRepository.SaveChangesAsync();
+        SendCode(email, code);
+    }
+
+    private void SendCode(string email, string code)
+    {
+        MailMessage mm = new MailMessage();
+        SmtpClient sc = new SmtpClient("smtp.gmail.com");
+        mm.From = new MailAddress("mikita.verkhavodka@gmail.com");
+        mm.To.Add(email);
+        mm.Subject = "Email confirmation";
+        mm.Body = code;
+        sc.Port = 587;
+        sc.Credentials = new System.Net.NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
+        sc.EnableSsl = true;
+        sc.Send(mm);
+    }
+    
+    public bool IsEmailValid(string email)
+    {
+        if (email.Length > 100) throw new IncorrectDataException("Email isn't valid");
+        var regex = @"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$";
+        return Regex.IsMatch(email, regex, RegexOptions.IgnoreCase);
+    }
+    
+    
+    /*public async Task<List<string>> RestorePassword(RestorePasswordRequest request)
+    {
+        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == request.Login);
+        var userRoles = _dbRepository.GetAll<UserRoleEntity>().Where(r => r.UserId == user.Id);
+        var roleNames = userRoles.Select(u => u.RoleEntity.Role).ToList();
+
+        return roleNames;
+    }*/
 }
