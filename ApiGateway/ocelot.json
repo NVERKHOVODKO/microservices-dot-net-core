@@ -2,7 +2,10 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/gateway/users",
-      "UpstreamHttpMethod": ["GET", "POST"],
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST"
+      ],
       "DownstreamPathTemplate": "/User/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -12,9 +15,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/addRole",
-      "UpstreamHttpMethod": ["POST"],
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
       "DownstreamPathTemplate": "/User/addRole",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -24,9 +30,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/removeUserRole",
-      "UpstreamHttpMethod": ["DELETE"],
+      "UpstreamHttpMethod": [
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/User/removeUserRole",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -36,9 +45,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/editLogin",
-      "UpstreamHttpMethod": ["PATCH"],
+      "UpstreamHttpMethod": [
+        "PATCH"
+      ],
       "DownstreamPathTemplate": "/User/editLogin",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -48,9 +60,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/editEmail",
-      "UpstreamHttpMethod": ["PATCH"],
+      "UpstreamHttpMethod": [
+        "PATCH"
+      ],
       "DownstreamPathTemplate": "/User/editEmail",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -60,9 +75,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/login",
-      "UpstreamHttpMethod": ["POST"],
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
       "DownstreamPathTemplate": "/Auth/login",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -72,9 +90,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/products",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
       "DownstreamPathTemplate": "/Product/products",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -84,9 +105,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/products",
-      "UpstreamHttpMethod": ["POST"],
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
       "DownstreamPathTemplate": "/Product/products",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -96,9 +120,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/products/{id}",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
       "DownstreamPathTemplate": "/Product/products/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -108,9 +135,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/products/{id}",
-      "UpstreamHttpMethod": ["DELETE"],
+      "UpstreamHttpMethod": [
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/Product/products/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -120,9 +150,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/products/editAvailability",
-      "UpstreamHttpMethod": ["PATCH"],
+      "UpstreamHttpMethod": [
+        "PATCH"
+      ],
       "DownstreamPathTemplate": "/Product/products/editAvailability",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -132,9 +165,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/products/editPrice",
-      "UpstreamHttpMethod": ["PATCH"],
+      "UpstreamHttpMethod": [
+        "PATCH"
+      ],
       "DownstreamPathTemplate": "/Product/products/editPrice",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -144,9 +180,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/products/editDescription",
-      "UpstreamHttpMethod": ["PATCH"],
+      "UpstreamHttpMethod": [
+        "PATCH"
+      ],
       "DownstreamPathTemplate": "/Product/products/editDescription",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -156,9 +195,12 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/products/editName",
-      "UpstreamHttpMethod": ["PATCH"],
+      "UpstreamHttpMethod": [
+        "PATCH"
+      ],
       "DownstreamPathTemplate": "/Product/products/editName",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -168,9 +210,13 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
       "UpstreamPathTemplate": "/gateway/{id}",
-      "UpstreamHttpMethod": ["GET", "DELETE"],
+      "UpstreamHttpMethod": [
+        "GET",
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/User/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -182,7 +228,6 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     }
   ],
-
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:5187"
   }

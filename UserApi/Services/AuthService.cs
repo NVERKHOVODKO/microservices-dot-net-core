@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Net.Mail;
 using System.Security.Authentication;
 using System.Security.Claims;
@@ -55,43 +56,29 @@ public class AuthService : IAuthService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public async Task<bool> IsUserExists(AuthRequest request)
-    {
-        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == request.Login);
-        if (user != null)
-        {
-            if (user.Login == request.Login &&
-                HashHandler.HashPassword(request.Password, user.Salt) == user.Password)
-                return true;
-        }
-        return false;
-    }
-
-    public async Task<List<string>> GetUserRoles(AuthRequest request)
-    {
-        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == request.Login);
-        var userRoles = _dbRepository.GetAll<UserRoleEntity>().Where(r => r.UserId == user.Id);
-        var roleNames = userRoles.Select(u => u.RoleEntity.Role).ToList();
-
-        return roleNames;
-    }
-    
     public async Task VerifyEmail(VerifyEmailRequest request)
     {
-        var code = await _dbRepository.Get<EmailVerificationCodeEntity>().FirstOrDefaultAsync(x => x.Email == request.Email);
+        var code = await _dbRepository.Get<EmailVerificationCodeEntity>()
+            .FirstOrDefaultAsync(x => x.Email == request.Email);
         if (code == null) throw new EntityNotFoundException("An error occurred. The code was not sent");
-        if (code.Code != request.Code)
-        {
-            throw new AuthenticationException();
-        }
+        if (code.Code != request.Code) throw new AuthenticationException();
     }
-    
+
     public async Task SendVerificationCode(string email)
     {
         if (email == null) throw new IncorrectDataException("Email can't be null");
-        if (!IsEmailValid(email)) throw new IncorrectDataException("Email isn't valid");
+        var existedCode = await _dbRepository.Get<EmailVerificationCodeEntity>().FirstOrDefaultAsync(x => x.Email == email);
         var random = new Random();
-        string code = random.Next(1000, 9999).ToString();
+        if (existedCode != null)
+        {
+            var newCode = random.Next(1000, 9999).ToString();
+            existedCode.Code = newCode;
+            await _dbRepository.SaveChangesAsync();
+            SendCode(email, newCode);
+            return;
+        }
+        if (!IsEmailValid(email)) throw new IncorrectDataException("Email isn't valid");
+        var code = random.Next(1000, 9999).ToString();
         var entity = new EmailVerificationCodeEntity
         {
             Id = Guid.NewGuid(),
@@ -105,27 +92,45 @@ public class AuthService : IAuthService
         SendCode(email, code);
     }
 
+    public async Task<bool> IsUserExists(AuthRequest request)
+    {
+        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == request.Login);
+        if (user != null)
+            if (user.Login == request.Login &&
+                HashHandler.HashPassword(request.Password, user.Salt) == user.Password)
+                return true;
+        return false;
+    }
+
+    public async Task<List<string>> GetUserRoles(AuthRequest request)
+    {
+        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == request.Login);
+        var userRoles = _dbRepository.GetAll<UserRoleEntity>().Where(r => r.UserId == user.Id);
+        var roleNames = userRoles.Select(u => u.RoleEntity.Role).ToList();
+
+        return roleNames;
+    }
+
     private void SendCode(string email, string code)
     {
-        MailMessage mm = new MailMessage();
-        SmtpClient sc = new SmtpClient("smtp.gmail.com");
+        var mm = new MailMessage();
+        var sc = new SmtpClient("smtp.gmail.com");
         mm.From = new MailAddress("mikita.verkhavodka@gmail.com");
         mm.To.Add(email);
         mm.Subject = "Email confirmation";
         mm.Body = code;
         sc.Port = 587;
-        sc.Credentials = new System.Net.NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
+        sc.Credentials = new NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
         sc.EnableSsl = true;
         sc.Send(mm);
     }
-    
+
     public bool IsEmailValid(string email)
     {
         if (email.Length > 100) throw new IncorrectDataException("Email isn't valid");
         var regex = @"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$";
         return Regex.IsMatch(email, regex, RegexOptions.IgnoreCase);
     }
-    
     
     /*public async Task<List<string>> RestorePassword(RestorePasswordRequest request)
     {

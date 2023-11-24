@@ -3,7 +3,6 @@ using ProductApi.Services.Interfaces;
 using ProjectX.Exceptions;
 using Repository;
 using TestApplication.DTO;
-using AccessViolationException = ProjectX.Exceptions.AccessViolationException;
 
 namespace ProductApi.Services;
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -16,13 +17,11 @@ export class RegisterComponent {
   errorMessageUsername = '';
   errorMessagePassword = '';
   errorMessageEmail = '';
- 
 
-
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   isUsernameValid(field: string): boolean {
-    const value = this[field as keyof RegisterComponent];  // Use keyof to access the property by name
+    const value = this[field as keyof RegisterComponent];
     if (value.length > 20) {
       this.errorMessageUsername = 'Username must be less than 20 characters';
       return true;
@@ -77,8 +76,7 @@ export class RegisterComponent {
   }
 
 
-  register() {
-    const url = 'http://localhost:5187/gateway/users';
+  verifyEmail() {
 
     if (this.password !== this.confirmPassword) {
       console.error('Passwords do not match');
@@ -86,28 +84,29 @@ export class RegisterComponent {
       return;
     }
 
-    const body = {
+    const userData = {
       login: this.username,
       password: this.password,
       email: this.email,
     };
 
-    console.log(this.email);
-    console.log(this.username);
-    console.log(this.password);
-
-    this.http.post(url, body).subscribe(
+    this.http.post("http://localhost:5092/Auth/sendVerificationCode", { email: this.email }).subscribe(
       (response: any) => {
-        console.log(response);
-        console.log('Registration successful:', response);
-        const token = response.token;
-        console.log(token);
-        this.router.navigate(['/product-menu'], { queryParams: { token: token }});
+        if (response && response.status === "Sended") {
+          console.log('Registration successful:', response);
+          this.router.navigate(['/verify-email'], { queryParams: { userData } });
+        } else {
+          console.error('Unexpected response:', response);
+          alert('An unexpected response occurred. Please check the console for details.');
+        }
       },
       (error) => {
-        console.error('Registration error:', error);
-        console.log('Error message:', error.error.message);
-        alert(error.error.message);
+        console.error('HTTP error:', error);
+        if (error.status === 200) {
+          this.router.navigate(['/verify-email'], { queryParams: { login: this.username, password: this.password, email: this.email} });
+        } else {
+          alert('An unexpected error occurred. Please check the console for details.');
+        }
       }
     );
   }

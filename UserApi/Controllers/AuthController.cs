@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TestApplication.DTO;
 using TestApplication.Services;
-using System;
-using System.Net;
-using System.Net.Mail;
 
 namespace TestApplication.Controllers;
 
@@ -27,12 +24,12 @@ public class AuthController : ControllerBase
         var token = await _authService.GenerateTokenAsync(request);
         return Ok(new { token });
     }
-    
+
     [HttpPost("sendVerificationCode")]
     [AllowAnonymous]
-    public async Task<IActionResult> SendVerificationCode([FromBody] string email)
+    public async Task<IActionResult> SendVerificationCode(SendVerificationCodeRequest request)
     {
-        await _authService.SendVerificationCode(email);
+        await _authService.SendVerificationCode(request.Email);
         return Ok("Sended");
     }
 
@@ -43,7 +40,7 @@ public class AuthController : ControllerBase
         await _authService.VerifyEmail(request);
         return Ok("Verified");
     }
-    
+
     /*[HttpPatch("restorePassword")]
     [AllowAnonymous]
     public async Task<IActionResult> RestorePassword([FromBody] RestorePasswordRequest request)

@@ -105,10 +105,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseCors(x => x
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .WithExposedHeaders("Content-Disposition")
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .WithExposedHeaders("Content-Disposition")
 );
 
 app.UseCookiePolicy(new CookiePolicyOptions

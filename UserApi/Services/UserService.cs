@@ -43,15 +43,12 @@ public class UserService : IUserService
             DateCreated = DateTime.UtcNow,
             DateUpdated = DateTime.UtcNow
         };
-        Console.WriteLine("1111111111111111");
         var result = await _dbRepository.Add(entity);
-        Console.WriteLine("222222222222222222222");
         var roleId = AddRoleToUserAsync(new AddUserRoleRequest
         {
             UserId = id,
-            RoleId = new Guid("ae75a552-4703-4308-b6b2-008d76461e64")
+            RoleId = new Guid("86ebf03e-4a99-406b-8c6b-4d2edb66fe3d")
         });
-        Console.WriteLine("3333333333333333");
         await _dbRepository.SaveChangesAsync();
         return id;
     }

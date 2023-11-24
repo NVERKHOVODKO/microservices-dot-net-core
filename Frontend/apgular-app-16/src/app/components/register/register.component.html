@@ -29,7 +29,7 @@
             <input type="email" id="email" name="email" [(ngModel)]="email" required>
             <div *ngIf="isEmailValid('email')" class="error-message">{{ errorMessageEmail }}</div>
         </div>
-        <button type="button" (click)="register()">Register</button>
+        <button type="button" (click)="verifyEmail()">VerifyEmail</button>
         <p>Already have an account? <a href="/">Login</a></p>
     </form>
 </body>

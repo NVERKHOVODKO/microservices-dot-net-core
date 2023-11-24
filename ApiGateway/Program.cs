@@ -6,7 +6,7 @@ builder.Services.AddCors();
 
 builder.Services.AddControllersWithViews();
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("ocelot.json", false, true)
     .AddEnvironmentVariables();
 
 builder.Services.AddOcelot(builder.Configuration);
