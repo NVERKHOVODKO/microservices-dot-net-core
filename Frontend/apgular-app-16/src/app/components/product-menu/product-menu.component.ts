@@ -59,8 +59,6 @@ export class ProductMenuComponent implements OnInit {
   }
 
 
-  
-
   sortTable(column: string): void {
     if (column === this.sortedColumn) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
@@ -91,7 +89,7 @@ export class ProductMenuComponent implements OnInit {
     const date = new Date(dateString);
     return this.datePipe.transform(date, 'yyyy-MM-dd HH:mm:ss') || ''; // fallback to empty string if transformation fails
   }
-  
+
   getProducts() {
     const url = 'http://localhost:5187/gateway/products';
     const headers = {
@@ -108,6 +106,8 @@ export class ProductMenuComponent implements OnInit {
           alert('Access forbidden. You do not have permission to delete this product.');
         } else if (error.status === 401) {
           alert('Unauthorized. Please log in and try again.');
+        } else if (error.status === 403) {
+          alert('Forbidden');
         } else {
           alert('An error occurred while deleting the product.');
         }
@@ -116,20 +116,19 @@ export class ProductMenuComponent implements OnInit {
   }
 
   createProduct() {
-    // Показываем всплывающее окно для создания продукта
     this.showCreateProductPopup = true;
   }
 
   saveProduct() {
     const url = 'http://localhost:5187/gateway/products';
-      const productData = {
+    const productData = {
       name: this.newProduct.name,
       description: this.newProduct.description,
       price: this.newProduct.price,
       availability: this.newProduct.availability,
       creatorId: this.userId
     };
-  
+
     const headers = {
       'Authorization': `Bearer ${this.token}`
     };
@@ -146,9 +145,10 @@ export class ProductMenuComponent implements OnInit {
           alert('Unauthorized. Please log in and try again.');
         } else {
           alert('An error occurred while deleting the product.');
-        }      }
+        }
+      }
     );
-  
+
     this.showCreateProductPopup = false;
     this.newProduct = { name: '', description: '', price: 0, availability: false };
     this.getProducts();
@@ -157,12 +157,12 @@ export class ProductMenuComponent implements OnInit {
 
   editName() {
     const value = this.editingProduct.name;
-    if(value.length > 30){
+    if (value.length > 30) {
       return;
     }
     const isValid = !(value === '' || value === undefined || value === null);
     if (!isValid) {
-        return;
+      return;
     }
     const url = 'http://localhost:5187/gateway/products/editName';
     const headers = {
@@ -182,7 +182,9 @@ export class ProductMenuComponent implements OnInit {
       (error) => {
         if (error.status === 200) {
           alert('Name edited successfully');
-        }else{
+        } else if (error.status === 403) {
+          alert('Forbidden');
+        } else {
           alert(error.error.message);
           console.error('Edit Name error:', error);
         }
@@ -196,12 +198,12 @@ export class ProductMenuComponent implements OnInit {
     console.log('value: ', value);
     const isValid = !(value === '' || value === undefined || value === null);
     if (!isValid) {
-        return;
-    }
-    if(value <= 0){
       return;
     }
-    if(value > 999999999){
+    if (value <= 0) {
+      return;
+    }
+    if (value > 999999999) {
       return;
     }
     const url = 'http://localhost:5187/gateway/products/editPrice';
@@ -222,7 +224,9 @@ export class ProductMenuComponent implements OnInit {
       (error) => {
         if (error.status === 200) {
           alert('Price edited successfully');
-        }else{
+        } else if (error.status === 403) {
+          alert('Forbidden');
+        } else {
           alert(error.error.message);
           console.error('Edit Price error:', error);
         }
@@ -233,7 +237,7 @@ export class ProductMenuComponent implements OnInit {
 
   editDescription() {
     const value = this.editingProduct.description;
-    if(value.length > 200){
+    if (value.length > 200) {
       return;
     }
     const url = 'http://localhost:5187/gateway/products/editDescription';
@@ -254,7 +258,9 @@ export class ProductMenuComponent implements OnInit {
       (error) => {
         if (error.status === 200) {
           alert('Description edited successfully');
-        }else{
+        } else if (error.status === 403) {
+          alert('Forbidden');
+        } else {
           alert(error.error.message);
           console.error('Edit Description error:', error);
         }
@@ -282,7 +288,9 @@ export class ProductMenuComponent implements OnInit {
       (error) => {
         if (error.status === 200) {
           alert('Availability edited successfully');
-        }else{
+        } else if (error.status === 403) {
+          alert('Forbidden');
+        } else {
           alert(error.error.message);
           console.error('Edit Availability error:', error);
         }
@@ -292,37 +300,37 @@ export class ProductMenuComponent implements OnInit {
 
   isEditNameValid(): boolean {
     const value = this.editingProduct.name;
-    if(value.length > 30){
+    if (value.length > 30) {
       this.errorMessageEditName = 'Name must be less than 30 symbols';
       return true;
     }
     const isValid = !(value === '' || value === undefined || value === null);
     if (!isValid) {
-        this.errorMessageEditName = 'Name is required';
+      this.errorMessageEditName = 'Name is required';
     } else {
-        this.errorMessageEditName = '';
+      this.errorMessageEditName = '';
     }
     return !isValid;
   }
-  
+
   isLoginValid(field: string): boolean {
     const value = this.newProduct[field];
-    if(value.length > 30){
+    if (value.length > 30) {
       this.errorMessageLogin = 'Name must be less than 30 symbols';
       return true;
     }
     const isValid = !(value === '' || value === undefined || value === null);
     if (!isValid) {
-        this.errorMessageLogin = 'Name is required';
+      this.errorMessageLogin = 'Name is required';
     } else {
-        this.errorMessageLogin = '';
+      this.errorMessageLogin = '';
     }
     return !isValid;
   }
 
   isEditDescriptionValid(): boolean {
     const value = this.editingProduct.description;
-    if(value.length > 200){
+    if (value.length > 200) {
       this.errorMessageEditDescription = 'Description must be less than 200 symbols';
       return true;
     }
@@ -331,7 +339,7 @@ export class ProductMenuComponent implements OnInit {
 
   isDescriptionValid(field: string): boolean {
     const value = this.newProduct[field];
-    if(value.length > 200){
+    if (value.length > 200) {
       this.errorMessageDescription = 'Description must be less than 200 symbols';
       return true;
     }
@@ -342,14 +350,14 @@ export class ProductMenuComponent implements OnInit {
     const value = this.editingProduct.price;
     const isValid = !(value === '' || value === undefined || value === null);
     if (!isValid) {
-        this.errorMessageEditPrice = 'Price is required';
-        return true;
+      this.errorMessageEditPrice = 'Price is required';
+      return true;
     }
-    if(value <= 0){
+    if (value <= 0) {
       this.errorMessageEditPrice = "Price must be more than 0";
       return true;
     }
-    if(value > 999999999){
+    if (value > 999999999) {
       this.errorMessageEditPrice = "Price can't be more than 999999999";
       return true;
     }
@@ -360,14 +368,14 @@ export class ProductMenuComponent implements OnInit {
     const value = this.newProduct[field];
     const isValid = !(value === '' || value === undefined || value === null);
     if (!isValid) {
-        this.errorMessagePrice = 'Price is required';
-        return true;
+      this.errorMessagePrice = 'Price is required';
+      return true;
     }
-    if(value <= 0){
+    if (value <= 0) {
       this.errorMessagePrice = "Price must be more than 0";
       return true;
     }
-    if(value > 999999999){
+    if (value > 999999999) {
       this.errorMessagePrice = "Price can't be more than 999999999";
       return true;
     }
@@ -385,7 +393,7 @@ export class ProductMenuComponent implements OnInit {
     const headers = {
       'Authorization': `Bearer ${this.token}`
     };
-  
+
     this.http.delete(url, { headers, observe: 'response' }).subscribe(
       (response: any) => {
         console.log('Ответ:', response);
@@ -394,10 +402,10 @@ export class ProductMenuComponent implements OnInit {
         alert('Product deleted successfully!');
         console.log('Response body:', response.body);
         this.getProducts();
-      },      
+      },
       error => {
         console.error('Error:', error);
-  
+
         if (error.status === 403) {
           alert('Access forbidden. You do not have permission to delete this product.');
         } else if (error.status === 401) {
@@ -405,7 +413,9 @@ export class ProductMenuComponent implements OnInit {
         } else if (error.status === 200) {
           alert('Product deleted successfully!');
           this.getProducts();
-        }else if (error.status === 404) {
+        } else if (error.status === 403) {
+          alert('Forbidden');
+        } else if (error.status === 404) {
           alert('Product not found. It may have been deleted by someone else.');
         } else {
           alert('An error occurred while deleting the product.');
@@ -413,14 +423,12 @@ export class ProductMenuComponent implements OnInit {
       }
     );
   }
-  
+
 
 
   editProduct(product: any) {
     console.log('Edit Product with ID:', product.id);
     this.showEditProductPopup = true;
-
-
     this.editingProduct.name = product.name;
     this.editingProduct.id = product.id;
     this.editingProduct.description = product.description;
@@ -438,12 +446,12 @@ export class ProductMenuComponent implements OnInit {
   }
 
 
-  goToUsersMenu(){
+  goToUsersMenu() {
     this.router.navigate(['/users-menu']);
   }
 
 
-  goBack(){
+  goBack() {
     this.router.navigate(['/']);
   }
 }

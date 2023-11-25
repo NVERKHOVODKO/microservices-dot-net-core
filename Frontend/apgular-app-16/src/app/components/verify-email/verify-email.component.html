@@ -9,23 +9,24 @@
 </head>
 
 <body>
-    <form #verifyForm="ngForm" (ngSubmit)="enterCode()">
+    <div class="container">
         <div>
             <p>Enter verification code:</p>
-            <input type="text" [(ngModel)]="verificationCode" placeholder="Verification Code" name="verificationCode" required>
-            <button type="submit">Submit</button>
+            <input class="codeInput" type="text " [(ngModel)]="verificationCode " placeholder="Verification Code " name="verificationCode " required>
+            <button (click)="enterCode() ">Submit</button>
         </div>
 
-        <div *ngIf="showResendButton">
+        <div *ngIf="showResendButton ">
             <p>Didn't receive the code? </p>
-            <button (click)="resend()">Resend</button>
+            <button (click)="resend()" [disabled]="resendCooldown">Resend</button>
         </div>
 
-        <div *ngIf="!showResendButton">
+        <div *ngIf="!showResendButton ">
             <p>Resend available in {{ cooldownTimer }} seconds</p>
         </div>
-        <p>Go back <a href="/register">Registration</a></p>
-    </form>
+        <p>Go back <a href="/register ">Registration</a></p>
+    </div>
+
 </body>
 
 </html>

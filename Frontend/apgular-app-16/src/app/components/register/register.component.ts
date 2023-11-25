@@ -84,6 +84,18 @@ export class RegisterComponent {
       return;
     }
 
+    if (this.email.length < 4) {
+      return;
+    }
+
+    if (this.password.length < 4) {
+      return;
+    }
+
+    if (this.username.length < 4) {
+      return;
+    }
+
     const userData = {
       login: this.username,
       password: this.password,
@@ -104,6 +116,11 @@ export class RegisterComponent {
         console.error('HTTP error:', error);
         if (error.status === 200) {
           this.router.navigate(['/verify-email'], { queryParams: { login: this.username, password: this.password, email: this.email} });
+        }
+        else if (error.status === 400) {
+          alert(error.error.message);
+        }else if (error.status === 404) {
+          alert(error.error.message);
         } else {
           alert('An unexpected error occurred. Please check the console for details.');
         }
