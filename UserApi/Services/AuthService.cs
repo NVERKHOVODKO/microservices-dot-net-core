@@ -74,7 +74,7 @@ public class AuthService : IAuthService
             var newCode = random.Next(1000, 9999).ToString();
             existedCode.Code = newCode;
             await _dbRepository.SaveChangesAsync();
-            SendCode(email, newCode);
+            SendCodeAsync(email, newCode);// correct
             return;
         }
         if (!IsEmailValid(email)) throw new IncorrectDataException("Email isn't valid");
@@ -89,7 +89,7 @@ public class AuthService : IAuthService
         };
         var result = await _dbRepository.Add(entity);
         await _dbRepository.SaveChangesAsync();
-        SendCode(email, code);
+        SendCodeAsync(email, code);// correct
     }
 
     public async Task<bool> IsUserExists(AuthRequest request)
@@ -111,72 +111,27 @@ public class AuthService : IAuthService
         return roleNames;
     }
     
-    private string ComposeConfirmationEmail(string code)
-    {
-        return $@"
-        <!DOCTYPE html>
-        <html lang=""en"">
-        
-        <head>
-            <meta charset=""UTF-8"">
-            <meta http-equiv=""X-UA-Compatible"" content=""IE=edge"">
-            <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-            <title>Email Confirmation</title>
-        </head>
-        
-        <body style=""font-family: Arial, sans-serif; text-align: center;"">
-        
-            <h1>Email Confirmation</h1>
-        
-            <p>
-                Thank you for registering! Please confirm your email by entering the following code:
-            </p>
-        
-            <h2 style=""color: #007BFF;"">{code}</h2>
-        
-            <p>
-                Please do not reply to this message. If you did not request this confirmation, please ignore this email.
-            </p>
-        
-            <p>
-                Best regards,<br>
-                Your Company Name
-            </p>
-        
-        </body>
-        
-        </html>
-    ";
-    }
 
-    private void SendCode(string email, int code)
+    private async Task SendCodeAsync(string email, string code)
     {
         var mm = new MailMessage();
         var sc = new SmtpClient("smtp.gmail.com");
+
         mm.From = new MailAddress("mikita.verkhavodka@gmail.com");
         mm.To.Add(email);
         mm.Subject = "Email confirmation";
-        mm.Body = ComposeConfirmationEmail(code.ToString());
+        mm.Body = $"Hello!<br>" +
+                  $"Thank you for registering on our website.<br><br>" +
+                  $"To complete the confirmation process, please enter the following code: <strong style='font-size: 25px;'>{code}</strong><br><br><br>" +
+                  $"Please do not reply to this message.";
+       
+        
         mm.IsBodyHtml = true;
         sc.Port = 587;
         sc.Credentials = new NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
         sc.EnableSsl = true;
-        sc.Send(mm);
-    }
 
-
-    private void SendCode(string email, string code)
-    {
-        var mm = new MailMessage();
-        var sc = new SmtpClient("smtp.gmail.com");
-        mm.From = new MailAddress("mikita.verkhavodka@gmail.com");
-        mm.To.Add(email);
-        mm.Subject = "Email confirmation";
-        mm.Body = code;
-        sc.Port = 587;
-        sc.Credentials = new NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
-        sc.EnableSsl = true;
-        sc.Send(mm);
+        await sc.SendMailAsync(mm);
     }
 
     public bool IsEmailValid(string email)
