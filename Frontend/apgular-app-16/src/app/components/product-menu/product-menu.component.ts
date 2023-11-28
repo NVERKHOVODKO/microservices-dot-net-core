@@ -445,11 +445,13 @@ export class ProductMenuComponent implements OnInit {
     this.getProducts();
   }
 
-
   goToUsersMenu() {
     this.router.navigate(['/users-menu']);
   }
 
+  goToProfile(){
+    this.router.navigate(['/profile-menu']);
+  }
 
   goBack() {
     this.router.navigate(['/']);

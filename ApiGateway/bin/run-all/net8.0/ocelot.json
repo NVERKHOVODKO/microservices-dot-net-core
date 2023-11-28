@@ -226,6 +226,34 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
+    }, {
+      "UpstreamPathTemplate": "/gateway/sendVerificationCode",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Auth/sendVerificationCode",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    }, {
+      "UpstreamPathTemplate": "/gateway/verifyEmail",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Auth/verifyEmail",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     }
   ],
   "GlobalConfiguration": {

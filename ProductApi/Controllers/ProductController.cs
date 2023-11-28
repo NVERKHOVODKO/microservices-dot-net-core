@@ -46,7 +46,7 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> EditName(EditNameRequest request)
     {
         await _productService.UpdateName(request);
-        return Ok($"Product with Id {request.ProductId} has been updated.");
+        return Ok();
     }
 
     [Authorize(Roles = "Admin, SuperAdmin")]
@@ -54,7 +54,7 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> EditDescription(EditDescriptionRequest request)
     {
         await _productService.UpdateDescription(request);
-        return Ok($"Product with Id {request.ProductId} has been updated.");
+        return Ok();
     }
 
     [Authorize(Roles = "Admin, SuperAdmin")]
@@ -62,7 +62,7 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> EditPrice(EditPriceRequest request)
     {
         await _productService.UpdatePrice(request);
-        return Ok($"Product with Id {request.ProductId} has been updated.");
+        return Ok();
     }
 
     [Authorize(Roles = "Admin, SuperAdmin")]
@@ -70,7 +70,7 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> EditAvailability(EditAvailabilityRequest request)
     {
         await _productService.UpdateAvailability(request);
-        return Ok($"Product with Id {request.ProductId} has been updated.");
+        return Ok();
     }
 
     [Authorize(Roles = "Admin, SuperAdmin")]
@@ -78,6 +78,6 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> DeleteProduct(Guid id)
     {
         await _productService.DeleteProductAsync(id);
-        return Ok($"Product({id}) has been deleted.");
+        return Ok();
     }
 }

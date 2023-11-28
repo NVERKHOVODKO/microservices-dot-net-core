@@ -14,12 +14,14 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './components/register/register.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
+import { ProfileMenuComponent } from './components/profile-menu/profile-menu.component';
 
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'product-menu', component: ProductMenuComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'profile-menu', component: ProfileMenuComponent },
   { path: 'verify-email', component: VerifyEmailComponent },
   { path: '**', component:  NotFoundComponent}
 ];
@@ -34,7 +36,8 @@ const routes: Routes = [
     RegisterComponent,
     ProductMenuComponent,
     NotFoundComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    ProfileMenuComponent
   ],
   imports: [
     BrowserModule,

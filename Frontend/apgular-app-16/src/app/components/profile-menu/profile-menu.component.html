@@ -1,0 +1,54 @@
+<p>profile-menu works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <!-- Добавьте вашу таблицу стилей (CSS) здесь, если необходимо -->
+</head>
+
+<body>
+
+    <h2>Edit Profile</h2>
+
+    <form action="/edit-profile" method="post">
+        <!-- Роль -->
+        <div>
+            <label for="role">Role:</label>
+            <input type="text" id="role" name="role" value="User" readonly>
+        </div>
+
+        <!-- Логин -->
+        <div>
+            <label for="login">Login:</label>
+            <span id="currentLogin">current_login</span>
+            <button type="button" (click)="editLogin()">Edit</button>
+            <input type="text" id="newLogin" name="newLogin" [(ngModel)]="newLogin" required>
+        </div>
+
+        <!-- Пароль -->
+        <div>
+            <label for="currentPassword">Current Password:</label>
+            <input type="password" id="currentPassword" name="currentPassword">
+        </div>
+        <div>
+            <label for="newPassword">New Password:</label>
+            <button type="button" (click)="changePassword()">Change</button>
+            <input type="password" id="newPassword" name="newPassword" [(ngModel)]="newLogin" required>
+        </div>
+
+        <!-- Почта -->
+        <div>
+            <label for="email">Email:</label>
+            <span id="currentEmail">current_email@example.com</span>
+            <button type="button" (click)="editEmail()">Edit</button>
+            <input type="text" id="newEmail" name="newEmail" [(ngModel)]="newEmail" required>
+        </div>
+
+        <br>
+
+        <!-- Кнопка для отправки формы -->
+        <button type="submit">Save Changes</button>
+    </form>

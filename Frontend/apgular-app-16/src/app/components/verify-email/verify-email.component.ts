@@ -37,7 +37,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     const body = { email: this.email, code: this.verificationCode };
     console.log(body);
 
-    this.http.post('http://localhost:5092/Auth/verifyEmail', body).subscribe(
+    this.http.post('http://localhost:5187/gateway/verifyEmail', body).subscribe(
       (response: any) => {
         alert('Mail successfully confirmed');
         this.createUser();
