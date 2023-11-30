@@ -154,6 +154,7 @@ export class ProfileMenuComponent {
   }
 
   changePassword() {
+    this.router.navigate(['/change-password-message']);
   }
 
   editEmail() {

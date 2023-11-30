@@ -22,6 +22,7 @@ const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'product-menu', component: ProductMenuComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'change-password-message', component: ChangePasswordMessageComponent },
   { path: 'profile-menu', component: ProfileMenuComponent },
   { path: 'verify-email', component: VerifyEmailComponent },
   { path: '**', component:  NotFoundComponent}
