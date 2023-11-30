@@ -44,7 +44,7 @@ public class UserService : IUserService
         };
         var result = await _dbRepository.Add(entity);
         var userRole = await _dbRepository.Get<RoleEntity>().FirstOrDefaultAsync(x => x.Role == "User");
-        var roleId = AddRoleToUserAsync(new AddUserRoleRequest
+        await AddRoleToUserAsync(new AddUserRoleRequest
         {
             UserId = id,
             RoleId = userRole.Id,
@@ -137,7 +137,7 @@ public class UserService : IUserService
     }
 
 
-    public async Task<Guid> AddRoleToUserAsync(AddUserRoleRequest request)
+    public async Task AddRoleToUserAsync(AddUserRoleRequest request)
     {
         if (!await IsUserRoleExistsAsync(request.UserId, request.RoleId)) 
             throw new UserRoleAlreadyExistsException("User already has this role.");
@@ -151,7 +151,6 @@ public class UserService : IUserService
         };
         var result = await _dbRepository.Add(userRole);
         await _dbRepository.SaveChangesAsync();
-        return result;
     }
 
 
@@ -183,6 +182,7 @@ public class UserService : IUserService
         await _dbRepository.SaveChangesAsync();
     }
     
+    
     public async Task UpdatePassword(EditPasswordRequest request)
     {
         if (request.NewPassword == null || request.Code == null) throw new IncorrectDataException("Fill in all details");
@@ -190,7 +190,7 @@ public class UserService : IUserService
         if (request.NewPassword.Length < 4) throw new IncorrectDataException("Password has to be longer than 4 symbols");
         var code = await _dbRepository.Get<RestorePasswordRecordEntity>().FirstOrDefaultAsync(x => x.Code == request.Code);
         if (code == null) throw new EntityNotFoundException("Code not found");
-        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == code.UserId);
+        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == code.Id);
         if (user == null) throw new EntityNotFoundException("User not found");
         user.Password = HashHandler.HashPassword(request.NewPassword, user.Salt);
         await _dbRepository.Update(user);

@@ -7,7 +7,8 @@ namespace UserApi.Entities;
 
 public class RestorePasswordRecordEntity: BaseEntity
 {
-    [Key] public Guid UserId { get; set; }
+    [Key] public Guid Id { get; set; }
+    [Required] public Guid UserId { get; set; }
     [Required] public String Code { get; set; }
     [ForeignKey("UserId")] public virtual UserEntity UserEntity { get; set; }
 }

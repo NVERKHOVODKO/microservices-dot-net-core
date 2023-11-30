@@ -10,6 +10,4 @@ public class EmailVerificationCodeEntity : BaseEntity
     [Key] public Guid Id { get; set; }
     [Required] public string Code { get; set; }
     [Required] public string Email { get; set; }
-    [Required] public Guid UserId { get; set; }
-    [ForeignKey("UserId")] public virtual UserEntity UserEntity { get; set; }
 }

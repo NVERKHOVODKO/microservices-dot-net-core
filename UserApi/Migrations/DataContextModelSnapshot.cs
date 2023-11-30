@@ -116,19 +116,15 @@ namespace UserApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Codes");
                 });
 
             modelBuilder.Entity("UserApi.Entities.RestorePasswordRecordEntity", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Code")
@@ -141,10 +137,12 @@ namespace UserApi.Migrations
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("RestorePasswordRecords");
                 });
@@ -164,17 +162,6 @@ namespace UserApi.Migrations
                         .IsRequired();
 
                     b.Navigation("RoleEntity");
-
-                    b.Navigation("UserEntity");
-                });
-
-            modelBuilder.Entity("UserApi.Entities.EmailVerificationCodeEntity", b =>
-                {
-                    b.HasOne("TestApplication.Models.UserEntity", "UserEntity")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("UserEntity");
                 });

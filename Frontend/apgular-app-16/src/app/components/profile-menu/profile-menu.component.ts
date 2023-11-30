@@ -79,23 +79,6 @@ export class ProfileMenuComponent {
   }
 
 
-  isEmailValid(field: string): boolean {
-    const value = this[field as keyof ProfileMenuComponent];
-    if (value === undefined) {
-      return false;
-    }
-    if (value.length > 100) {
-      this.errorMessagePassword = 'Email must be less than 100 characters';
-      return true;
-    }
-    const isValid = !(value === '' || value === undefined || value === null);
-    if (!isValid) {
-      this.errorMessageEmail = 'Email is required';
-    } else {
-      this.errorMessageEmail = '';
-    }
-    return !isValid;
-  }
 
   updateUserInfo(){
     const url = `http://localhost:5187/gateway/users/${this.user.id}`;
@@ -153,8 +136,32 @@ export class ProfileMenuComponent {
     );
   }
 
-  changePassword() {
-    this.router.navigate(['/change-password-message']);
+  sendLink() {
+    const url = 'http://localhost:5092/Auth/sendRestorePasswordMessage';
+    const headers = {
+      'Authorization': `Bearer ${this.token}`
+    };
+
+    const body = {
+      userId: this.user.id,
+    };
+
+    console.log(body);
+    this.http.post(url, body, { headers, observe: 'response' }).subscribe(
+      (response: any) => {
+        console.log(response);
+        this.router.navigate(['/change-password-message']);
+      },
+      error => {
+        if (error.status === 403) {
+          alert('Access forbidden. You do not have permission to delete this product.');
+        } else if (error.status === 401) {
+          alert('Unauthorized. Please log in and try again.');
+        } else {
+          alert(error.message);
+        }
+      }
+    );
   }
 
   editEmail() {

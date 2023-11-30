@@ -101,7 +101,7 @@ export class RegisterComponent {
       password: this.password,
       email: this.email,
     };
-
+    console.log('userData: ', userData);
     this.http.post("http://localhost:5187/gateway/sendVerificationCode", { email: this.email }).subscribe(
       (response: any) => {
         if (response && response.status === "Sended") {

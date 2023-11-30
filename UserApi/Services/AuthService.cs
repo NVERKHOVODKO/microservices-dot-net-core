@@ -82,15 +82,12 @@ public class AuthService : IAuthService
         }
         if (!IsEmailValid(email)) throw new IncorrectDataException("Email isn't valid");
         var code = random.Next(1000, 9999).ToString();
-        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Email == email);
         var entity = new EmailVerificationCodeEntity
         {
             Id = Guid.NewGuid(),
             Email = email,
             Code = code,
-            UserId = user.Id,
-            DateCreated = DateTime.UtcNow,
-            DateUpdated = DateTime.UtcNow
+            DateCreated = DateTime.UtcNow
         };
         var result = await _dbRepository.Add(entity);
         await _dbRepository.SaveChangesAsync();
@@ -163,13 +160,19 @@ public class AuthService : IAuthService
         return recore != null;
     }
     
-    public async Task SendRestorePasswordLink(RestorePasswordRequest request)
+    public async Task SendRestorePasswordMessage(RestorePasswordRequest request)
     {
+        var user = await _dbRepository.Get<UserEntity>(x => x.Id == request.UserId).FirstOrDefaultAsync();
+        if (user == null)
+        {
+            throw new EntityNotFoundException("User not found");
+        }
         if (!await IsRecordExists(request.UserId))
         {
             var code = await GenerateCode();
             var entity = new RestorePasswordRecordEntity
             {
+                Id = Guid.NewGuid(),
                 UserId = request.UserId,
                 Code = code,
                 DateCreated = DateTime.UtcNow
