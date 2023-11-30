@@ -7,4 +7,5 @@ public interface IAuthService
     public Task<string> GenerateTokenAsync(AuthRequest request);
     public Task SendVerificationCode(string email);
     public Task VerifyEmail(VerifyEmailRequest request);
+    public Task SendRestorePasswordLink(RestorePasswordRequest request);
 }

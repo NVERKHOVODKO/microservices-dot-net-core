@@ -41,28 +41,11 @@ public class AuthController : ControllerBase
         return Ok("Verified");
     }
 
-    /*[HttpPatch("restorePassword")]
+    [HttpPatch("sendRestorePasswordRequest")]
     [AllowAnonymous]
-    public async Task<IActionResult> RestorePassword([FromBody] RestorePasswordRequest request)
+    public async Task<IActionResult> SendRestorePasswordLink([FromBody] RestorePasswordRequest request)
     {
-        try
-        {
-            MailMessage mm = new MailMessage();
-            SmtpClient sc = new SmtpClient("smtp.gmail.com");
-            mm.From = new MailAddress("mikita.verkhavodka@gmail.com");
-            mm.To.Add("mikita.verkhavodka@gmail.com");
-            mm.Subject = "subj.Text";
-            mm.Body = "content.Text";
-            sc.Port = 587;
-            sc.Credentials = new System.Net.NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
-            sc.EnableSsl = true;
-            sc.Send(mm);
-            return Ok("yes");
-        }
-        catch (Exception ex)//
-        {
-            Console.WriteLine($"Ошибка при отправке письма: {ex.Message}");
-            return Ok("no");
-        }
-    }*/
+        await _authService.SendRestorePasswordLink(request);
+        return Ok();
+    }
 }

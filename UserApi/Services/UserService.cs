@@ -5,17 +5,16 @@ using ProjectX.Exceptions;
 using Repository;
 using TestApplication.DTO;
 using TestApplication.Models;
+using UserApi.Entities;
 
 namespace TestApplication.Services;
 
 public class UserService : IUserService
 {
     private readonly IDbRepository _dbRepository;
-    private readonly ILogger<UserService> _logger;
 
-    public UserService(IDbRepository dbRepository, ILogger<UserService> logger)
+    public UserService(IDbRepository dbRepository)
     {
-        _logger = logger;
         _dbRepository = dbRepository;
     }
 
@@ -44,10 +43,11 @@ public class UserService : IUserService
             DateUpdated = DateTime.UtcNow
         };
         var result = await _dbRepository.Add(entity);
+        var userRole = await _dbRepository.Get<RoleEntity>().FirstOrDefaultAsync(x => x.Role == "User");
         var roleId = AddRoleToUserAsync(new AddUserRoleRequest
         {
             UserId = id,
-            RoleId = new Guid("86ebf03e-4a99-406b-8c6b-4d2edb66fe3d")
+            RoleId = userRole.Id,
         });
         await _dbRepository.SaveChangesAsync();
         return id;
@@ -126,16 +126,21 @@ public class UserService : IUserService
 
     public async Task<bool> IsLoginUniqueForUserAsync(Guid userId, string login)
     {
-        var user = _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == login && x.Id != userId);
+        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == login && x.Id != userId);
+        return user != null;
+    }
+    
+    public async Task<bool> IsEmailUniqueForUserAsync(Guid userId, string email)
+    {
+        var user = _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Email == email && x.Id != userId);
         return user != null;
     }
 
 
     public async Task<Guid> AddRoleToUserAsync(AddUserRoleRequest request)
     {
-        var roleExists = await UserRoleExistsAsync(request.UserId, request.RoleId);
-
-        if (roleExists) throw new UserRoleAlreadyExistsException("User already has this role.");
+        if (!await IsUserRoleExistsAsync(request.UserId, request.RoleId)) 
+            throw new UserRoleAlreadyExistsException("User already has this role.");
 
         var userRole = new UserRoleEntity
         {
@@ -157,8 +162,8 @@ public class UserService : IUserService
         if (request.NewLogin == null || request.UserId == null) throw new IncorrectDataException("Fill in all details");
         if (request.NewLogin.Length > 20) throw new IncorrectDataException("Login has to be shorter that 20 symbols");
         if (request.NewLogin.Length < 4) throw new IncorrectDataException("Login has to be longer than 4 symbols");
-        if (!await IsLoginUniqueForUserAsync(request.UserId, request.NewLogin))
-            throw new IncorrectDataException("Login isn't unique");
+        /*if (!await IsLoginUniqueForUserAsync(request.UserId, request.NewLogin))
+            throw new IncorrectDataException("Login isn't unique");*/
         user.Login = request.NewLogin;
         await _dbRepository.Update(user);
         await _dbRepository.SaveChangesAsync();
@@ -171,17 +176,31 @@ public class UserService : IUserService
         if (user == null) throw new EntityNotFoundException("User not found");
         if (request.NewEmail == null || request.UserId == null) throw new IncorrectDataException("Fill in all details");
         if (!IsEmailValid(request.NewEmail)) throw new IncorrectDataException("Email isn't valid");
-        if (!await IsLoginUniqueForUserAsync(request.UserId, request.NewEmail))
-            throw new IncorrectDataException("Login isn't unique");
+        /*if (!await IsLoginUniqueForUserAsync(request.UserId, request.NewEmail))
+            throw new IncorrectDataException("Email isn't unique");*/
         user.Email = request.NewEmail;
         await _dbRepository.Update(user);
         await _dbRepository.SaveChangesAsync();
     }
+    
+    public async Task UpdatePassword(EditPasswordRequest request)
+    {
+        if (request.NewPassword == null || request.Code == null) throw new IncorrectDataException("Fill in all details");
+        if (request.NewPassword.Length > 20) throw new IncorrectDataException("Password has to be shorter that 20 symbols");
+        if (request.NewPassword.Length < 4) throw new IncorrectDataException("Password has to be longer than 4 symbols");
+        var code = await _dbRepository.Get<RestorePasswordRecordEntity>().FirstOrDefaultAsync(x => x.Code == request.Code);
+        if (code == null) throw new EntityNotFoundException("Code not found");
+        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == code.UserId);
+        if (user == null) throw new EntityNotFoundException("User not found");
+        user.Password = HashHandler.HashPassword(request.NewPassword, user.Salt);
+        await _dbRepository.Update(user);
+        await _dbRepository.SaveChangesAsync();
+    }
 
-    private async Task<bool> UserRoleExistsAsync(Guid userId, Guid roleId)
+    private async Task<bool> IsUserRoleExistsAsync(Guid userId, Guid roleId)
     {
         return await _dbRepository.Get<UserRoleEntity>()
-            .AnyAsync(ur => ur.UserId == userId && ur.RoleId == roleId);
+            .AnyAsync(ur => ur.UserId == userId && ur.RoleId == roleId) != null;
     }
 
     public bool IsEmailValid(string email)

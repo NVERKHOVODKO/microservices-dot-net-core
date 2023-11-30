@@ -8,33 +8,37 @@
 </head>
 
 <body>
+    <button (click)="goToMainMenu()">Users Menu</button>
 
     <div class="container">
         <div class="horizontal-container">
-            <label for="role">Role:</label>
-            <span id="currentLogin">Roles</span>
+            <label for="role">Roles:</label>
+            <span id="currentLogin">{{ roles.join(', ') }}</span>
         </div>
 
         <div>
             <div class="horizontal-container">
-                <label for="email ">Email:</label>
-                <span id="currentEmail "> current_email@example.com</span>
+                <label for="email">Email:</label>
+                <span id="currentEmail">{{ email }}</span>
             </div>
             <div class="horizontal-container">
-                <label for="login ">Login:</label>
-                <span id="currentLogin "> current_login</span>
+                <label for="userName">Login:</label>
+                <span id="userName">{{ userName }}</span>
             </div>
 
             <div>
                 <div class="horizontal-container">
-                    <input type="text " id="newLogin " name="newLogin " [(ngModel)]="newLogin " required>
-                    <button type="button " (click)="editLogin() ">Change Login</button>
+                    <input type="text" id="newLogin" name="newLogin" [(ngModel)]="newLogin" required>
+                    <button type="button" (click)="editLogin()">Change Login</button>
                 </div>
-                <div *ngIf="isUsernameValid( 'newLogin') " class="error-message ">{{ errorMessageUsername }}</div>
+                <div *ngIf="isUsernameValid('newLogin')" class="error-message">{{ errorMessageUsername }}</div>
             </div>
         </div>
 
         <div>
-            <button type="button " (click)="changePassword() ">Change password</button>
+            <button type="button" (click)="changePassword()">Change password</button>
         </div>
     </div>
+</body>
+
+</html>

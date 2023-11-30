@@ -15,6 +15,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './components/register/register.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { ProfileMenuComponent } from './components/profile-menu/profile-menu.component';
+import { ChangePasswordMessageComponent } from './components/change-password-message/change-password-message.component';
 
 
 const routes: Routes = [
@@ -37,7 +38,8 @@ const routes: Routes = [
     ProductMenuComponent,
     NotFoundComponent,
     VerifyEmailComponent,
-    ProfileMenuComponent
+    ProfileMenuComponent,
+    ChangePasswordMessageComponent
   ],
   imports: [
     BrowserModule,

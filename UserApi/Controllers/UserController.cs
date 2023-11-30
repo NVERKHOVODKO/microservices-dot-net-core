@@ -88,4 +88,11 @@ public class UserController : ControllerBase
         await _userService.UpdateEmail(request);
         return Ok($"User with Id {request.UserId} has been updated.");
     }
+    
+    [HttpPatch("users/editPassword")]
+    public async Task<IActionResult> EditPassword(EditPasswordRequest request)
+    {
+        await _userService.UpdatePassword(request);
+        return Ok();
+    }
 }

@@ -14,4 +14,5 @@ public class DataContext : DbContext
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<UserRoleEntity> UserRoles { get; set; }
     public DbSet<EmailVerificationCodeEntity> Codes { get; set; }
+    public DbSet<RestorePasswordRecordEntity> RestorePasswordRecords { get; set; }
 }

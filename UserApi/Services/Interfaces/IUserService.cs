@@ -7,6 +7,7 @@ public interface IUserService
     public Task<Guid> CreateUserAsync(CreateUserRequest request);
 
     public List<UserWithRolesDTO> GetUsers();
+    public Task UpdatePassword(EditPasswordRequest request);
 
     public Task<UserWithRolesDTO> GetUser(Guid id);
 

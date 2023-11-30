@@ -450,7 +450,7 @@ export class ProductMenuComponent implements OnInit {
   }
 
   goToProfile(){
-    this.router.navigate(['/profile-menu']);
+    this.router.navigate(['/profile-menu'], { queryParams: { token: this.token }});
   }
 
   goBack() {
