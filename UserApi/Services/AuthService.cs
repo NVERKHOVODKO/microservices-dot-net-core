@@ -66,6 +66,17 @@ public class AuthService : IAuthService
         if (code == null) throw new EntityNotFoundException("An error occurred. The code wasn't sent");
         if (code.Code != request.Code) throw new AuthenticationException();
     }
+    
+    public async Task ConfirmRestorePassword(string code)
+    {
+        var record = await _dbRepository.Get<RestorePasswordRecordEntity>()
+            .FirstOrDefaultAsync(x => x.Code == code);
+        if (record == null) throw new EntityNotFoundException("An error occurred. The record hasn't been created");
+        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == record.UserId);
+        user.Password = record.NewPassword;
+        await _dbRepository.Delete<RestorePasswordRecordEntity>(record.Id);
+        await _dbRepository.SaveChangesAsync();
+    }
 
     public async Task SendVerificationCode(string email)
     {
@@ -156,25 +167,26 @@ public class AuthService : IAuthService
     
     public async Task<bool> IsRecordExists(Guid userId)
     {
-        var recore = await _dbRepository.Get<RestorePasswordRecordEntity>(x => x.UserId == userId).FirstOrDefaultAsync();
-        return recore != null;
+        var record = await _dbRepository.Get<RestorePasswordRecordEntity>(x => x.UserId == userId).FirstOrDefaultAsync();
+        return record != null;
     }
     
-    public async Task SendRestorePasswordMessage(RestorePasswordRequest request)
+    public async Task SendRestorePasswordRequest(RestorePasswordRequest request)
     {
-        var user = await _dbRepository.Get<UserEntity>(x => x.Id == request.UserId).FirstOrDefaultAsync();
+        var user = await _dbRepository.Get<UserEntity>(x => x.Email == request.Email).FirstOrDefaultAsync();
         if (user == null)
         {
             throw new EntityNotFoundException("User not found");
         }
-        if (!await IsRecordExists(request.UserId))
+        if (!await IsRecordExists(user.Id))
         {
             var code = await GenerateCode();
             var entity = new RestorePasswordRecordEntity
             {
                 Id = Guid.NewGuid(),
-                UserId = request.UserId,
+                UserId = user.Id,
                 Code = code,
+                NewPassword = HashHandler.HashPassword(request.NewPassword, user.Salt),
                 DateCreated = DateTime.UtcNow
             };
             await _dbRepository.Add(entity);
@@ -183,7 +195,7 @@ public class AuthService : IAuthService
         }
         else
         {
-            var record = await _dbRepository.Get<RestorePasswordRecordEntity>(x => x.UserId == request.UserId).FirstOrDefaultAsync();
+            var record = await _dbRepository.Get<RestorePasswordRecordEntity>(x => x.UserId == user.Id).FirstOrDefaultAsync();
             string code = await GenerateCode();
             record.Code = code;
             await _dbRepository.SaveChangesAsync();
@@ -193,14 +205,14 @@ public class AuthService : IAuthService
 
     public async Task SendLinkAsync(RestorePasswordRequest request, string code)
     {
-        var user = await _dbRepository.Get<UserEntity>(x => x.Id == request.UserId).FirstOrDefaultAsync();
+        var user = await _dbRepository.Get<UserEntity>(x => x.Email == request.Email).FirstOrDefaultAsync();
 
         MailMessage mm = new MailMessage();
         SmtpClient sc = new SmtpClient("smtp.gmail.com");
         mm.From = new MailAddress("mikita.verkhavodka@gmail.com");
         mm.To.Add(user.Email);
         mm.Subject = "subj.Text";
-        mm.Body = $"users/editPassword/{code}";
+        mm.Body = $"http://localhost:4200/edit-password/{code}";
         sc.Port = 587;
         sc.Credentials = new System.Net.NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
         sc.EnableSsl = true;

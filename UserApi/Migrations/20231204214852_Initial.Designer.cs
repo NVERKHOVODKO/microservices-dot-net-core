@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace UserApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231130222210_Initial")]
+    [Migration("20231204214852_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -139,6 +139,10 @@ namespace UserApi.Migrations
 
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NewPassword")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");

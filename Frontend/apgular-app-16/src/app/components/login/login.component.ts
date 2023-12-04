@@ -16,6 +16,16 @@ export class LoginComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   login() {
+    if(this.password == ""){
+      alert("Enter password");
+      return;
+    }
+
+    if(this.username == ""){
+      alert("Enter password");
+      return;
+    }
+
     const url = 'http://localhost:5187/gateway/login';
     const data = { login: this.username, password: this.password };
 
@@ -31,8 +41,9 @@ export class LoginComponent {
         }
       },
       error => {
-        console.error('Error:', error);
-      }
+        console.error('HTTP error:', error);
+        alert(error.error.message);
+       }
     );
   }
 }

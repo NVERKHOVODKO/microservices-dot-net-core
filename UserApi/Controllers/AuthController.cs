@@ -41,11 +41,19 @@ public class AuthController : ControllerBase
         return Ok("Verified");
     }
 
-    [HttpPost("sendRestorePasswordMessage")]
+    [HttpPost("restore-password")]
     [AllowAnonymous]
-    public async Task<IActionResult> SendRestorePasswordMessage([FromBody] RestorePasswordRequest request)
+    public async Task<IActionResult> SendRestorePasswordRequest([FromBody] RestorePasswordRequest request)
     {
-        await _authService.SendRestorePasswordMessage(request);
+        await _authService.SendRestorePasswordRequest(request);
+        return Ok();
+    }
+    
+    [HttpGet("confirm-restore-password/{code}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ConfirmRestorePassword(string code)
+    {
+        await _authService.ConfirmRestorePassword(code);
         return Ok();
     }
 }
