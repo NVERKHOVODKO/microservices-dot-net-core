@@ -85,19 +85,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 var app = builder.Build();
 
-app.UseCookiePolicy(new CookiePolicyOptions
-{
-    MinimumSameSitePolicy = SameSiteMode.Strict,
-    HttpOnly = HttpOnlyPolicy.Always,
-    Secure = CookieSecurePolicy.Always
-});
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -118,19 +105,18 @@ app.UseCookiePolicy(new CookiePolicyOptions
     Secure = CookieSecurePolicy.Always
 });
 
+app.UseStaticFiles();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.InjectStylesheet("/swagger-ui/SwaggerDark.css");
         options.RoutePrefix = string.Empty;
     });
 }
-
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.MapControllers();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();

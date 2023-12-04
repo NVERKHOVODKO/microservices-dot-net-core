@@ -49,3 +49,5 @@ C:\НЕ СИСТЕМА\Microservices_AspNetCore\ProductApi\obj\run-all\net8.0\re
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ProductApi\obj\run-all\net8.0\ProductApi.pdb
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ProductApi\obj\run-all\net8.0\ProductApi.genruntimeconfig.cache
 C:\НЕ СИСТЕМА\Microservices_AspNetCore\ProductApi\obj\run-all\net8.0\ref\ProductApi.dll
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ProductApi\bin\run-all\net8.0\ProductApi.xml
+C:\НЕ СИСТЕМА\Microservices_AspNetCore\ProductApi\obj\run-all\net8.0\ProductApi.xml

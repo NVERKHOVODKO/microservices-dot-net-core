@@ -89,24 +89,6 @@ app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader());
 
-app.UseCookiePolicy(new CookiePolicyOptions
-{
-    MinimumSameSitePolicy = SameSiteMode.Strict,
-    HttpOnly = HttpOnlyPolicy.Always,
-    Secure = CookieSecurePolicy.Always
-});
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-
-app.MapControllers();
 
 app.UseCors(x => x
     .WithOrigins("https://localhost:7045")
@@ -120,6 +102,7 @@ app.UseCookiePolicy(new CookiePolicyOptions
     HttpOnly = HttpOnlyPolicy.Always,
     Secure = CookieSecurePolicy.Always
 });
+app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
 {
@@ -128,6 +111,7 @@ if (app.Environment.IsDevelopment())
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
         options.RoutePrefix = string.Empty;
+        options.InjectStylesheet("/swagger-ui/SwaggerDark.css");
     });
 }
 
