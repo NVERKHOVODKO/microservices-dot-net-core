@@ -25,6 +25,7 @@ export class ProfileMenuComponent {
     email: '',
     roles: []
   };
+  curentLogin: string = '';
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
 
@@ -40,9 +41,7 @@ export class ProfileMenuComponent {
       this.user.id = decodedToken.id;
       this.user.name = decodedToken.name;
       this.user.email = decodedToken.email;
-
       if (decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']) {
-        // Роль или роли доступны в decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
         this.user.roles = Array.isArray(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'])
           ? decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
           : [decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']];
@@ -100,6 +99,8 @@ export class ProfileMenuComponent {
       (response: any) => {
         console.log(response);
         this.userName = response.body.login;
+        this.curentLogin = this.userName;
+        this.newLogin = this.userName;
       },
       error => {
         if (error.status === 403) {
@@ -113,6 +114,10 @@ export class ProfileMenuComponent {
     );
   }
 
+
+  cancel(){
+    this.newLogin = this.curentLogin;
+  }
 
   editLogin() {
     const url = 'http://localhost:5092/User/users/editLogin';
@@ -130,43 +135,15 @@ export class ProfileMenuComponent {
       (response: any) => {
         console.log(response);
         this.updateUserInfo();
+        this.curentLogin = this.newLogin;
         alert("Login edited");
       },
       error => {
         if (error.status === 403) {
           alert('Access forbidden. You do not have permission to delete this product.');
-        } else if (error.status === 401) {
-          alert('Unauthorized. Please log in and try again.');
         } else {
-          alert('An error occurred while deleting the product.');
-        }
-      }
-    );
-  }
-
-  sendLink() {
-    const url = 'http://localhost:5092/Auth/sendRestorePasswordMessage';
-    const headers = {
-      'Authorization': `Bearer ${this.token}`
-    };
-
-    const body = {
-      userId: this.user.id,
-    };
-
-    console.log(body);
-    this.http.post(url, body, { headers, observe: 'response' }).subscribe(
-      (response: any) => {
-        console.log(response);
-        this.router.navigate(['/change-password-message']);
-      },
-      error => {
-        if (error.status === 403) {
-          alert('Access forbidden. You do not have permission to delete this product.');
-        } else if (error.status === 401) {
-          alert('Unauthorized. Please log in and try again.');
-        } else {
-          alert(error.message);
+          console.log(error);
+          alert("Incorrect login");
         }
       }
     );

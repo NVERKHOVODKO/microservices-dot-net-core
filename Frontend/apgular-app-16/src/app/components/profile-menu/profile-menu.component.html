@@ -29,14 +29,10 @@
             <div>
                 <div class="horizontal-container">
                     <input type="text" id="newLogin" name="newLogin" [(ngModel)]="newLogin" required>
-                    <button type="button" (click)="editLogin()">Change Login</button>
+                    <button type="button" (click)="editLogin()">+</button>
+                    <button type="button" (click)="cancel()">-</button>
                 </div>
-                <div *ngIf="isUsernameValid('newLogin')" class="error-message">{{ errorMessageUsername }}</div>
             </div>
-        </div>
-
-        <div>
-            <button type="button" (click)="sendLink()">Change password</button>
         </div>
     </div>
 </body>
