@@ -49,11 +49,11 @@ public class AuthController : ControllerBase
         return Ok();
     }
     
-    [HttpGet("confirm-restore-password/{code}")]
+    [HttpPost("confirm-restore-password")]
     [AllowAnonymous]
-    public async Task<IActionResult> ConfirmRestorePassword(string code)
+    public async Task<IActionResult> ConfirmRestorePassword([FromBody] ConfirmRestorePasswordRequest request)
     {
-        await _authService.ConfirmRestorePassword(code);
+        await _authService.ConfirmRestorePassword(request);
         return Ok();
     }
 }

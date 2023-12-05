@@ -15,18 +15,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './components/register/register.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { ProfileMenuComponent } from './components/profile-menu/profile-menu.component';
-import { ChangePasswordMessageComponent } from './components/change-password-message/change-password-message.component';
 import { RestorePasswordComponent } from './components/restore-password/restore-password.component';
+import { VerifyPasswordRecordingComponent } from './components/verify-password-recording/verify-password-recording.component';
 
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'product-menu', component: ProductMenuComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'change-password-message', component: ChangePasswordMessageComponent },
-  { path: 'restore-password', component: RestorePasswordComponent },
   { path: 'profile-menu', component: ProfileMenuComponent },
+  { path: 'restore-password', component: RestorePasswordComponent },
   { path: 'verify-email', component: VerifyEmailComponent },
+  { path: 'verify-password-recoverding', component: VerifyPasswordRecordingComponent },
   { path: '**', component:  NotFoundComponent}
 ];
 
@@ -42,8 +42,8 @@ const routes: Routes = [
     NotFoundComponent,
     VerifyEmailComponent,
     ProfileMenuComponent,
-    ChangePasswordMessageComponent,
-    RestorePasswordComponent
+    RestorePasswordComponent,
+    VerifyPasswordRecordingComponent,
   ],
   imports: [
     BrowserModule,

@@ -22,7 +22,7 @@ export class LoginComponent {
     }
 
     if(this.username == ""){
-      alert("Enter password");
+      alert("Enter login");
       return;
     }
 

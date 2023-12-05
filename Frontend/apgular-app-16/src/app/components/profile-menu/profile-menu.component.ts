@@ -36,25 +36,33 @@ export class ProfileMenuComponent {
     const helper = new JwtHelperService();
     if (this.token) {
       const decodedToken = helper.decodeToken(this.token);
+
       this.user.id = decodedToken.id;
       this.user.name = decodedToken.name;
       this.user.email = decodedToken.email;
-      if (decodedToken.hasOwnProperty('http://schemas.microsoft.com/ws/2008/06/identity/claims/role')
-        && Array.isArray(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'])) {
-        this.user.roles = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+
+      if (decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']) {
+        // Роль или роли доступны в decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+        this.user.roles = Array.isArray(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'])
+          ? decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+          : [decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']];
+
         console.log('User Roles:', this.user.roles);
       } else {
-        console.error('Roles not found or not an array in the token.');
+        console.error('Roles not found in the token.');
       }
+
       console.log('Decoded Token:', decodedToken);
     } else {
       console.error('Token is undefined or null');
     }
+
     this.roles = this.user.roles;
     this.email = this.user.email;
     this.userName = this.user.name;
     this.updateUserInfo();
   }
+
 
   isUsernameValid(field: string): boolean {
     const value = this[field as keyof ProfileMenuComponent];
@@ -80,7 +88,7 @@ export class ProfileMenuComponent {
 
 
 
-  updateUserInfo(){
+  updateUserInfo() {
     const url = `http://localhost:5187/gateway/users/${this.user.id}`;
     console.log(url);
     console.log(this.user.id);

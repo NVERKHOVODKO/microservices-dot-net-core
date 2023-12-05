@@ -67,10 +67,12 @@ public class AuthService : IAuthService
         if (code.Code != request.Code) throw new AuthenticationException();
     }
     
-    public async Task ConfirmRestorePassword(string code)
+    public async Task ConfirmRestorePassword(ConfirmRestorePasswordRequest request)
     {
         var record = await _dbRepository.Get<RestorePasswordRecordEntity>()
-            .FirstOrDefaultAsync(x => x.Code == code);
+            .Include(x => x.UserEntity)
+            .FirstOrDefaultAsync(x => x.Code == request.Code && x.UserEntity.Email == request.Email);
+        
         if (record == null) throw new EntityNotFoundException("An error occurred. The record hasn't been created");
         var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == record.UserId);
         user.Password = record.NewPassword;
@@ -205,19 +207,19 @@ public class AuthService : IAuthService
 
     public async Task SendLinkAsync(RestorePasswordRequest request, string code)
     {
-        var user = await _dbRepository.Get<UserEntity>(x => x.Email == request.Email).FirstOrDefaultAsync();
+        /*var user = await _dbRepository.Get<UserEntity>(x => x.Email == request.Email).FirstOrDefaultAsync();
 
         MailMessage mm = new MailMessage();
         SmtpClient sc = new SmtpClient("smtp.gmail.com");
         mm.From = new MailAddress("mikita.verkhavodka@gmail.com");
         mm.To.Add(user.Email);
         mm.Subject = "subj.Text";
-        mm.Body = $"http://localhost:4200/edit-password/{code}";
+        mm.Body = $"http://localhost:4200/restore-password-message?code={code}";
         sc.Port = 587;
         sc.Credentials = new System.Net.NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
         sc.EnableSsl = true;
         sc.Send(mm);
-        Console.WriteLine($"code: {code}\nuser.Email: {user.Email}");
+        Console.WriteLine($"code: {code}\nuser.Email: {user.Email}");*/
     }
     
     

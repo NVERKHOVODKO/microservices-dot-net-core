@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-restore-password',
@@ -9,64 +9,10 @@ import { HttpHeaders } from '@angular/common/http';
   styleUrls: ['./restore-password.component.css']
 })
 export class RestorePasswordComponent {
-  username: string = '';
   password: string = '';
   confirmPassword: string = '';
   email: string = '';
-  errorMessageUsername = '';
-  errorMessagePassword = '';
-  errorMessageEmail = '';
-
-  constructor(private http: HttpClient, private router: Router) { }
-
-  isUsernameValid(field: string): boolean {
-    const value = this[field as keyof RestorePasswordComponent];
-        const isValid = !(value === '' || value === undefined || value === null);
-    if (!isValid) {
-      this.errorMessageUsername = 'Username is required';
-    } else {
-      this.errorMessageUsername = '';
-    }
-    return !isValid;
-  }
-
-
-  isPasswordValid(field: string): boolean {
-    const value = this[field as keyof RestorePasswordComponent];
-    if (value.length > 30) {
-      this.errorMessagePassword = 'Password must be less than 30 characters';
-      return true;
-    }
-    if (value.length < 4) {
-      this.errorMessagePassword = 'Password must be more than 4 characters';
-      return true;
-    }
-    const isValid = !(value === '' || value === undefined || value === null);
-    if (!isValid) {
-      this.errorMessagePassword = 'Username is required';
-    } else {
-      this.errorMessagePassword = '';
-    }
-    return !isValid;
-  }
-
-
-  isEmailValid(field: string): boolean {
-    const value = this[field as keyof RestorePasswordComponent];
-    if (value.length > 100) {
-      this.errorMessagePassword = 'Email must be less than 100 characters';
-      return true;
-    }
-    const isValid = !(value === '' || value === undefined || value === null);
-    if (!isValid) {
-      this.errorMessageEmail = 'Email is required';
-    } else {
-      this.errorMessageEmail = '';
-    }
-    return !isValid;
-  }
-
-
+  constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient) { }
 
   verifyByEmail() {
     if (this.password !== this.confirmPassword) {
@@ -75,47 +21,30 @@ export class RestorePasswordComponent {
       return;
     }
 
-    /* if (!this.isEmailValid(this.email)) {
-      alert('Email inst correct');
-      return;
-    }*/
-
     if (this.password.length < 4) {
-      alert('Passwords cant be less than 4 symbols');
+      alert('Passwords can\'t be less than 4 symbols');
       return;
     }
 
     const userData = {
-      login: this.username,
-      password: this.password,
       email: this.email,
+      newPassword: this.password
     };
-    console.log('userData: ', userData);
+
+    console.log(userData);
+    const apiUrl = 'http://localhost:5092/Auth/restore-password';
 
 
-    /* this.http.post("http://localhost:5187/gateway/sendVerificationCode", { email: this.email }).subscribe(
-      (response: any) => {
-        if (response && response.status === "Sended") {
-          console.log('Registration successful:', response);
-          this.router.navigate(['/verify-email'], { queryParams: { userData } });
-        } else {
-          console.error('Unexpected response:', response);
-          alert('An unexpected response occurred. Please check the console for details.');
-        }
-      },
+    this.http.post(apiUrl, userData).subscribe(
+      (response) => {
+        this.router.navigate(['/verify-password-recoverding'], {
+          queryParams: { email: this.email }
+        });
+            },
       (error) => {
-        console.error('HTTP error:', error);
-        if (error.status === 200) {
-          this.router.navigate(['/verify-email'], { queryParams: { login: this.username, password: this.password, email: this.email} });
-        }
-        else if (error.status === 400) {
-          alert(error.error.message);
-        }else if (error.status === 404) {
-          alert(error.error.message);
-        } else {
-          alert('An unexpected error occurred. Please check the console for details.');
-        }
+        console.error('Error during request:', error);
+        alert(error.message)
       }
-    ); */
+    );
   }
 }

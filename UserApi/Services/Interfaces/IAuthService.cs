@@ -8,5 +8,5 @@ public interface IAuthService
     public Task SendVerificationCode(string email);
     public Task VerifyEmail(VerifyEmailRequest request);
     public Task SendRestorePasswordRequest(RestorePasswordRequest request);
-    public Task ConfirmRestorePassword(string code);
+    public Task ConfirmRestorePassword(ConfirmRestorePasswordRequest request);
 }
