@@ -28,6 +28,7 @@ public class UserService : IUserService
         if (request.Password.Length < 4) throw new IncorrectDataException("Password must be longer than 4 symbols");
         if (request.Password.Length > 30) throw new IncorrectDataException("Password must be less than 30 symbols");
         if (request.Email == null) throw new IncorrectDataException("Email can't be null");
+        if (!await IsEmailUniqueAsync(request.Email)) throw new IncorrectDataException("Email isn't unique");
         if (!IsEmailValid(request.Email)) throw new IncorrectDataException("Email isn't valid");
 
         var salt = HashHandler.GenerateSalt(30);
@@ -124,6 +125,12 @@ public class UserService : IUserService
     }
 
 
+    public async Task<bool> IsEmailUniqueAsync(string email)
+    {
+        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Email == email);
+        return user == null;
+    }
+    
     public async Task<bool> IsLoginUniqueForUserAsync(Guid userId, string login)
     {
         var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == login && x.Id != userId);
