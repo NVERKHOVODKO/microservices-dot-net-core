@@ -66,7 +66,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     };
     console.log(userBody);
 
-    this.http.post('http://localhost:5092/User/users', userBody).subscribe(
+    this.http.post('http://localhost:5187/gateway/users', userBody).subscribe(
       (userResponse: any) => {
         console.log('User creation successful:', userResponse);
       },
@@ -81,7 +81,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
       alert('Sent');
       this.resendCooldown = true;
 
-      this.http.post('http://localhost:5092/Auth/sendVerificationCode', { email: this.email }).subscribe(
+      this.http.post('http://localhost:5187/gateway/sendVerificationCode', { email: this.email }).subscribe(
         (response: any) => { },
         (error) => {
           if (error.status === 200) {

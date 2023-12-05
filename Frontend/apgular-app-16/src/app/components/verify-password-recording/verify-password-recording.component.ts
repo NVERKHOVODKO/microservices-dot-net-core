@@ -15,7 +15,6 @@ export class VerifyPasswordRecordingComponent {
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
 
-
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.email = params['email'];
@@ -33,7 +32,7 @@ export class VerifyPasswordRecordingComponent {
     };
 
     console.log(data);
-    const apiUrl = 'http://localhost:5092/Auth/confirm-restore-password';
+    const apiUrl = 'http://localhost:5187/gateway/confirm-restore-password';
 
     this.http.post(apiUrl, data).subscribe(
       (response) => {

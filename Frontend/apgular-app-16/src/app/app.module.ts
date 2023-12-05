@@ -7,7 +7,6 @@ import { HttpClientModule } from '@angular/common/http'; // добавлено
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { UserMenuComponent } from './components/user-menu/user-menu.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { ProductMenuComponent } from './components/product-menu/product-menu.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -35,7 +34,6 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    UserMenuComponent,
     AdminMenuComponent,
     RegisterComponent,
     ProductMenuComponent,

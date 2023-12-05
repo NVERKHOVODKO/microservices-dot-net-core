@@ -47,11 +47,11 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "UpstreamPathTemplate": "/gateway/editLogin",
+      "UpstreamPathTemplate": "/gateway/users/editLogin",
       "UpstreamHttpMethod": [
         "PATCH"
       ],
-      "DownstreamPathTemplate": "/User/editLogin",
+      "DownstreamPathTemplate": "/User/users/editLogin",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -246,6 +246,34 @@
         "POST"
       ],
       "DownstreamPathTemplate": "/Auth/verifyEmail",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    }, {
+      "UpstreamPathTemplate": "/gateway/restore-password",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Auth/restore-password",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    }, {
+      "UpstreamPathTemplate": "/gateway/confirm-restore-password",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Auth/confirm-restore-password",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
