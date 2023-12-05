@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Entities;
-using TestApplication.Models;
 
 namespace UserApi.Entities;
 

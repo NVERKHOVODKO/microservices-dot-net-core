@@ -117,6 +117,7 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;
     });
 }
+
 app.MapControllers();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();

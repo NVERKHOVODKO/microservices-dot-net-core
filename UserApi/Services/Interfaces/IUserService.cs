@@ -11,7 +11,7 @@ public interface IUserService
 
     public Task<UserWithRolesDTO> GetUser(Guid id);
 
-    public Task DeleteUserAsync(Guid id);
+    public Task DeleteUserAsync(DeleteUserRequest request);
 
     public Task<bool> IsLoginUniqueAsync(string login);
 

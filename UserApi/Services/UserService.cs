@@ -48,7 +48,7 @@ public class UserService : IUserService
         await AddRoleToUserAsync(new AddUserRoleRequest
         {
             UserId = id,
-            RoleId = userRole.Id,
+            RoleId = userRole.Id
         });
         await _dbRepository.SaveChangesAsync();
         return id;
@@ -100,14 +100,26 @@ public class UserService : IUserService
     }
 
 
-    public async Task DeleteUserAsync(Guid id)
+    public async Task DeleteUserAsync(DeleteUserRequest request)
     {
-        var user = _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == id);
-        if (user == null) throw new EntityNotFoundException("User not found");
-        await _dbRepository.Delete<UserEntity>(id);
-        await _dbRepository.SaveChangesAsync();
-    }
+        if (request.DeletedId == request.DeleterId) throw new IncorrectDataException("You can't delete yourself");
+        var deleted = await _dbRepository.Get<UserEntity>()
+            .Include(u => u.UserRoleModels)
+            .ThenInclude(r => r.RoleEntity)
+            .FirstOrDefaultAsync(x => x.Id == request.DeletedId);
+        var deleter = await _dbRepository.Get<UserEntity>()
+            .Include(u => u.UserRoleModels)
+            .ThenInclude(r => r.RoleEntity)
+            .FirstOrDefaultAsync(x => x.Id == request.DeleterId);
+        if (deleted == null) throw new EntityNotFoundException("User not found");
+        if (deleter == null) throw new EntityNotFoundException("User not found");
 
+        if (IsDeletingAllowed(deleter, deleted))
+        {
+            await _dbRepository.Delete<UserEntity>(request.DeletedId);
+            await _dbRepository.SaveChangesAsync();
+        }
+    }
 
     public async Task RemoveUserRoleAsync(Guid id)
     {
@@ -124,29 +136,16 @@ public class UserService : IUserService
         return user == null;
     }
 
-
-    public async Task<bool> IsEmailUniqueAsync(string email)
-    {
-        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Email == email);
-        return user == null;
-    }
-    
     public async Task<bool> IsLoginUniqueForUserAsync(Guid userId, string login)
     {
         var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Login == login && x.Id != userId);
-        return user != null;
-    }
-    
-    public async Task<bool> IsEmailUniqueForUserAsync(Guid userId, string email)
-    {
-        var user = _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Email == email && x.Id != userId);
         return user != null;
     }
 
 
     public async Task AddRoleToUserAsync(AddUserRoleRequest request)
     {
-        if (!await IsUserRoleExistsAsync(request.UserId, request.RoleId)) 
+        if (!await IsUserRoleExistsAsync(request.UserId, request.RoleId))
             throw new UserRoleAlreadyExistsException("User already has this role.");
 
         var userRole = new UserRoleEntity
@@ -188,20 +187,60 @@ public class UserService : IUserService
         await _dbRepository.Update(user);
         await _dbRepository.SaveChangesAsync();
     }
-    
-    
+
+
     public async Task UpdatePassword(EditPasswordRequest request)
     {
-        if (request.NewPassword == null || request.Code == null) throw new IncorrectDataException("Fill in all details");
-        if (request.NewPassword.Length > 20) throw new IncorrectDataException("Password has to be shorter that 20 symbols");
-        if (request.NewPassword.Length < 4) throw new IncorrectDataException("Password has to be longer than 4 symbols");
-        var code = await _dbRepository.Get<RestorePasswordRecordEntity>().FirstOrDefaultAsync(x => x.Code == request.Code);
+        if (request.NewPassword == null || request.Code == null)
+            throw new IncorrectDataException("Fill in all details");
+        if (request.NewPassword.Length > 20)
+            throw new IncorrectDataException("Password has to be shorter that 20 symbols");
+        if (request.NewPassword.Length < 4)
+            throw new IncorrectDataException("Password has to be longer than 4 symbols");
+        var code = await _dbRepository.Get<RestorePasswordRecordEntity>()
+            .FirstOrDefaultAsync(x => x.Code == request.Code);
         if (code == null) throw new EntityNotFoundException("Code not found");
         var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == code.Id);
         if (user == null) throw new EntityNotFoundException("User not found");
         user.Password = HashHandler.HashPassword(request.NewPassword, user.Salt);
         await _dbRepository.Update(user);
         await _dbRepository.SaveChangesAsync();
+    }
+
+
+    public bool IsDeletingAllowed(UserEntity deleter, UserEntity deleted)
+    {
+        var deleterRoles = deleter.UserRoleModels.Select(ur => ur.RoleEntity.Role).ToArray();
+        var deletedRoles = deleted.UserRoleModels.Select(ur => ur.RoleEntity.Role).ToArray();
+        var deletedLeadRole = GetLeadingRole(deletedRoles);
+        var deleterLeadRole = GetLeadingRole(deleterRoles);
+        if (deleterLeadRole == deletedLeadRole) return false;
+        if (deleterLeadRole == "SuperAdmin") return true;
+        if (deleterLeadRole == "Admin" && deletedLeadRole != "SuperAdmin") return true;
+        return false;
+    }
+
+
+    private string GetLeadingRole(string[] roles)
+    {
+        string[] rolePriority = { "SuperAdmin", "Admin", "Support", "User" };
+        foreach (var role in rolePriority)
+            if (roles.Contains(role))
+                return role;
+        return "User";
+    }
+
+
+    public async Task<bool> IsEmailUniqueAsync(string email)
+    {
+        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Email == email);
+        return user == null;
+    }
+
+    public async Task<bool> IsEmailUniqueForUserAsync(Guid userId, string email)
+    {
+        var user = _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Email == email && x.Id != userId);
+        return user != null;
     }
 
     private async Task<bool> IsUserRoleExistsAsync(Guid userId, Guid roleId)

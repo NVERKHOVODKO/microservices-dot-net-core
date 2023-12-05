@@ -4,7 +4,8 @@
       "UpstreamPathTemplate": "/gateway/users",
       "UpstreamHttpMethod": [
         "GET",
-        "POST"
+        "POST",
+        "DELETE"
       ],
       "DownstreamPathTemplate": "/User/users",
       "DownstreamScheme": "http",
@@ -226,7 +227,8 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    }, {
+    },
+    {
       "UpstreamPathTemplate": "/gateway/sendVerificationCode",
       "UpstreamHttpMethod": [
         "POST"
@@ -240,7 +242,8 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    }, {
+    },
+    {
       "UpstreamPathTemplate": "/gateway/verifyEmail",
       "UpstreamHttpMethod": [
         "POST"
@@ -254,7 +257,8 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    }, {
+    },
+    {
       "UpstreamPathTemplate": "/gateway/restore-password",
       "UpstreamHttpMethod": [
         "POST"
@@ -268,7 +272,8 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    }, {
+    },
+    {
       "UpstreamPathTemplate": "/gateway/confirm-restore-password",
       "UpstreamHttpMethod": [
         "POST"

@@ -48,7 +48,7 @@ public class AuthController : ControllerBase
         await _authService.SendRestorePasswordRequest(request);
         return Ok();
     }
-    
+
     [HttpPost("confirm-restore-password")]
     [AllowAnonymous]
     public async Task<IActionResult> ConfirmRestorePassword([FromBody] ConfirmRestorePasswordRequest request)

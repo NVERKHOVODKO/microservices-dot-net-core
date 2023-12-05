@@ -59,10 +59,10 @@ public class UserController : ControllerBase
 
     //[Authorize]
     [HttpDelete("users/{id}")]
-    public async Task<IActionResult> DeleteUser(Guid id)
+    public async Task<IActionResult> DeleteUser(DeleteUserRequest request)
     {
-        await _userService.DeleteUserAsync(id);
-        return Ok($"User({id}) has been deleted.");
+        await _userService.DeleteUserAsync(request);
+        return Ok($"User({request.DeletedId}) has been deleted.");
     }
 
     //[Authorize(Roles = "SuperAdmin, Admin")]
@@ -88,7 +88,7 @@ public class UserController : ControllerBase
         await _userService.UpdateEmail(request);
         return Ok($"User with Id {request.UserId} has been updated.");
     }
-    
+
     [HttpPatch("users/editPassword")]
     public async Task<IActionResult> EditPassword(EditPasswordRequest request)
     {

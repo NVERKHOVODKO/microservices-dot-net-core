@@ -446,7 +446,7 @@ export class ProductMenuComponent implements OnInit {
   }
 
   goToUsersMenu() {
-    this.router.navigate(['/users-menu']);
+    this.router.navigate(['/user-menu'], { queryParams: { token: this.token }});
   }
 
   goToProfile(){

@@ -4,7 +4,8 @@
       "UpstreamPathTemplate": "/gateway/users",
       "UpstreamHttpMethod": [
         "GET",
-        "POST"
+        "POST",
+        "DELETE"
       ],
       "DownstreamPathTemplate": "/User/users",
       "DownstreamScheme": "http",
