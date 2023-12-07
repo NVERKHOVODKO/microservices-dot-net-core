@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,7 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) {}
 
   login() {
     if(this.password == ""){
@@ -26,14 +28,14 @@ export class LoginComponent {
 
     const url = 'http://localhost:5187/gateway/login';
     const data = { login: this.username, password: this.password };
-
     this.http.post(url, data).subscribe(
       (response: any) => {
         if (response && response.token) {
           console.log('Request: ', Request);
           const token = response.token;
           console.log('response: ', response);
-          this.router.navigate(['/product-menu'], { queryParams: { token: token }});
+          this.cookieService.set('userToken', token);
+          this.router.navigate(['/product-menu']);
         } else {
           console.error('Token not found in response.');
         }

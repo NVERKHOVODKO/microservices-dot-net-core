@@ -21,13 +21,10 @@
                 <label for="email">Email:</label>
                 <span id="currentEmail">{{ email }}</span>
             </div>
-            <div class="horizontal-container">
-                <label for="userName">Login:</label>
-                <span id="userName">{{ userName }}</span>
-            </div>
 
             <div>
                 <div class="horizontal-container">
+                    <label for="userName">Login</label>
                     <input type="text" id="newLogin" name="newLogin" [(ngModel)]="newLogin" required>
                     <button type="button" (click)="editLogin()">+</button>
                     <button type="button" (click)="cancel()">-</button>

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -41,12 +42,13 @@ export class ProductMenuComponent implements OnInit {
   sortedColumn: string | null = null;
   sortDirection: string = 'asc'; // 'asc' or 'desc'
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private datePipe: DatePipe) { }
+  constructor(private cookieService: CookieService, private http: HttpClient, private route: ActivatedRoute, private router: Router, private datePipe: DatePipe) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    /* this.route.queryParams.subscribe(params => {
       this.token = params['token'];
-    });
+    }); */
+    this.token = this.cookieService.get('userToken');
     const helper = new JwtHelperService();
     if (this.token) {
       const decodedToken = helper.decodeToken(this.token);
@@ -446,11 +448,11 @@ export class ProductMenuComponent implements OnInit {
   }
 
   goToUsersMenu() {
-    this.router.navigate(['/user-menu'], { queryParams: { token: this.token }});
+    this.router.navigate(['/user-menu']);
   }
 
   goToProfile(){
-    this.router.navigate(['/profile-menu'], { queryParams: { token: this.token }});
+    this.router.navigate(['/profile-menu']);
   }
 
   goBack() {

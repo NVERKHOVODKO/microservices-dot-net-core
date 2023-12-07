@@ -17,7 +17,7 @@ public interface IUserService
 
     public Task<bool> IsLoginUniqueForUserAsync(Guid userId, string login);
     public Task AddRoleToUserAsync(AddUserRoleRequest request);
-    public Task RemoveUserRoleAsync(Guid id);
+    public Task RemoveUserRoleAsync(RemoveUserRequest request);
 
     public Task UpdateLogin(EditLoginRequest request);
 

@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-profile-menu',
@@ -27,13 +29,14 @@ export class ProfileMenuComponent {
   };
   curentLogin: string = '';
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
+  constructor(private cookieService: CookieService, private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
 
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    /* this.route.queryParams.subscribe(params => {
       this.token = params['token'];
-    });
+    }); */
+    this.token = this.cookieService.get('userToken');
     const helper = new JwtHelperService();
     if (this.token) {
       const decodedToken = helper.decodeToken(this.token);
@@ -154,7 +157,7 @@ export class ProfileMenuComponent {
 
 
   goToMainMenu() {
-    this.router.navigate(['/product-menu'], { queryParams: { token: this.token } });
+    this.router.navigate(['/product-menu']);
   }
 
 }

@@ -10,8 +10,5 @@ public class AddUserRoleRequest
     /// </summary>
     public Guid UserId { get; set; }
 
-    /// <summary>
-    ///     Gets or sets the role's unique identifier.
-    /// </summary>
-    public Guid RoleId { get; set; }
+    public String RoleName { get; set; }
 }

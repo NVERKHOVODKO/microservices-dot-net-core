@@ -3,6 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { CookieService } from 'ngx-cookie-service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 
 
 @Component({
@@ -15,15 +18,72 @@ export class UserMenuComponent {
   token: string | undefined;
   sortedColumn: string | null = null;
   sortDirection: string = 'asc';
+  showEditUserPopup: boolean = false;
+  roles: string[] = [];
+  editingUser: any = {
+    id: '',
+    name: '',
+    email: '',
+    roles: []
+  };
+  user: any = {
+    id: '',
+    name: '',
+    email: '',
+    roles: []
+  };
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {}
+  constructor(private cookieService: CookieService, private route: ActivatedRoute, private http: HttpClient, private router: Router) { }
 
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    /* this.route.queryParams.subscribe(params => {
       this.token = params['token'];
-    });
+    }); */
+    this.token = this.cookieService.get('userToken');
+    const helper = new JwtHelperService();
+    if (this.token) {
+      const decodedToken = helper.decodeToken(this.token);
+
+      this.user.id = decodedToken.id;
+      this.user.name = decodedToken.name;
+      this.user.email = decodedToken.email;
+      if (decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']) {
+        this.user.roles = Array.isArray(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'])
+          ? decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+          : [decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']];
+
+        console.log('User Roles:', this.user.roles);
+      } else {
+        console.error('Roles not found in the token.');
+      }
+
+      console.log('Decoded Token:', decodedToken);
+    } else {
+      console.error('Token is undefined or null');
+    }
     this.getUsers();
+  }
+
+
+  editRoles(): void {
+    console.log('Selected Roles:', this.roles);
+    const userId = this.editingUser.id;
+
+    const newRoles = this.roles.filter(role => !this.editingUser.roleNames.$values.includes(role));
+
+    newRoles.forEach(role => {
+      this.http.post('http://localhost:5092/User/users/addRole', { userId, roleName: role })
+        .subscribe(
+          (response) => {
+            console.log(`Role '${role}' added successfully for user ${userId}`);
+          },
+          (error) => {
+            alert(error.message);
+            console.error(`Error adding role '${role}' for user ${userId}:`, error);
+          }
+        );
+    });
   }
 
   getUsers() {
@@ -31,7 +91,7 @@ export class UserMenuComponent {
 
     this.http.get(apiUrl).subscribe(
       (response: any) => {
-        this.users = response.$values; 
+        this.users = response.$values;
       },
       (error) => {
         console.error('Error during request:', error);
@@ -39,27 +99,72 @@ export class UserMenuComponent {
     );
   }
 
-  createUser(){
+  createUser() {
 
   }
 
-  goToProducts(){
-    this.router.navigate(['/product-menu'], { queryParams: { token: this.token }});
+  openEditUserPopup(user: any) {
+    const apiUrl = `http://localhost:5092/User/users/${user.id}`;
+    this.http.get(apiUrl).subscribe(
+      (response: any) => {
+        this.editingUser = { ...response };
+        this.showEditUserPopup = true;
+        this.activateRoleCheckboxes();
+      },
+      (error) => {
+        console.error('Error during request:', error);
+      }
+    );
+  }
+  
+  activateRoleCheckboxes() {
+    if (this.editingUser && this.editingUser.roleNames) {
+      const roles: string[] = this.editingUser.roleNames.$values;
+      roles.forEach((role: string) => {
+        if (!this.roles.includes(role)) {
+          this.setRole(role, true);
+        }
+      });
+    }
+  }
+  
+  setRole(role: string, isActive: boolean = true): void {
+    if (isActive) {
+      this.roles.push(role);
+    } else {
+      this.roles = this.roles.filter(r => r !== role);
+    }
+  }
+  
+
+  closeEditUserPopup() {
+    this.showEditUserPopup = false;
+    this.editingUser = {};
+  }
+
+  saveUser() {
+    this.closeEditUserPopup();
   }
 
 
-  editUser(user: any){
+  goToProducts() {
+    this.router.navigate(['/product-menu']);
+  }
+
+
+  editUser(user: any) {
 
   }
 
-  deleteUser(userId: string){
-    const apiUrl = 'http://localhost:5187/gateway/users/' + userId;
+  deleteUser(userId: string) {
+    const apiUrl = `http://localhost:5187/gateway/users?deleterId=${this.user.id}&deletedId=${userId}`;
 
     this.http.delete(apiUrl).subscribe(
       (response: any) => {
-        this.users = response.$values; 
+        this.users = response.$values;
       },
       (error) => {
+        alert(error.message);
         console.error('Error during request:', error);
       }
     );

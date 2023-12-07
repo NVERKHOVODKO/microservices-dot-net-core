@@ -100,7 +100,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
   }
 
   resetCooldownTimer() {
-    this.cooldownTimer = 5;
+    this.cooldownTimer = 60;
     this.showResendButton = false;
     this.timerInterval = setInterval(() => {
       if (this.cooldownTimer > 0) {

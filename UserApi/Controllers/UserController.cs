@@ -59,18 +59,22 @@ public class UserController : ControllerBase
 
     //[Authorize]
     [HttpDelete("users/{id}")]
-    public async Task<IActionResult> DeleteUser(DeleteUserRequest request)
+    public async Task<IActionResult> DeleteUser(Guid deleterId, Guid deletedId)
     {
-        await _userService.DeleteUserAsync(request);
-        return Ok($"User({request.DeletedId}) has been deleted.");
+        await _userService.DeleteUserAsync(new DeleteUserRequest
+        {
+            DeleterId = deleterId,
+            DeletedId = deletedId,
+        });
+        return Ok($"User({deletedId}) has been deleted.");
     }
 
     //[Authorize(Roles = "SuperAdmin, Admin")]
     [HttpDelete("users/removeUserRole")]
-    public async Task<IActionResult> RemoveUserRole(Guid id)
+    public async Task<IActionResult> RemoveUserRole(RemoveUserRequest request)
     {
-        await _userService.RemoveUserRoleAsync(id);
-        return Ok($"User({id}) has been deleted.");
+        await _userService.RemoveUserRoleAsync(request);
+        return Ok($"User({request.UserId}) has been deleted.");
     }
 
     //[Authorize]

@@ -44,11 +44,10 @@ public class UserService : IUserService
             DateUpdated = DateTime.UtcNow
         };
         var result = await _dbRepository.Add(entity);
-        var userRole = await _dbRepository.Get<RoleEntity>().FirstOrDefaultAsync(x => x.Role == "User");
         await AddRoleToUserAsync(new AddUserRoleRequest
         {
             UserId = id,
-            RoleId = userRole.Id
+            RoleName = "User"
         });
         await _dbRepository.SaveChangesAsync();
         return id;
@@ -121,11 +120,14 @@ public class UserService : IUserService
         }
     }
 
-    public async Task RemoveUserRoleAsync(Guid id)
+    public async Task RemoveUserRoleAsync(RemoveUserRequest request)
     {
-        var userRole = _dbRepository.Get<UserRoleEntity>().FirstOrDefaultAsync(x => x.Id == id);
-        if (userRole == null) throw new EntityNotFoundException("Role not found");
-        await _dbRepository.Delete<UserRoleEntity>(id);
+        if (!await IsUserRoleExistsAsync(request.UserId, request.RoleName))
+            throw new UserRoleAlreadyExistsException("User hasn't this role.");
+
+        var role = await _dbRepository.Get<RoleEntity>().FirstOrDefaultAsync(x => x.Role == request.RoleName);
+        if (role == null) throw new EntityNotFoundException("Role not found");
+        await _dbRepository.Delete<UserRoleEntity>(role.Id);
         await _dbRepository.SaveChangesAsync();
     }
 
@@ -145,13 +147,15 @@ public class UserService : IUserService
 
     public async Task AddRoleToUserAsync(AddUserRoleRequest request)
     {
-        if (!await IsUserRoleExistsAsync(request.UserId, request.RoleId))
+        if (await IsUserRoleExistsAsync(request.UserId, request.RoleName))
             throw new UserRoleAlreadyExistsException("User already has this role.");
 
+        var role = await _dbRepository.Get<RoleEntity>().FirstOrDefaultAsync(x => x.Role == request.RoleName);
+        if (role == null) throw new EntityNotFoundException("Role not found");
         var userRole = new UserRoleEntity
         {
             UserId = request.UserId,
-            RoleId = request.RoleId,
+            RoleId = role.Id,
             DateCreated = DateTime.UtcNow,
             DateUpdated = DateTime.UtcNow
         };
@@ -243,10 +247,13 @@ public class UserService : IUserService
         return user != null;
     }
 
-    private async Task<bool> IsUserRoleExistsAsync(Guid userId, Guid roleId)
+    private async Task<bool> IsUserRoleExistsAsync(Guid userId, String roleName)
     {
-        return await _dbRepository.Get<UserRoleEntity>()
-            .AnyAsync(ur => ur.UserId == userId && ur.RoleId == roleId) != null;
+        var isRoleExists = await _dbRepository.Get<UserRoleEntity>()
+            .AnyAsync(ur => ur.UserId == userId &&
+                            ur.RoleEntity.Role.ToLower() == roleName.ToLower());
+
+        return isRoleExists;
     }
 
     public bool IsEmailValid(string email)

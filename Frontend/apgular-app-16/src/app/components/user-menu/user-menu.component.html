@@ -1,7 +1,6 @@
 <div>
     <button (click)="goToProducts()">Go To Products(Unauthorized)</button>
     <button (click)="getUsers()">Get Users(Authorized)</button>
-    <button (click)="createUser()">Create User</button>
 </div>
 
 <div *ngIf="users && users.length > 0">
@@ -21,14 +20,52 @@
                 <td>{{ user.login }}</td>
                 <td>{{ user.email }}</td>
                 <td>
-                    <button (click)="editUser(user)">Edit</button>
-                    <button (click)="deleteUser(user.id)">Delete(Admin, SuperAdmin)</button>
+                    <button (click)="openEditUserPopup(user)">Edit</button>
+                    <button (click)="deleteUser(user.id) ">Delete(Admin, SuperAdmin)</button>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
 
-<div *ngIf="!users || users.length === 0">
+<div *ngIf="!users || users.length===0 ">
     <p>No users available.</p>
+</div>
+
+<div class="overlay " *ngIf="showEditUserPopup "></div>
+<div class="edit-user-popup " *ngIf="showEditUserPopup ">
+    <div>
+        <h4>Edit User</h4>
+    </div>
+    <!-- Ваш шаблон -->
+    <div class="input-container">
+        <label>
+            <div>
+                <input type="checkbox" (change)="setRole('User')" [checked]="roles.includes('User')" />
+                User
+            </div>
+        </label>
+        <label>
+            <div>
+                <input type="checkbox" (change)="setRole('Admin')" [checked]="roles.includes('Admin')" />
+                Admin
+            </div>
+        </label>
+        <label>
+            <div>
+                <input type="checkbox" (change)="setRole('Support')" [checked]="roles.includes('Support')" />
+                Support
+            </div>
+        </label>
+        <label>
+            <div>
+                <input type="checkbox" (change)="setRole('SuperAdmin')" [checked]="roles.includes('SuperAdmin')" />
+                SuperAdmin
+            </div>
+        </label>
+    </div>
+    <div class="input-container">
+        <button (click)="editRoles()">Edit User</button>
+        <button (click)="closeEditUserPopup()">Close</button>
+    </div>
 </div>

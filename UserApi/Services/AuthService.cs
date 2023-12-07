@@ -125,7 +125,7 @@ public class AuthService : IAuthService
             };
             await _dbRepository.Add(entity);
             await _dbRepository.SaveChangesAsync();
-            SendLinkAsync(request, code);
+            SendCodeAsync(request, code);
         }
         else
         {
@@ -134,7 +134,7 @@ public class AuthService : IAuthService
             var code = await GenerateCode();
             record.Code = code;
             await _dbRepository.SaveChangesAsync();
-            SendLinkAsync(request, code);
+            SendCodeAsync(request, code);
         }
     }
 
@@ -167,16 +167,13 @@ public class AuthService : IAuthService
         mm.From = new MailAddress("mikita.verkhavodka@gmail.com");
         mm.To.Add(email);
         mm.Subject = "Email confirmation";
-        mm.Body = $"Hello!<br>" +
-                  $"Thank you for registering on our website.<br><br>" +
-                  $"To complete the confirmation process, please enter the following code: <strong style='font-size: 25px;'>{code}</strong><br><br><br>" +
-                  $"Please do not reply to this message.";
-        mm.IsBodyHtml = true;
+        mm.Body = code;
         sc.Port = 587;
         sc.Credentials = new NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
         sc.EnableSsl = true;
-        await sc.SendMailAsync(mm);
+        sc.Send(mm);
     }
+    
 
     public bool IsEmailValid(string email)
     {
@@ -205,21 +202,20 @@ public class AuthService : IAuthService
         return record != null;
     }
 
-    public async Task SendLinkAsync(RestorePasswordRequest request, string code)
+    public async Task SendCodeAsync(RestorePasswordRequest request, string code)
     {
-        /*var user = await _dbRepository.Get<UserEntity>(x => x.Email == request.Email).FirstOrDefaultAsync();
+        var user = await _dbRepository.Get<UserEntity>(x => x.Email == request.Email).FirstOrDefaultAsync();
 
         MailMessage mm = new MailMessage();
         SmtpClient sc = new SmtpClient("smtp.gmail.com");
         mm.From = new MailAddress("mikita.verkhavodka@gmail.com");
         mm.To.Add(user.Email);
-        mm.Subject = "subj.Text";
-        mm.Body = $"http://localhost:4200/restore-password-message?code={code}";
+        mm.Subject = "Password changing";
+        mm.Body = code;
         sc.Port = 587;
-        sc.Credentials = new System.Net.NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
+        sc.Credentials = new NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
         sc.EnableSsl = true;
         sc.Send(mm);
-        Console.WriteLine($"code: {code}\nuser.Email: {user.Email}");*/
     }
 
 
