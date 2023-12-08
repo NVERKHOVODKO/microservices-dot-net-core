@@ -24,6 +24,14 @@ public class AuthController : ControllerBase
         var token = await _authService.GenerateTokenAsync(request);
         return Ok(new { token });
     }
+    
+    [HttpPost("get-user-token")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetUserToken([FromBody] GetTokenRequest request)
+    {
+        var token = await _authService.GetUserToken(request);
+        return Ok(new { token });
+    }
 
     [HttpPost("sendVerificationCode")]
     [AllowAnonymous]

@@ -122,41 +122,55 @@ export class ProductMenuComponent implements OnInit {
   }
 
   saveProduct() {
+    if(this.newProduct.name.length < 4){
+      alert("Name must be less than 4 symbols");
+      return;
+    }
+    if(this.newProduct.description.length > 200){
+      alert("Description must be less than 200 symbols");
+      return;
+    }
+    if(isNaN(this.newProduct.price) || this.newProduct.price <= 0){
+      alert("Price must be positive");
+      return;
+    }
     const url = 'http://localhost:5187/gateway/products';
-    const productData = {
+    const body = {
       name: this.newProduct.name,
       description: this.newProduct.description,
       price: this.newProduct.price,
       availability: this.newProduct.availability,
       creatorId: this.userId
     };
-
+  
+    console.log(body);
+  
     const headers = {
       'Authorization': `Bearer ${this.token}`
     };
-    this.http.post(url, productData, { headers, observe: 'response' }).subscribe(
+  
+  
+    this.http.post(url, body, { headers }).subscribe(
       (response: any) => {
         console.log(response);
         console.log('Product created successfully:', response);
         alert('Product created successfully!');
+        this.getProducts();
       },
       error => {
         if (error.status === 403) {
-          alert('Access forbidden. You do not have permission to delete this product.');
+          alert('Access forbidden. You do not have permission to create product.');
         } else if (error.status === 401) {
           alert('Unauthorized. Please log in and try again.');
+        } else if (error.status === 400) {
+          alert("Bad request");
         } else {
-          alert('An error occurred while deleting the product.');
+          alert('An error occurred while creating the product.');
         }
       }
     );
-
-    this.showCreateProductPopup = false;
-    this.newProduct = { name: '', description: '', price: 0, availability: false };
-    this.getProducts();
   }
-
-
+  
   editName() {
     const value = this.editingProduct.name;
     if (value.length > 30) {

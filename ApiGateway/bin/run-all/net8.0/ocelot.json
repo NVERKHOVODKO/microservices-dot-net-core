@@ -95,21 +95,7 @@
     {
       "UpstreamPathTemplate": "/gateway/products",
       "UpstreamHttpMethod": [
-        "GET"
-      ],
-      "DownstreamPathTemplate": "/Product/products",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5122
-        }
-      ],
-      "DangerousAcceptAnyServerCertificateValidator": true
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/products",
-      "UpstreamHttpMethod": [
+        "GET", 
         "POST"
       ],
       "DownstreamPathTemplate": "/Product/products",
@@ -121,7 +107,7 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },
+    }, 
     {
       "UpstreamPathTemplate": "/gateway/products/{id}",
       "UpstreamHttpMethod": [
@@ -279,6 +265,21 @@
         "POST"
       ],
       "DownstreamPathTemplate": "/Auth/confirm-restore-password",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/get-user-token",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Auth/get-user-token",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {

@@ -30,14 +30,41 @@ public class AuthService : IAuthService
         _logger = logger;
         _dbRepository = dbRepository;
     }
+    
+    public async Task<string> GetUserToken(GetTokenRequest request)
+    {
+        var user = await _dbRepository.Get<UserEntity>()
+            .Include(u => u.UserRoleModels)
+            .ThenInclude(ur => ur.RoleEntity)
+            .FirstOrDefaultAsync(u => u.Id == request.Id);
+        if (user == null) throw new EntityNotFoundException("User not found");
+        var roles = await GetUserRoles(request);
+        var claims = new List<Claim>();
+        if (roles != null && roles.Any())
+            foreach (var role in roles)
+                claims.Add(new Claim(ClaimTypes.Role, role));
+        claims.Add(new Claim("id", user.Id.ToString()));
+        claims.Add(new Claim("name", user.Login));
+        claims.Add(new Claim("email", user.Email));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityToken(
+            _configuration["Jwt:Issuer"],
+            _configuration["Jwt:Audience"],
+            claims,
+            expires: DateTime.UtcNow.AddMinutes(10),
+            signingCredentials: signIn);
 
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
     public async Task<string> GenerateTokenAsync(AuthRequest request)
     {
-        if (await IsUserExists(request) == false) throw new EntityNotFoundException("There is no such user");
+        //if (await IsUserExists(request) == false) throw new EntityNotFoundException("There is no such user");
         var user = await _dbRepository.Get<UserEntity>()
             .Include(u => u.UserRoleModels)
             .ThenInclude(ur => ur.RoleEntity)
             .FirstOrDefaultAsync(u => u.Login == request.Login);
+        if (user == null) throw new EntityNotFoundException("User not found");
         var roles = await GetUserRoles(request);
         var claims = new List<Claim>();
         if (roles != null && roles.Any())
@@ -157,6 +184,14 @@ public class AuthService : IAuthService
         return roleNames;
     }
 
+    public async Task<List<string>> GetUserRoles(GetTokenRequest request)
+    {
+        var user = await _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Id == request.Id);
+        var userRoles = _dbRepository.GetAll<UserRoleEntity>().Where(r => r.UserId == user.Id);
+        var roleNames = userRoles.Select(u => u.RoleEntity.Role).ToList();
+
+        return roleNames;
+    }
 
     private async Task SendCodeAsync(string email, string code)
     {

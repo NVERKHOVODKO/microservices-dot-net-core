@@ -140,6 +140,7 @@ export class ProfileMenuComponent {
         this.updateUserInfo();
         this.curentLogin = this.newLogin;
         alert("Login edited");
+        this.updateToken();
       },
       error => {
         if (error.status === 403) {
@@ -151,6 +152,28 @@ export class ProfileMenuComponent {
       }
     );
   }
+
+  updateToken() {
+    const requestBody = {
+      id: this.user.id
+    };
+
+    this.http.post<any>('http://localhost:5187/gateway/get-user-token', requestBody)
+      .subscribe(
+        (response) => {
+          if (response && response.token) {
+            this.cookieService.set('token', response.token, { expires: 1 });
+            console.log('Token updated successfully:', response.token);
+          } else {
+            console.error('Invalid token response:', response);
+          }
+        },
+        (error) => {
+          console.error('Error fetching token:', error);
+        }
+      );
+  }
+  
 
   editEmail() {
   }

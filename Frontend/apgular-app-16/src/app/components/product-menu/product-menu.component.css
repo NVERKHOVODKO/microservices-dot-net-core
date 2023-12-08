@@ -47,12 +47,6 @@
     z-index: 998;
 }
 
-.input-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
 body {
     background-color: #02315E;
     color: #ffffff;
@@ -212,4 +206,33 @@ body {
 
 #linksTable tbody tr:hover {
     background-color: #ecf0f1;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.input-container label {
+    margin-bottom: 5px;
+}
+
+.input-container textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.edit-product-popup textarea {
+    max-height: 100px;
+    resize: vertical;
+}
+
+.background textarea {
+    max-height: 240px;
+    resize: vertical;
 }
