@@ -18,11 +18,11 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "UpstreamPathTemplate": "/gateway/addRole",
+      "UpstreamPathTemplate": "/gateway/add-role",
       "UpstreamHttpMethod": [
         "POST"
       ],
-      "DownstreamPathTemplate": "/User/addRole",
+      "DownstreamPathTemplate": "/User/add-role",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -33,11 +33,11 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "UpstreamPathTemplate": "/gateway/removeUserRole",
+      "UpstreamPathTemplate": "/gateway/remove-user-role",
       "UpstreamHttpMethod": [
         "DELETE"
       ],
-      "DownstreamPathTemplate": "/User/removeUserRole",
+      "DownstreamPathTemplate": "/User/remove-user-role",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -48,11 +48,11 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "UpstreamPathTemplate": "/gateway/users/editLogin",
+      "UpstreamPathTemplate": "/gateway/users/edit-login",
       "UpstreamHttpMethod": [
         "PATCH"
       ],
-      "DownstreamPathTemplate": "/User/users/editLogin",
+      "DownstreamPathTemplate": "/User/users/edit-login",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -63,11 +63,11 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "UpstreamPathTemplate": "/gateway/editEmail",
+      "UpstreamPathTemplate": "/gateway/edit-email",
       "UpstreamHttpMethod": [
         "PATCH"
       ],
-      "DownstreamPathTemplate": "/User/editEmail",
+      "DownstreamPathTemplate": "/User/edit-email",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -139,11 +139,11 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "UpstreamPathTemplate": "/gateway/products/editAvailability",
+      "UpstreamPathTemplate": "/gateway/products/edit-availability",
       "UpstreamHttpMethod": [
         "PATCH"
       ],
-      "DownstreamPathTemplate": "/Product/products/editAvailability",
+      "DownstreamPathTemplate": "/Product/products/edit-availability",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -154,11 +154,11 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "UpstreamPathTemplate": "/gateway/products/editPrice",
+      "UpstreamPathTemplate": "/gateway/products/edit-price",
       "UpstreamHttpMethod": [
         "PATCH"
       ],
-      "DownstreamPathTemplate": "/Product/products/editPrice",
+      "DownstreamPathTemplate": "/Product/products/edit-price",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -169,11 +169,11 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "UpstreamPathTemplate": "/gateway/products/editDescription",
+      "UpstreamPathTemplate": "/gateway/products/edit-description",
       "UpstreamHttpMethod": [
         "PATCH"
       ],
-      "DownstreamPathTemplate": "/Product/products/editDescription",
+      "DownstreamPathTemplate": "/Product/products/edit-description",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -184,11 +184,11 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "UpstreamPathTemplate": "/gateway/products/editName",
+      "UpstreamPathTemplate": "/gateway/products/edit-name",
       "UpstreamHttpMethod": [
         "PATCH"
       ],
-      "DownstreamPathTemplate": "/Product/products/editName",
+      "DownstreamPathTemplate": "/Product/products/edit-name",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -215,11 +215,11 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "UpstreamPathTemplate": "/gateway/sendVerificationCode",
+      "UpstreamPathTemplate": "/gateway/send-verificationCode",
       "UpstreamHttpMethod": [
         "POST"
       ],
-      "DownstreamPathTemplate": "/Auth/sendVerificationCode",
+      "DownstreamPathTemplate": "/Auth/send-verificationCode",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -230,11 +230,11 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
-      "UpstreamPathTemplate": "/gateway/verifyEmail",
+      "UpstreamPathTemplate": "/gateway/verify-email",
       "UpstreamHttpMethod": [
         "POST"
       ],
-      "DownstreamPathTemplate": "/Auth/verifyEmail",
+      "DownstreamPathTemplate": "/Auth/verify-email",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {

@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
         return Ok(new { token });
     }
 
-    [HttpPost("sendVerificationCode")]
+    [HttpPost("send-verificationCode")]
     [AllowAnonymous]
     public async Task<IActionResult> SendVerificationCode(SendVerificationCodeRequest request)
     {
@@ -41,7 +41,7 @@ public class AuthController : ControllerBase
         return Ok("Sended");
     }
 
-    [HttpPost("verifyEmail")]
+    [HttpPost("verify-email")]
     [AllowAnonymous]
     public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailRequest request)
     {

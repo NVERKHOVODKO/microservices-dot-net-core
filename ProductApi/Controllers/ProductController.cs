@@ -42,7 +42,7 @@ public class ProductController : ControllerBase
     }
 
     [Authorize(Roles = "Admin, SuperAdmin")]
-    [HttpPatch("products/editName")]
+    [HttpPatch("products/edit-name")]
     public async Task<IActionResult> EditName(EditNameRequest request)
     {
         await _productService.UpdateName(request);
@@ -50,7 +50,7 @@ public class ProductController : ControllerBase
     }
 
     [Authorize(Roles = "Admin, SuperAdmin")]
-    [HttpPatch("products/editDescription")]
+    [HttpPatch("products/edit-description")]
     public async Task<IActionResult> EditDescription(EditDescriptionRequest request)
     {
         await _productService.UpdateDescription(request);
@@ -58,7 +58,7 @@ public class ProductController : ControllerBase
     }
 
     [Authorize(Roles = "Admin, SuperAdmin")]
-    [HttpPatch("products/editPrice")]
+    [HttpPatch("products/edit-price")]
     public async Task<IActionResult> EditPrice(EditPriceRequest request)
     {
         await _productService.UpdatePrice(request);
@@ -66,7 +66,7 @@ public class ProductController : ControllerBase
     }
 
     [Authorize(Roles = "Admin, SuperAdmin")]
-    [HttpPatch("products/editAvailability")]
+    [HttpPatch("products/edit-availability")]
     public async Task<IActionResult> EditAvailability(EditAvailabilityRequest request)
     {
         await _productService.UpdateAvailability(request);

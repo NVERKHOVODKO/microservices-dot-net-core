@@ -29,7 +29,7 @@ public class UserController : ControllerBase
 
 
     //[Authorize]
-    [HttpPost("users/addRole")]
+    [HttpPost("users/add-role")]
     public async Task<IActionResult> AddRoleToUser([FromBody] AddUserRoleRequest request)
     {
         await _userService.AddRoleToUserAsync(request);
@@ -70,7 +70,7 @@ public class UserController : ControllerBase
     }
 
     //[Authorize(Roles = "SuperAdmin, Admin")]
-    [HttpDelete("users/removeUserRole")]
+    [HttpDelete("users/remove-user-role")]
     public async Task<IActionResult> RemoveUserRole(RemoveUserRequest request)
     {
         await _userService.RemoveUserRoleAsync(request);
@@ -78,7 +78,7 @@ public class UserController : ControllerBase
     }
 
     //[Authorize]
-    [HttpPatch("users/editLogin")]
+    [HttpPatch("users/edit-login")]
     public async Task<IActionResult> EditLogin(EditLoginRequest request)
     {
         await _userService.UpdateLogin(request);
@@ -86,14 +86,14 @@ public class UserController : ControllerBase
     }
 
     //[Authorize]
-    [HttpPatch("users/editEmail")]
+    [HttpPatch("users/edit-email")]
     public async Task<IActionResult> EditEmail(EditEmailRequest request)
     {
         await _userService.UpdateEmail(request);
         return Ok($"User with Id {request.UserId} has been updated.");
     }
 
-    [HttpPatch("users/editPassword")]
+    [HttpPatch("users/edit-password")]
     public async Task<IActionResult> EditPassword(EditPasswordRequest request)
     {
         await _userService.UpdatePassword(request);
