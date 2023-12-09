@@ -73,7 +73,7 @@ export class UserMenuComponent {
     const newRoles = this.roles.filter(role => !this.editingUser.roleNames.$values.includes(role));
 
     newRoles.forEach(role => {
-      this.http.post('http://localhost:5092/User/users/addRole', { userId, roleName: role })
+      this.http.post('http://localhost:5092/User/users/add-role', { userId, roleName: role })
         .subscribe(
           (response) => {
             console.log(`Role '${role}' added successfully for user ${userId}`);

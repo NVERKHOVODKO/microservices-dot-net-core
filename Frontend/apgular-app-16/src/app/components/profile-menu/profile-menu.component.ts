@@ -123,7 +123,7 @@ export class ProfileMenuComponent {
   }
 
   editLogin() {
-    const url = 'http://localhost:5187/gateway/users/editLogin';
+    const url = 'http://localhost:5187/gateway/users/edit-login';
 
     const headers = {
       'Authorization': `Bearer ${this.token}`

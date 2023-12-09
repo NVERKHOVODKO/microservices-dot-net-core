@@ -37,7 +37,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     const body = { email: this.email, code: this.verificationCode };
     console.log(body);
 
-    this.http.post('http://localhost:5187/gateway/verifyEmail', body).subscribe(
+    this.http.post('http://localhost:5187/gateway/verify-email', body).subscribe(
       (response: any) => {
         alert('Mail successfully confirmed');
         this.createUser();
@@ -81,7 +81,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
       alert('Sent');
       this.resendCooldown = true;
 
-      this.http.post('http://localhost:5187/gateway/sendVerificationCode', { email: this.email }).subscribe(
+      this.http.post('http://localhost:5187/gateway/send-verification-code', { email: this.email }).subscribe(
         (response: any) => { },
         (error) => {
           if (error.status === 200) {

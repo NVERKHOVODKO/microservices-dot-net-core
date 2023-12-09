@@ -180,7 +180,7 @@ export class ProductMenuComponent implements OnInit {
     if (!isValid) {
       return;
     }
-    const url = 'http://localhost:5187/gateway/products/editName';
+    const url = 'http://localhost:5187/gateway/products/edit-name';
     const headers = {
       'Authorization': `Bearer ${this.token}`
     };
@@ -222,7 +222,7 @@ export class ProductMenuComponent implements OnInit {
     if (value > 999999999) {
       return;
     }
-    const url = 'http://localhost:5187/gateway/products/editPrice';
+    const url = 'http://localhost:5187/gateway/products/edit-price';
     const headers = {
       'Authorization': `Bearer ${this.token}`
     };
@@ -256,7 +256,7 @@ export class ProductMenuComponent implements OnInit {
     if (value.length > 200) {
       return;
     }
-    const url = 'http://localhost:5187/gateway/products/editDescription';
+    const url = 'http://localhost:5187/gateway/products/edit-description';
     const headers = {
       'Authorization': `Bearer ${this.token}`
     };
@@ -286,7 +286,7 @@ export class ProductMenuComponent implements OnInit {
 
 
   editAvailability() {
-    const url = 'http://localhost:5187/gateway/products/editAvailability';
+    const url = 'http://localhost:5187/gateway/products/edit-availability';
     const headers = {
       'Authorization': `Bearer ${this.token}`
     };
