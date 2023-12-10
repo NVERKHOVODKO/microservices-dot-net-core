@@ -225,7 +225,7 @@ public class UserService : IUserService
     }
 
 
-    private string GetLeadingRole(string[] roles)
+    public string GetLeadingRole(string[] roles)
     {
         string[] rolePriority = { "SuperAdmin", "Admin", "Support", "User" };
         foreach (var role in rolePriority)
@@ -241,11 +241,6 @@ public class UserService : IUserService
         return user == null;
     }
 
-    public async Task<bool> IsEmailUniqueForUserAsync(Guid userId, string email)
-    {
-        var user = _dbRepository.Get<UserEntity>().FirstOrDefaultAsync(x => x.Email == email && x.Id != userId);
-        return user != null;
-    }
 
     private async Task<bool> IsUserRoleExistsAsync(Guid userId, String roleName)
     {

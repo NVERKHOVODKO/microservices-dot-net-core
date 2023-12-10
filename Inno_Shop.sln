@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserApi", "UserApi\UserApi.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductApi", "ProductApi\ProductApi.csproj", "{3D3210C9-9F68-4BBE-A63B-03C9BBF884B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAPI.UnitTests", "UserAPI.UnitTests\UserAPI.UnitTests.csproj", "{879229BF-D574-469D-8DDF-D02DC7768092}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductAPI.UnitTests", "ProductAPI.UnitTests\ProductAPI.UnitTests.csproj", "{436AF816-D224-4CC0-B56F-E2A28349C072}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,18 @@ Global
 		{3D3210C9-9F68-4BBE-A63B-03C9BBF884B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3D3210C9-9F68-4BBE-A63B-03C9BBF884B3}.run-all|Any CPU.ActiveCfg = run-all|Any CPU
 		{3D3210C9-9F68-4BBE-A63B-03C9BBF884B3}.run-all|Any CPU.Build.0 = run-all|Any CPU
+		{879229BF-D574-469D-8DDF-D02DC7768092}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{879229BF-D574-469D-8DDF-D02DC7768092}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{879229BF-D574-469D-8DDF-D02DC7768092}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{879229BF-D574-469D-8DDF-D02DC7768092}.Release|Any CPU.Build.0 = Release|Any CPU
+		{879229BF-D574-469D-8DDF-D02DC7768092}.run-all|Any CPU.ActiveCfg = Debug|Any CPU
+		{879229BF-D574-469D-8DDF-D02DC7768092}.run-all|Any CPU.Build.0 = Debug|Any CPU
+		{436AF816-D224-4CC0-B56F-E2A28349C072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{436AF816-D224-4CC0-B56F-E2A28349C072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{436AF816-D224-4CC0-B56F-E2A28349C072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{436AF816-D224-4CC0-B56F-E2A28349C072}.Release|Any CPU.Build.0 = Release|Any CPU
+		{436AF816-D224-4CC0-B56F-E2A28349C072}.run-all|Any CPU.ActiveCfg = Debug|Any CPU
+		{436AF816-D224-4CC0-B56F-E2A28349C072}.run-all|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6B721541-970C-4C8C-A1C2-33D459F09AD8} = {6CFB4F97-292B-45CF-8D65-491260DCB895}

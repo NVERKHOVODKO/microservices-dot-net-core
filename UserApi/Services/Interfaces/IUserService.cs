@@ -8,11 +8,12 @@ public interface IUserService
 
     public List<UserWithRolesDTO> GetUsers();
     public Task UpdatePassword(EditPasswordRequest request);
+    public bool IsEmailValid(string email);
 
     public Task<UserWithRolesDTO> GetUser(Guid id);
 
     public Task DeleteUserAsync(DeleteUserRequest request);
-
+    public string GetLeadingRole(string[] roles);
     public Task<bool> IsLoginUniqueAsync(string login);
 
     public Task<bool> IsLoginUniqueForUserAsync(Guid userId, string login);
