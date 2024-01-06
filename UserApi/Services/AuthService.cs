@@ -203,7 +203,7 @@ public class AuthService : IAuthService
         mm.Subject = "Email confirmation";
         mm.Body = code;
         sc.Port = 587;
-        sc.Credentials = new NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
+        sc.Credentials = new NetworkCredential("mikita.verkhavodka@gmail.com", "тут пароль но надо новый генерить для app");
         sc.EnableSsl = true;
         sc.Send(mm);
     }
