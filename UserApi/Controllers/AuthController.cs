@@ -33,12 +33,12 @@ public class AuthController : ControllerBase
         return Ok(new { token });
     }
 
-    [HttpPost("send-verificationCode")]
+    [HttpPost("send-verification-code")]
     [AllowAnonymous]
-    public async Task<IActionResult> SendVerificationCode(SendVerificationCodeRequest request)
+    public async Task<IActionResult> SendVerificationCode([FromBody] SendVerificationCodeRequest request)
     {
         await _authService.SendVerificationCode(request.Email);
-        return Ok("Sended");
+        return Ok();
     }
 
     [HttpPost("verify-email")]

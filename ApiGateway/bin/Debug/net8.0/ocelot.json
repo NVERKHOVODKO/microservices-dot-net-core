@@ -2,7 +2,11 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/gateway/users",
-      "UpstreamHttpMethod": ["GET"],
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/User/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -12,10 +16,13 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
-      "UpstreamPathTemplate": "/gateway/addRole",
-      "UpstreamHttpMethod": ["POST"],
-      "DownstreamPathTemplate": "/User/addRole",
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/add-role",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/User/add-role",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -24,9 +31,179 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/remove-user-role",
+      "UpstreamHttpMethod": [
+        "DELETE"
+      ],
+      "DownstreamPathTemplate": "/User/remove-user-role",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/users/edit-login",
+      "UpstreamHttpMethod": [
+        "PATCH"
+      ],
+      "DownstreamPathTemplate": "/User/users/edit-login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/edit-email",
+      "UpstreamHttpMethod": [
+        "PATCH"
+      ],
+      "DownstreamPathTemplate": "/User/edit-email",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/login",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/products",
+      "UpstreamHttpMethod": [
+        "GET", 
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Product/products",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    }, 
+    {
+      "UpstreamPathTemplate": "/gateway/products/{id}",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/Product/products/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/products/{id}",
+      "UpstreamHttpMethod": [
+        "DELETE"
+      ],
+      "DownstreamPathTemplate": "/Product/products/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/products/edit-availability",
+      "UpstreamHttpMethod": [
+        "PATCH"
+      ],
+      "DownstreamPathTemplate": "/Product/products/edit-availability",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/products/edit-price",
+      "UpstreamHttpMethod": [
+        "PATCH"
+      ],
+      "DownstreamPathTemplate": "/Product/products/edit-price",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/products/edit-description",
+      "UpstreamHttpMethod": [
+        "PATCH"
+      ],
+      "DownstreamPathTemplate": "/Product/products/edit-description",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/products/edit-name",
+      "UpstreamHttpMethod": [
+        "PATCH"
+      ],
+      "DownstreamPathTemplate": "/Product/products/edit-name",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5122
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
       "UpstreamPathTemplate": "/gateway/{id}",
-      "UpstreamHttpMethod": ["GET", "DELETE"],
+      "UpstreamHttpMethod": [
+        "GET",
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/User/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -36,10 +213,13 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
-      "UpstreamPathTemplate": "/gateway/create",
-      "UpstreamHttpMethod": ["POST"],
-      "DownstreamPathTemplate": "/User/create",
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/send-verificationCode",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Auth/send-verificationCode",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -48,10 +228,13 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
-      "UpstreamPathTemplate": "/gateway/removeUserRole",
-      "UpstreamHttpMethod": ["DELETE"],
-      "DownstreamPathTemplate": "/User/removeUserRole",
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/verify-email",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Auth/verify-email",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -60,10 +243,13 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
-      "UpstreamPathTemplate": "/gateway/editLogin",
-      "UpstreamHttpMethod": ["PATCH"],
-      "DownstreamPathTemplate": "/User/editLogin",
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/restore-password",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Auth/restore-password",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -72,10 +258,13 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
-      "UpstreamPathTemplate": "/gateway/editEmail",
-      "UpstreamHttpMethod": ["PATCH"],
-      "DownstreamPathTemplate": "/User/editEmail",
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/confirm-restore-password",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Auth/confirm-restore-password",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -84,10 +273,28 @@
         }
       ],
       "DangerousAcceptAnyServerCertificateValidator": true
-    },{
-      "UpstreamPathTemplate": "/gateway/login",
-      "UpstreamHttpMethod": ["POST"],
-      "DownstreamPathTemplate": "/Auth/login",
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/send-verification-code",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Auth/send-verification-code",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5092
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/get-user-token",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/Auth/get-user-token",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -98,7 +305,6 @@
       "DangerousAcceptAnyServerCertificateValidator": true
     }
   ],
-  
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:5187"
   }

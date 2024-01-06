@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { ProductMenuComponent } from './components/product-menu/product-menu.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -34,7 +33,6 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    AdminMenuComponent,
     RegisterComponent,
     ProductMenuComponent,
     NotFoundComponent,
@@ -48,7 +46,7 @@ const routes: Routes = [
     BrowserModule,
     FormsModule,
     RouterModule.forRoot(routes),
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,61 @@
+﻿version: '3.9'
+networks:
+  backend:
+
+services:
+  app:
+    container_name: product-api
+    image: product-api:latest
+    build:
+      context: .
+      dockerfile: ProductApi/Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - backend
+    depends_on:
+      - userdb
+      - productdb
+  
+  userdb:
+    container_name: postgres-user
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: UserMicroservice
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+    volumes:
+      - postgres-user-data:/var/lib/postgresql/data
+  
+  productdb:
+    container_name: postgres-product
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ProductMicroservice
+    ports:
+      - "5433:5432"
+    networks:
+      - backend
+    volumes:
+      - postgres-product-data:/var/lib/postgresql/data
+  
+  apigateway:
+    container_name: api-gateway
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    ports:
+      - 5187:5187
+    networks:
+      - backend
+
+volumes:
+  postgres-user-data:
+  postgres-product-data:

@@ -198,7 +198,6 @@ public class AuthService : IAuthService
         Console.WriteLine(email, code);
         var mm = new MailMessage();
         var sc = new SmtpClient("smtp.gmail.com");
-
         mm.From = new MailAddress("mikita.verkhavodka@gmail.com");
         mm.To.Add(email);
         mm.Subject = "Email confirmation";
@@ -248,7 +247,7 @@ public class AuthService : IAuthService
         mm.Subject = "Password changing";
         mm.Body = code;
         sc.Port = 587;
-        sc.Credentials = new NetworkCredential("mikita.verkhavodka@gmail.com", "hors mfwv zsve lvye");
+        sc.Credentials = new NetworkCredential("mikita.verkhavodka@gmail.com", "тут пароль но надо новый генерить для app");
         sc.EnableSsl = true;
         sc.Send(mm);
     }

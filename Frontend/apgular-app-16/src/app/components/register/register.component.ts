@@ -111,19 +111,6 @@ export class RegisterComponent {
           console.error('Unexpected response:', response);
           alert('An unexpected response occurred. Please check the console for details.');
         }
-      },
-      (error) => {
-        console.error('HTTP error:', error);
-        if (error.status === 200) {
-          this.router.navigate(['/verify-email'], { queryParams: { login: this.username, password: this.password, email: this.email} });
-        }
-        else if (error.status === 400) {
-          alert(error.error.message);
-        }else if (error.status === 404) {
-          alert(error.error.message);
-        } else {
-          alert('An unexpected error occurred. Please check the console for details.');
-        }
       }
     );
   }

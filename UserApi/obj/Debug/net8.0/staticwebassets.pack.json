@@ -1,11 +1,11 @@
 {
   "Files": [
     {
-      "Id": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\UserApi\\wwwroot\\favicon.ico",
+      "Id": "C:\\projects\\Inno-Shop\\microservices-dot-net-core\\UserApi\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\UserApi\\wwwroot\\swagger-ui\\SwaggerDark.css",
+      "Id": "C:\\projects\\Inno-Shop\\microservices-dot-net-core\\UserApi\\wwwroot\\swagger-ui\\SwaggerDark.css",
       "PackagePath": "staticwebassets\\swagger-ui\\SwaggerDark.css"
     },
     {

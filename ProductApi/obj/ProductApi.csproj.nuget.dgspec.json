@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ProductApi\\ProductApi.csproj": {}
+    "C:\\projects\\Inno-Shop\\microservices-dot-net-core\\ProductApi\\ProductApi.csproj": {}
   },
   "projects": {
-    "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ProductApi\\ProductApi.csproj": {
+    "C:\\projects\\Inno-Shop\\microservices-dot-net-core\\ProductApi\\ProductApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ProductApi\\ProductApi.csproj",
+        "projectUniqueName": "C:\\projects\\Inno-Shop\\microservices-dot-net-core\\ProductApi\\ProductApi.csproj",
         "projectName": "ProductApi",
-        "projectPath": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ProductApi\\ProductApi.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\ProductApi\\obj\\",
+        "projectPath": "C:\\projects\\Inno-Shop\\microservices-dot-net-core\\ProductApi\\ProductApi.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "C:\\projects\\Inno-Shop\\microservices-dot-net-core\\ProductApi\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -98,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-preview.2.23157.25\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "rWKDcKZHIJ8uQ1HIvhMsFn2xDHXSEwFWoRHuYD+IRrk=",
+  "Hash": "2sVxmnN2BVV8ZTCaavdd/nCd/CI7iu0QY81HkQmR2rw=",
   "Source": "UserApi",
   "BasePath": "_content/UserApi",
   "Mode": "Default",
@@ -10,22 +10,24 @@
     {
       "Name": "UserApi\\wwwroot",
       "Source": "UserApi",
-      "ContentRoot": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\UserApi\\wwwroot\\",
+      "ContentRoot": "C:\\projects\\Inno-Shop\\microservices-dot-net-core\\UserApi\\wwwroot\\",
       "BasePath": "_content/UserApi",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\UserApi\\wwwroot\\favicon.ico",
+      "Identity": "C:\\projects\\Inno-Shop\\microservices-dot-net-core\\UserApi\\wwwroot\\favicon.ico",
       "SourceId": "UserApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\UserApi\\wwwroot\\",
+      "ContentRoot": "C:\\projects\\Inno-Shop\\microservices-dot-net-core\\UserApi\\wwwroot\\",
       "BasePath": "_content/UserApi",
       "RelativePath": "favicon.ico",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
@@ -34,15 +36,17 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\UserApi\\wwwroot\\swagger-ui\\SwaggerDark.css",
+      "Identity": "C:\\projects\\Inno-Shop\\microservices-dot-net-core\\UserApi\\wwwroot\\swagger-ui\\SwaggerDark.css",
       "SourceId": "UserApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\НЕ СИСТЕМА\\Microservices_AspNetCore\\UserApi\\wwwroot\\",
+      "ContentRoot": "C:\\projects\\Inno-Shop\\microservices-dot-net-core\\UserApi\\wwwroot\\",
       "BasePath": "_content/UserApi",
       "RelativePath": "swagger-ui/SwaggerDark.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
